@@ -117,6 +117,13 @@ export async function fakeRegister(params) {
   });
 }
 
+export async function register(params) {
+  return request('/naruto/v1/register', {
+    method: 'POST',
+    data: params,
+  });
+}
+
 export async function queryNotices(params = {}) {
   return request(`/api/notices?${stringify(params)}`);
 }
