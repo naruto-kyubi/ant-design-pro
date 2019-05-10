@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link';
 import router from 'umi/router';
-import { Form, Input, Button, message, Select, Row, Col, Popover, Progress } from 'antd';
+import { Form, Input, Button, Select, Row, Col, Popover, Progress, Alert } from 'antd';
 import styles from './Register.less';
 
 const FormItem = Form.Item;
@@ -51,7 +51,7 @@ class Register extends Component {
   componentDidUpdate() {
     const { form, register } = this.props;
     const account = form.getFieldValue('mail');
-    if (register.status === 'ok') {
+    if (register.status === 'ok' && register.operator === 'submit') {
       router.push({
         pathname: '/user/register-result',
         state: {
@@ -66,6 +66,16 @@ class Register extends Component {
   }
 
   onGetCaptcha = () => {
+    const { form, dispatch } = this.props;
+    const mobile = form.getFieldValue('mobile');
+
+    dispatch({
+      type: 'register/getCaptcha',
+      payload: {
+        mobile,
+      },
+    });
+
     let count = 59;
     this.setState({ count });
     this.interval = setInterval(() => {
@@ -75,7 +85,6 @@ class Register extends Component {
         clearInterval(this.interval);
       }
     }, 1000);
-    message.warning(formatMessage({ id: 'app.login.verification-code-warning' }));
   };
 
   getPasswordStatus = () => {
@@ -174,8 +183,17 @@ class Register extends Component {
     ) : null;
   };
 
+  renderAlert = content => (
+    <Alert
+      style={{ marginBottom: 24 }}
+      message={formatMessage({ id: content })}
+      type="error"
+      showIcon
+    />
+  );
+
   render() {
-    const { form, submitting } = this.props;
+    const { form, submitting, register } = this.props;
     const { getFieldDecorator } = form;
     const { count, prefix, help, visible } = this.state;
     return (
@@ -183,6 +201,7 @@ class Register extends Component {
         <h3>
           <FormattedMessage id="app.register.register" />
         </h3>
+        {register.status === 'fail' && this.renderAlert(register.data.errCode)}
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
             {getFieldDecorator('mail', {

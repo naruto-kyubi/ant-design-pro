@@ -131,3 +131,7 @@ export async function queryNotices(params = {}) {
 export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
 }
+
+export async function getCaptcha(mobile) {
+  return request(`/naruto/v1/getCaptcha?mobile=${mobile}`);
+}

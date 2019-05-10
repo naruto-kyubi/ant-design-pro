@@ -37,4 +37,7 @@ export default {
   'validation.date.required': '请选择起止日期',
   'validation.goal.required': '请输入目标描述',
   'validation.standard.required': '请输入衡量标准',
+  'captcha.unknown.error': '验证码服务错误',
+  'captcha.incorrect.error': '验证码错误',
+  'captcha.timeout.error': '验证码超时',
 };

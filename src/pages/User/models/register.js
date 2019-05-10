@@ -1,4 +1,4 @@
-import { register } from '@/services/api';
+import { register, getCaptcha } from '@/services/api';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
 
@@ -7,15 +7,38 @@ export default {
 
   state: {
     status: undefined,
+    data: undefined,
+    operator: undefined,
   },
 
   effects: {
     *submit({ payload }, { call, put }) {
       // const response = yield call(fakeRegister, payload);
       const response = yield call(register, payload);
+      const { status, data } = response;
       yield put({
         type: 'registerHandle',
-        payload: response,
+        payload: {
+          status,
+          data,
+          operator: 'submit',
+        },
+      });
+    },
+
+    *getCaptcha({ payload }, { call, put }) {
+      // const response = yield call(fakeRegister, payload);
+      const { mobile } = payload;
+      const response = yield call(getCaptcha, mobile);
+
+      const { status, data } = response;
+      yield put({
+        type: 'captchaHandler',
+        payload: {
+          status,
+          data,
+          operator: 'getCaptcha',
+        },
       });
     },
   },
@@ -26,7 +49,13 @@ export default {
       reloadAuthorized();
       return {
         ...state,
-        status: payload.status,
+        ...payload,
+      };
+    },
+    captchaHandler(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
       };
     },
   },
