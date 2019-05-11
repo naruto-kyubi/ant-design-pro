@@ -40,4 +40,5 @@ export default {
   'captcha.unknown.error': '验证码服务错误',
   'captcha.incorrect.error': '验证码错误',
   'captcha.timeout.error': '验证码超时',
+  'user.exist.error': '手机已注册',
 };
