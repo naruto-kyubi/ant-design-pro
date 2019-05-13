@@ -20,6 +20,7 @@ export default {
     '激活邮件已发送到你的邮箱中，邮件有效期为24小时。请及时登录邮箱，点击邮件中的链接激活帐户。',
   'app.register-result.back-home': '返回首页',
   'app.register-result.view-mailbox': '查看邮箱',
+  'validation.nickname.required': '请输入昵称！',
   'validation.email.required': '请输入邮箱地址！',
   'validation.email.wrong-format': '邮箱地址格式错误！',
   'validation.userName.required': '请输入用户名!',
@@ -41,4 +42,6 @@ export default {
   'captcha.incorrect.error': '验证码错误',
   'captcha.timeout.error': '验证码超时',
   'user.exist.error': '手机已注册',
+  'nickname.exist.error': '该昵称已被注册',
+  'form.nickname.placeholder': '昵称',
 };

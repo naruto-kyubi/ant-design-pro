@@ -204,7 +204,7 @@ class Register extends Component {
         {register.status === 'fail' && this.renderAlert(register.data.errCode)}
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
-            {getFieldDecorator('mail', {
+            {/* getFieldDecorator('mail', {
               rules: [
                 {
                   required: true,
@@ -217,6 +217,19 @@ class Register extends Component {
               ],
             })(
               <Input size="large" placeholder={formatMessage({ id: 'form.email.placeholder' })} />
+            ) */
+            getFieldDecorator('nickname', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({ id: 'validation.nickname.required' }),
+                },
+              ],
+            })(
+              <Input
+                size="large"
+                placeholder={formatMessage({ id: 'form.nickname.placeholder' })}
+              />
             )}
           </FormItem>
           <FormItem help={help}>
