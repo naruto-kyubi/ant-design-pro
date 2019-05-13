@@ -8,7 +8,6 @@ export default {
   state: {
     status: undefined,
     data: undefined,
-    operator: undefined,
   },
 
   effects: {
@@ -21,7 +20,6 @@ export default {
         payload: {
           status,
           data,
-          operator: 'submit',
         },
       });
     },
@@ -37,7 +35,6 @@ export default {
         payload: {
           status,
           data,
-          operator: 'getCaptcha',
         },
       });
     },

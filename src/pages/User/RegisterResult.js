@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 import { Button } from 'antd';
 import Link from 'umi/link';
 import Result from '@/components/Result';
@@ -7,14 +7,14 @@ import styles from './RegisterResult.less';
 
 const actions = (
   <div className={styles.actions}>
-    <a href="">
+    {/* <a href="">
       <Button size="large" type="primary">
         <FormattedMessage id="app.register-result.view-mailbox" />
       </Button>
-    </a>
-    <Link to="/">
+    </a> */}
+    <Link to="/user/login">
       <Button size="large">
-        <FormattedMessage id="app.register-result.back-home" />
+        <FormattedMessage id="app.register-result.back-login" />
       </Button>
     </Link>
   </div>
@@ -32,7 +32,7 @@ const RegisterResult = ({ location }) => (
         />
       </div>
     }
-    description={formatMessage({ id: 'app.register-result.activation-email' })}
+    // description={''}
     actions={actions}
     style={{ marginTop: 56 }}
   />

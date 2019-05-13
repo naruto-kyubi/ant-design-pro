@@ -46,12 +46,14 @@ class Register extends Component {
     visible: false,
     help: '',
     prefix: '86',
+    operator: undefined,
   };
 
   componentDidUpdate() {
     const { form, register } = this.props;
+    const { operator } = this.state;
     const account = form.getFieldValue('mail');
-    if (register.status === 'ok' && register.operator === 'submit') {
+    if (register.status === 'ok' && operator === 'submit') {
       router.push({
         pathname: '/user/register-result',
         state: {
@@ -69,6 +71,7 @@ class Register extends Component {
     const { form, dispatch } = this.props;
     const mobile = form.getFieldValue('mobile');
 
+    this.setState({ operator: 'getCaptcha' });
     dispatch({
       type: 'register/getCaptcha',
       payload: {
@@ -105,6 +108,8 @@ class Register extends Component {
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
         const { prefix } = this.state;
+        this.setState({ operator: 'submit' });
+
         dispatch({
           type: 'register/submit',
           payload: {
