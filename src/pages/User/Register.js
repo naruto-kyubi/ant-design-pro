@@ -71,7 +71,7 @@ class Register extends Component {
     const { form, dispatch } = this.props;
     const mobile = form.getFieldValue('mobile');
 
-    this.setState({ operator: 'getCaptcha' });
+    this.setState({ operator: 'getRegisterCaptcha' });
     dispatch({
       type: 'register/getRegisterCaptcha',
       payload: {
