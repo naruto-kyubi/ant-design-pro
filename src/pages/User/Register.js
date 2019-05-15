@@ -73,7 +73,7 @@ class Register extends Component {
 
     this.setState({ operator: 'getCaptcha' });
     dispatch({
-      type: 'register/getCaptcha',
+      type: 'register/getRegisterCaptcha',
       payload: {
         mobile,
       },

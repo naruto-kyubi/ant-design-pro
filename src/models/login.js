@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { fakeAccountLogin, getCaptcha } from '@/services/api';
+import { fakeAccountLogin, getLogonCaptcha } from '@/services/api';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
@@ -40,8 +40,8 @@ export default {
       }
     },
 
-    *getCaptcha({ payload }, { call }) {
-      yield call(getCaptcha, payload);
+    *getLogonCaptcha({ payload }, { call }) {
+      yield call(getLogonCaptcha, payload);
     },
 
     *logout(_, { put }) {

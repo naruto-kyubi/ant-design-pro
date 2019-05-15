@@ -104,7 +104,7 @@ export async function updateFakeList(params) {
 }
 
 export async function fakeAccountLogin(params) {
-  return request('/naruto/v1/login/account', {
+  return request('/naruto/v1/logon/account', {
     method: 'POST',
     data: params,
   });
@@ -118,7 +118,7 @@ export async function fakeRegister(params) {
 }
 
 export async function register(params) {
-  return request('/naruto/v1/register', {
+  return request('/naruto/v1/user/register', {
     method: 'POST',
     data: params,
   });
@@ -132,6 +132,12 @@ export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
 }
 
-export async function getCaptcha(mobile) {
-  return request(`/naruto/v1/getCaptcha?mobile=${mobile}`);
+// export async function getCaptcha(mobile) {
+//   return request(`/naruto/v1/getCaptcha?mobile=${mobile}`);
+// }
+export async function getRegisterCaptcha(mobile) {
+  return request(`/naruto/v1/user/registerCaptcha?mobile=${mobile}`);
+}
+export async function getLogonCaptcha(mobile) {
+  return request(`/naruto/v1/logon/captcha?mobile=${mobile}`);
 }

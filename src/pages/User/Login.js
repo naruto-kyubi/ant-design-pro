@@ -30,7 +30,7 @@ class LoginPage extends Component {
         } else {
           const { dispatch } = this.props;
           dispatch({
-            type: 'login/getCaptcha',
+            type: 'login/getLogonCaptcha',
             payload: values.mobile,
           })
             .then(resolve)

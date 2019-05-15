@@ -1,4 +1,4 @@
-import { register, getCaptcha } from '@/services/api';
+import { register, getRegisterCaptcha } from '@/services/api';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
 
@@ -24,10 +24,10 @@ export default {
       });
     },
 
-    *getCaptcha({ payload }, { call, put }) {
+    *getRegisterCaptcha({ payload }, { call, put }) {
       // const response = yield call(fakeRegister, payload);
       const { mobile } = payload;
-      const response = yield call(getCaptcha, mobile);
+      const response = yield call(getRegisterCaptcha, mobile);
 
       const { status, data } = response;
       yield put({
