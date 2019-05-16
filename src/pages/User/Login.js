@@ -78,10 +78,10 @@ class LoginPage extends Component {
           }}
         >
           <Tab key="account" tab={formatMessage({ id: 'app.login.tab-login-credentials' })}>
-            {login.status === 'error' &&
+            {login.status === 'fail' &&
               login.type === 'account' &&
               !submitting &&
-              this.renderMessage(formatMessage({ id: 'app.login.message-invalid-credentials' }))}
+              this.renderMessage(formatMessage({ id: login.data.errCode }))}
             <UserName
               name="userName"
               placeholder={`${formatMessage({ id: 'app.login.userName' })}`}
@@ -108,12 +108,10 @@ class LoginPage extends Component {
             />
           </Tab>
           <Tab key="mobile" tab={formatMessage({ id: 'app.login.tab-login-mobile' })}>
-            {login.status === 'error' &&
+            {login.status === 'fail' &&
               login.type === 'mobile' &&
               !submitting &&
-              this.renderMessage(
-                formatMessage({ id: 'app.login.message-invalid-verification-code' })
-              )}
+              this.renderMessage(formatMessage({ id: login.data.errCode }))}
             <Mobile
               name="mobile"
               placeholder={formatMessage({ id: 'form.phone-number.placeholder' })}
