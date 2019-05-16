@@ -49,4 +49,5 @@ export default {
   'user.exist.error': '手机号已被使用',
   'nickname.exist.error': '该昵称已被使用',
   'form.nickname.placeholder': '昵称',
+  'app.login.forgotpassword': '请输入你注册时填写的手机号',
 };
