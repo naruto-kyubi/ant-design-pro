@@ -138,6 +138,18 @@ export async function getFakeCaptcha(mobile) {
 export async function getRegisterCaptcha(mobile) {
   return request(`/naruto/v1/user/registerCaptcha?mobile=${mobile}`);
 }
+
+export async function getForgotpasswordCaptcha(mobile) {
+  return request(`/naruto/v1/user/forgotPasswordCaptcha?mobile=${mobile}`);
+}
+
 export async function getLogonCaptcha(mobile) {
   return request(`/naruto/v1/logon/captcha?mobile=${mobile}`);
+}
+
+export async function resetPassword(params) {
+  return request('/naruto/v1/user/resetPassword', {
+    method: 'POST',
+    data: params,
+  });
 }
