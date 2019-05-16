@@ -10,15 +10,23 @@ export default {
 
   state: {
     status: undefined,
+    type: undefined,
+    data: undefined,
   },
 
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(fakeAccountLogin, payload);
+
       yield put({
         type: 'changeLoginStatus',
-        payload: response,
+        payload: {
+          status: response.status,
+          type: payload.type,
+          data: response.data,
+        },
       });
+
       // Login successfully
       if (response.status === 'ok') {
         reloadAuthorized();
@@ -75,6 +83,7 @@ export default {
         ...state,
         status: payload.status,
         type: payload.type,
+        data: payload.data,
       };
     },
   },
