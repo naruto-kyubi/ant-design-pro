@@ -50,10 +50,10 @@ class Register extends Component {
   };
 
   componentDidUpdate() {
-    const { form, register } = this.props;
+    const { form, register, submitting } = this.props;
     const { operator } = this.state;
-    const account = form.getFieldValue('mail');
-    if (register.status === 'ok' && operator === 'submit') {
+    const account = form.getFieldValue('mobile');
+    if (!submitting && register.status === 'ok' && operator === 'submit') {
       router.push({
         pathname: '/user/register-result',
         state: {
@@ -108,8 +108,6 @@ class Register extends Component {
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
         const { prefix } = this.state;
-        this.setState({ operator: 'submit' });
-
         dispatch({
           type: 'register/submit',
           payload: {
@@ -117,6 +115,7 @@ class Register extends Component {
             prefix,
           },
         });
+        this.setState({ operator: 'submit' });
       }
     });
   };
@@ -188,7 +187,7 @@ class Register extends Component {
     ) : null;
   };
 
-  renderAlert = content => (
+  renderMessage = content => (
     <Alert
       style={{ marginBottom: 24 }}
       message={formatMessage({ id: content })}
@@ -199,14 +198,15 @@ class Register extends Component {
 
   render() {
     const { form, submitting, register } = this.props;
+    const { data } = register;
     const { getFieldDecorator } = form;
-    const { count, prefix, help, visible } = this.state;
+    const { count, prefix, help, visible, operator } = this.state;
     return (
       <div className={styles.main}>
         <h3>
           <FormattedMessage id="app.register.register" />
         </h3>
-        {register.status === 'fail' && this.renderAlert(register.data.errCode)}
+        {register.status === 'fail' && operator && this.renderMessage(data.errCode)}
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
             {/* getFieldDecorator('mail', {
