@@ -21,7 +21,7 @@ export default {
       });
     },
 
-    *getForgotpasswordCaptcha({ payload }, { call }, { put }) {
+    *getForgotpasswordCaptcha({ payload }, { call, put }) {
       const { mobile } = payload;
       const response = yield call(getForgotpasswordCaptcha, mobile);
 
