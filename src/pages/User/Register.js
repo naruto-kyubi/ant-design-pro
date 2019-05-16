@@ -198,7 +198,6 @@ class Register extends Component {
 
   render() {
     const { form, submitting, register } = this.props;
-    const { data } = register;
     const { getFieldDecorator } = form;
     const { count, prefix, help, visible, operator } = this.state;
     return (
@@ -206,7 +205,7 @@ class Register extends Component {
         <h3>
           <FormattedMessage id="app.register.register" />
         </h3>
-        {register.status === 'fail' && operator && this.renderMessage(data.errCode)}
+        {register.status === 'fail' && operator && this.renderMessage(register.data.errCode)}
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
             {/* getFieldDecorator('mail', {
