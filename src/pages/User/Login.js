@@ -14,12 +14,12 @@ const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 }))
 class LoginPage extends Component {
   state = {
-    type: 'account',
+    authType: 'account',
     autoLogin: true,
   };
 
-  onTabChange = type => {
-    this.setState({ type });
+  onTabChange = authType => {
+    this.setState({ authType });
   };
 
   onGetCaptcha = () =>
@@ -41,14 +41,14 @@ class LoginPage extends Component {
     });
 
   handleSubmit = (err, values) => {
-    const { type } = this.state;
+    const { authType } = this.state;
     if (!err) {
       const { dispatch } = this.props;
       dispatch({
         type: 'login/login',
         payload: {
           ...values,
-          type,
+          authType,
         },
       });
     }
@@ -66,11 +66,11 @@ class LoginPage extends Component {
 
   render() {
     const { login, submitting } = this.props;
-    const { type, autoLogin } = this.state;
+    const { authType, autoLogin } = this.state;
     return (
       <div className={styles.main}>
         <Login
-          defaultActiveKey={type}
+          defaultActiveKey={authType}
           onTabChange={this.onTabChange}
           onSubmit={this.handleSubmit}
           ref={form => {
@@ -79,7 +79,7 @@ class LoginPage extends Component {
         >
           <Tab key="account" tab={formatMessage({ id: 'app.login.tab-login-credentials' })}>
             {login.status === 'fail' &&
-              login.type === 'account' &&
+              login.authType === 'account' &&
               !submitting &&
               this.renderMessage(formatMessage({ id: login.data.errCode }))}
             <UserName
@@ -109,7 +109,7 @@ class LoginPage extends Component {
           </Tab>
           <Tab key="captcha" tab={formatMessage({ id: 'app.login.tab-login-mobile' })}>
             {login.status === 'fail' &&
-              login.type === 'captcha' &&
+              login.authType === 'captcha' &&
               !submitting &&
               this.renderMessage(formatMessage({ id: login.data.errCode }))}
             <Mobile
