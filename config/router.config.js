@@ -5,6 +5,7 @@ export default [
     component: '../layouts/UserLayout',
     routes: [
       { path: '/user', redirect: '/user/login' },
+      { path: '/user/weibo', name: 'weibo', component: './User/Weibo' },
       { path: '/user/login', name: 'login', component: './User/Login' },
       { path: '/user/forgotpassword', name: 'login', component: './User/Forgotpassword' },
       { path: '/user/register', name: 'register', component: './User/Register' },

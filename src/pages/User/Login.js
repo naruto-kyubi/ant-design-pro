@@ -18,6 +18,32 @@ class LoginPage extends Component {
     autoLogin: true,
   };
 
+  componentDidMount() {
+    window.oAuth = this.oAuth;
+  }
+
+  oAuth = (authType, authCode) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'login/login',
+      payload: {
+        // ...values,
+        authType,
+        authCode,
+        password: '123',
+      },
+    });
+
+    // 登录；
+    // dispatch({
+    //   type: 'login/auth',
+    //   payload: {
+    //     oAuthType,
+    //     code,
+    //   },
+    // });
+  };
+
   onTabChange = authType => {
     this.setState({ authType });
   };
@@ -51,6 +77,30 @@ class LoginPage extends Component {
           authType,
         },
       });
+    }
+  };
+
+  handOAuthClick = oAuthType => {
+    console.log('----');
+    // this.handleModalVisible(true);
+    const iWidth = 800; // 弹出窗口的宽度;
+    const iHeight = 600; // 弹出窗口的高度;
+    const iTop = (window.screen.availHeight - iHeight) / 2; // 获得窗口的垂直位置;
+    const iLeft = (window.screen.availWidth - iWidth) / 2; // 获得窗口的水平位置;
+    const name = '认证';
+    if (oAuthType === 'weibo') {
+      const url = `https://api.weibo.com/oauth2/authorize?client_id=3274457296&response_type=code&redirect_uri=${
+        window.location.origin
+      }/user/weibo`;
+      window.open(
+        url,
+        name,
+        `height=${iHeight},width=${iWidth},top=${iTop},left=${iLeft},toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no`
+      );
+    } else if (oAuthType === 'taobao') {
+      alert('taobao');
+    } else if (oAuthType === 'alipay') {
+      alert('alipay');
     }
   };
 
@@ -152,11 +202,27 @@ class LoginPage extends Component {
           <Submit loading={submitting}>
             <FormattedMessage id="app.login.login" />
           </Submit>
+
           <div className={styles.other}>
             <FormattedMessage id="app.login.sign-in-with" />
-            <Icon type="alipay-circle" className={styles.icon} theme="outlined" />
-            <Icon type="taobao-circle" className={styles.icon} theme="outlined" />
-            <Icon type="weibo-circle" className={styles.icon} theme="outlined" />
+            <Icon
+              type="alipay-circle"
+              className={styles.icon}
+              theme="outlined"
+              onClick={() => this.handOAuthClick('alipay')}
+            />
+            <Icon
+              type="taobao-circle"
+              className={styles.icon}
+              theme="outlined"
+              onClick={() => this.handOAuthClick('taobao')}
+            />
+            <Icon
+              type="weibo-circle"
+              className={styles.icon}
+              theme="outlined"
+              onClick={() => this.handOAuthClick('weibo')}
+            />
             <Link className={styles.register} to="/user/register">
               <FormattedMessage id="app.login.signup" />
             </Link>
