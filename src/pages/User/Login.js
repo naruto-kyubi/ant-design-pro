@@ -107,9 +107,9 @@ class LoginPage extends Component {
               }}
             />
           </Tab>
-          <Tab key="mobile" tab={formatMessage({ id: 'app.login.tab-login-mobile' })}>
+          <Tab key="captcha" tab={formatMessage({ id: 'app.login.tab-login-mobile' })}>
             {login.status === 'fail' &&
-              login.type === 'mobile' &&
+              login.type === 'captcha' &&
               !submitting &&
               this.renderMessage(formatMessage({ id: login.data.errCode }))}
             <Mobile
