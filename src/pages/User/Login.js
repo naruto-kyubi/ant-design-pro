@@ -79,7 +79,7 @@ class LoginPage extends Component {
         >
           <Tab key="account" tab={formatMessage({ id: 'app.login.tab-login-credentials' })}>
             {login.status === 'fail' &&
-              login.authType === 'account' &&
+              authType === 'account' &&
               !submitting &&
               this.renderMessage(formatMessage({ id: login.data.errCode }))}
             <UserName
@@ -109,7 +109,7 @@ class LoginPage extends Component {
           </Tab>
           <Tab key="captcha" tab={formatMessage({ id: 'app.login.tab-login-mobile' })}>
             {login.status === 'fail' &&
-              login.authType === 'captcha' &&
+              authType === 'captcha' &&
               !submitting &&
               this.renderMessage(formatMessage({ id: login.data.errCode }))}
             <Mobile
