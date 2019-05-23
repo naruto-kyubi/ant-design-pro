@@ -69,4 +69,33 @@ const request = extend({
   credentials: 'include', // 默认请求是否带上cookie
 });
 
+// liuhaoyi
+// 每次提交请求时，在header中增加token
+request.interceptors.request.use((url, options) => {
+  const _options = { ...options };
+  const token = sessionStorage.getItem('x-auth-token');
+  if (token) {
+    _options.headers = {
+      'x-auth-token': token,
+      ...options.headers,
+    };
+  }
+  return {
+    url,
+    options: _options,
+  };
+});
+
+/**
+ * liuhaoyi
+ * 存储服务端返回的jwttoken。
+ */
+request.interceptors.response.use(response => {
+  const token = response.headers.get('x-auth-token');
+  if (token) {
+    sessionStorage.setItem('x-auth-token', token);
+  }
+  return response;
+});
+
 export default request;
