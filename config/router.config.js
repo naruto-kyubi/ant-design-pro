@@ -6,6 +6,7 @@ export default [
     routes: [
       { path: '/user', redirect: '/user/login' },
       { path: '/user/weibo', name: 'weibo', component: './User/Weibo' },
+      // { path: '/user/user', name: 'user', component: './User/User' },
       { path: '/user/login', name: 'login', component: './User/Login' },
       { path: '/user/forgotpassword', name: 'login', component: './User/Forgotpassword' },
       { path: '/user/register', name: 'register', component: './User/Register' },
@@ -47,6 +48,25 @@ export default [
             name: 'workplace',
             component: './Dashboard/Workplace',
           },
+        ],
+      },
+      // users
+      {
+        path: '/console/user',
+        icon: 'form',
+        name: 'user',
+        routes: [
+          {
+            path: '/console/user/user',
+            name: 'user',
+            component: './User/User',
+          },
+          // {
+          //   path: '/form/advanced-form',
+          //   name: 'advancedform',
+          //   authority: ['admin'],
+          //   component: './Forms/AdvancedForm',
+          // },
         ],
       },
       // forms

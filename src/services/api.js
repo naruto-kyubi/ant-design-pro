@@ -153,3 +153,56 @@ export async function resetPassword(params) {
     data: params,
   });
 }
+
+export async function addUser(params) {
+  return request('/naruto/v1/user/add', {
+    method: 'POST',
+    data: {
+      ...params,
+      method: 'post',
+    },
+  });
+}
+export async function removeUser(params) {
+  // return request('/api/rule', {
+  //   method: 'POST',
+  //   data: {
+  //     ...params,
+  //     _method: 'DELETE',
+  //   },
+  // });
+  const { key } = params;
+  return request(`/naruto/v1/user/delete/${key}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function updateUser(params = {}) {
+  // return request(`/api/rule?${stringify(params.query)}`, {
+  //   method: 'PUT',
+  //   data: {
+  //     ...params.body,
+  //     method: 'update',
+  //   },
+  // });
+
+  const { key } = params.body;
+  return request(`/naruto/v1/user/update/${key}`, {
+    method: 'PUT',
+    data: {
+      ...params.body,
+      method: 'update',
+    },
+  });
+}
+export async function queryUser(params) {
+  return request(`/naruto/v1/user/query?${stringify(params)}`);
+}
+
+/**
+ * @liuhaoyi
+ * 获取当前登录用户对应的功能菜单。springboot依据token获取userName。
+ */
+export async function queryMenus() {
+  return request('/naruto/v1//logon/function');
+}
