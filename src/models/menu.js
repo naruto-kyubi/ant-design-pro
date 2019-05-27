@@ -132,12 +132,12 @@ export default {
 
         // 递归函数，遍历菜单数据，并且支持多语言。
         const localeMenuData = data => {
-          const myData = [...data];
-          const newData = myData.map(item => {
-            let myItem = { ...item };
+          const menuData = [...data];
+          const newData = menuData.map(item => {
+            let menuItem = { ...item };
 
             if (item.locale) {
-              myItem = {
+              menuItem = {
                 ...item,
                 name: formatMessage({ id: item.locale, defaultMessage: item.name }),
               };
@@ -146,27 +146,27 @@ export default {
               const itemFilter = localeMenuData(item.children).filter(
                 obj => !(obj.type === 'COMPONENT')
               );
-              myItem = { ...myItem, children: itemFilter };
+              menuItem = { ...menuItem, children: itemFilter };
             }
-            return myItem;
+            return menuItem;
           });
           return newData;
         };
 
         const localeCOMData = data => {
-          const myData = [...data];
-          let myItem = [];
-          myData.map(item => {
+          const comData = [...data];
+          let comItem = [];
+          comData.map(item => {
             if (item.type === 'COMPONENT') {
-              myItem = [...myItem, item];
+              comItem = [...comItem, item];
             }
             if (item.children) {
               const c = localeCOMData(item.children);
-              if (c) myItem = [...myItem, ...c];
+              if (c) comItem = [...comItem, ...c];
             }
-            return myItem;
+            return comItem;
           });
-          return myItem;
+          return comItem;
         };
 
         const myOriginalMenuData = localeMenuData(originalMenuData);
