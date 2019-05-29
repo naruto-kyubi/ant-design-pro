@@ -7,14 +7,6 @@ export default {
     list: [],
     currentUser: {},
 
-    // data: {
-    //   status: undefined,
-    //   data: [],
-    //   meta: {
-    //     pagination: {},
-    //   }
-    // },
-
     data: {
       status: undefined,
       list: [],
@@ -60,20 +52,15 @@ export default {
     *create({ payload, callback }, { call, put }) {
       const response = yield call(addUser, payload);
 
-      const {
-        status,
-        data,
-        meta: { pagination },
-      } = response;
+      const { status, data } = response;
 
-      if (status === 'success') {
+      if (status === 'ok') {
         // 成功；
         yield put({
           type: 'saveHandle',
           payload: {
-            status,
-            list: data,
-            pagination,
+            // status,
+            // list: data,
           },
         });
       }

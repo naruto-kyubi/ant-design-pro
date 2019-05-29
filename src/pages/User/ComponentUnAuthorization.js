@@ -4,18 +4,17 @@ import { connect } from 'dva';
 @connect(({ menu }) => ({
   components: menu.components,
 }))
-class ComponentAuthorization extends Component {
+class ComponentUnAuthorization extends Component {
   render() {
     const { children, components, code } = this.props;
 
     const v = components.filter(item => item.code === code);
 
-    if (v && v.length > 0) {
-      return <span>{children}</span>;
+    if (!v || v.length < 1) {
+      return <div>{children}</div>;
     }
-
-    return <span />;
+    return <div />;
   }
 }
 
-export default ComponentAuthorization;
+export default ComponentUnAuthorization;

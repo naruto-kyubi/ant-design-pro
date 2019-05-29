@@ -155,11 +155,11 @@ export async function resetPassword(params) {
 }
 
 export async function addUser(params) {
-  return request('/naruto/v1/user/add', {
+  return request('/naruto/v1/user/create', {
     method: 'POST',
     data: {
       ...params,
-      method: 'post',
+      // method: 'post',
     },
   });
 }
@@ -186,8 +186,8 @@ export async function updateUser(params = {}) {
   //   },
   // });
 
-  const { key } = params.body;
-  return request(`/naruto/v1/user/update/${key}`, {
+  const { id } = params.body;
+  return request(`/naruto/v1/user/update/${id}`, {
     method: 'PUT',
     data: {
       ...params.body,
