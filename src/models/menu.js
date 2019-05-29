@@ -191,6 +191,8 @@ export default {
 
   reducers: {
     save(state, action) {
+      // stored data into window；
+      window.authorizeComponents = action.payload.components;
       return {
         ...state,
         ...action.payload,

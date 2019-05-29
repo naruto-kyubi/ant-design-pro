@@ -1,12 +1,11 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
-import router from 'umi/router';
 import { Row, Col, Card, Form, Input, Icon, Button, Dropdown, Menu, Modal, message } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './User.less';
-import ComponentAuthorization from './ComponentAuthorization';
-import ComponentUnAuthorization from './ComponentUnAuthorization';
+import ComponentAuthorization from '@/pages/Authorization/ComponentAuthorization';
+import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
 
 const FormItem = Form.Item;
 
@@ -14,9 +13,8 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-// @liuhaoyi 存储在上一次查询的参数；
+
 let queryParams = {};
-// @liuhaoyi; 回调并加载更新后的数据；
 const callback = (dispatch, _queryParams) => {
   return () =>
     dispatch({
@@ -173,7 +171,6 @@ class User extends PureComponent {
     {
       title: 'nickname',
       dataIndex: 'nickname',
-      render: text => <a onClick={() => this.previewItem(text)}>{text}</a>,
     },
     {
       title: 'mobile',
@@ -185,16 +182,7 @@ class User extends PureComponent {
       code: 'console.user.update',
       render: (text, record) => (
         <Fragment>
-          <ComponentAuthorization code="console.user.update">
-            <a onClick={() => this.handleUpdateModalVisible(true, record)}>edit</a>
-            {/* <Divider type="vertical" /> */}
-            {/* <a href="">订阅警报</a> */}
-          </ComponentAuthorization>
-          <ComponentUnAuthorization code="console.user.update">
-            <div>edit</div>
-            {/* <Divider type="vertical" /> */}
-            {/* <a href="">订阅警报</a> */}
-          </ComponentUnAuthorization>
+          <a onClick={() => this.handleUpdateModalVisible(true, record)}>edit</a>
         </Fragment>
       ),
     },
@@ -238,10 +226,6 @@ class User extends PureComponent {
     this.setState({
       selectedRows: [],
     });
-  };
-
-  previewItem = id => {
-    router.push(`/profile/basic/${id}`);
   };
 
   handleFormReset = () => {
@@ -298,9 +282,7 @@ class User extends PureComponent {
 
   handleSearch = e => {
     e.preventDefault();
-
     const { dispatch, form } = this.props;
-
     form.validateFields((err, fieldsValue) => {
       if (err) return;
 
@@ -374,7 +356,6 @@ class User extends PureComponent {
           ...fields,
         },
       },
-      // @liuhaoyi new add
       callback: callback(dispatch, queryParams),
     });
 
@@ -385,8 +366,6 @@ class User extends PureComponent {
   renderSimpleForm() {
     const {
       form: { getFieldDecorator },
-      // @liuhaoyi new add
-      //   valueTextlist,
     } = this.props;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
@@ -410,51 +389,12 @@ class User extends PureComponent {
               <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
                 重置
               </Button>
-              {/* <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-                展开 <Icon type="down" />
-              </a> */}
             </span>
           </Col>
         </Row>
       </Form>
     );
   }
-
-  // renderAdvancedForm() {
-  //   const {
-  //     form: { getFieldDecorator },
-  //   } = this.props;
-  //   return (
-  //     <Form onSubmit={this.handleSearch} layout="inline">
-  //       <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="昵称">
-  //             {getFieldDecorator('nickname-equal')(<Input placeholder="请输入" />)}
-  //           </FormItem>
-  //         </Col>
-  //         <Col md={8} sm={24}>
-  //           <FormItem label="手机">
-  //             {getFieldDecorator('mobile-like')(<Input placeholder="请输入" />)}
-  //           </FormItem>
-  //         </Col>
-
-  //         <Col md={8} sm={24}>
-  //           <span className={styles.submitButtons}>
-  //             <Button type="primary" htmlType="submit">
-  //               查询
-  //             </Button>
-  //             <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-  //               重置
-  //             </Button>
-  //             <a style={{ marginLeft: 8 }} onClick={this.toggleForm}>
-  //               展开 <Icon type="down" />
-  //             </a>
-  //           </span>
-  //         </Col>
-  //       </Row>
-  //     </Form>
-  //   );
-  // }
 
   renderForm() {
     const { expandForm } = this.state;
@@ -465,7 +405,6 @@ class User extends PureComponent {
     const {
       user: { data },
       loading,
-      components,
     } = this.props;
     const { selectedRows, modalVisible, updateModalVisible, rowFormValues } = this.state;
     const menu = (
@@ -474,13 +413,7 @@ class User extends PureComponent {
         <Menu.Item key="approval">批量审批</Menu.Item>
       </Menu>
     );
-    this.columns = this.columns.filter(item => {
-      if (!item.code) return true;
-      const v = components.filter(obj => obj.code === item.code);
-      if (v && v.length > 0) return true;
-      return false;
-    });
-
+    this.columns = AuthorizationUtils.getAuthorizedColums(this.columns);
     const parentMethods = {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
