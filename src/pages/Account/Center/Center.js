@@ -142,14 +142,17 @@ class Center extends PureComponent {
                     </p>
                     <p>
                       <i className={styles.address} />
-                      {currentUser.geographic.province.label}
-                      {currentUser.geographic.city.label}
+                      {/* {currentUser.geographic.province.label}
+                      {currentUser.geographic.city.label} */}
                     </p>
                   </div>
                   <Divider dashed />
                   <div className={styles.tags}>
                     <div className={styles.tagsTitle}>标签</div>
-                    {currentUser.tags.concat(newTags).map(item => (
+                    {/* {currentUser.tags.concat(newTags).map(item => (
+                      <Tag key={item.key}>{item.label}</Tag>
+                    ))} */}
+                    {newTags.map(item => (
                       <Tag key={item.key}>{item.label}</Tag>
                     ))}
                     {inputVisible && (

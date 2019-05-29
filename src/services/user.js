@@ -5,5 +5,5 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request('/api/currentUser');
+  return request('/naruto/v1/user/currentUser');
 }

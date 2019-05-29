@@ -150,10 +150,8 @@ class UpdateForm extends PureComponent {
 }
 
 /* eslint react/no-multi-comp:0 */
-@connect(({ user, menu, loading }) => ({
+@connect(({ user, loading }) => ({
   user,
-  components: menu.components,
-  //   valueTextlist: valueText.valueTextlist,
   loading: loading.models.user,
 }))
 @Form.create()
