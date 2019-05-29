@@ -101,7 +101,7 @@ class BaseView extends Component {
               })(<Input />)}
             </FormItem>
             <FormItem label={formatMessage({ id: 'app.settings.basic.nickname' })}>
-              {getFieldDecorator('name', {
+              {getFieldDecorator('nickname', {
                 rules: [
                   {
                     required: true,
