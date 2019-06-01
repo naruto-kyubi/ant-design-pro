@@ -312,6 +312,12 @@ export default [
           },
         ],
       },
+
+      {
+        path: '/article',
+        name: 'article',
+        component: './Article',
+      },
       {
         component: '404',
       },
