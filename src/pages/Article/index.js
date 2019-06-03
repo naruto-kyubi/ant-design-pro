@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { List, Icon, Tag, Card, Row, Col } from 'antd';
+import { List, Icon, Tag, Card, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
 import ArticleListContent from '@/components/ArticleListContent';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
@@ -30,6 +30,17 @@ class Article extends PureComponent {
     };
   };
 
+  getTitle = item => {
+    const { title, owner, updatedAt } = item;
+    const { nickname, avatar } = owner;
+    return {
+      content: title,
+      updatedAt,
+      owner: nickname,
+      avatar,
+    };
+  };
+
   render() {
     const { article } = this.props;
     const { list } = article;
@@ -48,11 +59,6 @@ class Article extends PureComponent {
     return (
       <GridContent>
         <Row gutter={24}>
-          <Col lg={7} md={24}>
-            <Card bordered={false} style={{ marginBottom: 24 }}>
-              这里要放置热帖！
-            </Card>
-          </Col>
           <Col lg={17} md={24}>
             <Card className={styles.tabsCard} bordered={false}>
               <List
@@ -85,6 +91,27 @@ class Article extends PureComponent {
                       }
                     />
                     <ArticleListContent data={this.getContent(item)} />
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </Col>
+          <Col lg={7} md={24}>
+            <Card bordered={false} style={{ marginBottom: 24 }}>
+              <Button type="primary" icon="edit">
+                发表新帖
+              </Button>
+            </Card>
+            <Card bordered={false} style={{ marginBottom: 24 }} title="本周热议">
+              <List
+                size="large"
+                className={styles.articleList}
+                rowKey="id"
+                itemLayout="vertical"
+                dataSource={list.data}
+                renderItem={item => (
+                  <List.Item key={item.id}>
+                    <ArticleListContent data={this.getTitle(item)} />
                   </List.Item>
                 )}
               />
