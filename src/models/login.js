@@ -11,6 +11,7 @@ export default {
   state: {
     status: undefined,
     type: undefined,
+    error: undefined,
     data: undefined,
   },
 
@@ -22,7 +23,8 @@ export default {
         type: 'changeLoginStatus',
         payload: {
           status: response.status,
-          type: payload.type,
+          type: payload.authType,
+          error: response.error,
           data: response.data,
         },
       });
@@ -84,6 +86,7 @@ export default {
         status: payload.status,
         type: payload.type,
         data: payload.data,
+        error: payload.error,
       };
     },
   },

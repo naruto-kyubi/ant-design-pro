@@ -37,6 +37,10 @@ export default {
   'app.settings.security.modify': '修改',
   'app.settings.security.set': '设置',
   'app.settings.security.bind': '绑定',
+  // @liuhaoyi
+  'app.settings.binding.weibo': '绑定微博',
+  'app.settings.binding.weibo-description': '当前未绑定微博账号',
+
   'app.settings.binding.taobao': '绑定淘宝',
   'app.settings.binding.taobao-description': '当前未绑定淘宝账号',
   'app.settings.binding.alipay': '绑定支付宝',

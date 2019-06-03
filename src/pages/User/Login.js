@@ -16,33 +16,17 @@ class LoginPage extends Component {
   state = {
     authType: 'account',
     autoLogin: true,
+
+    // bindInfo:{
+    //   bindType: this.props.type ,
+    //   bindUid: this.props.data ? this.props.data.uid : undefined ,
+    //   bindName: this.props.data ? this.props.data.name : undefined ,
+    // }
   };
 
   componentDidMount() {
     window.oAuth = this.oAuth;
   }
-
-  oAuth = (authType, authCode) => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'login/login',
-      payload: {
-        // ...values,
-        authType,
-        authCode,
-        password: '123',
-      },
-    });
-
-    // 登录；
-    // dispatch({
-    //   type: 'login/auth',
-    //   payload: {
-    //     oAuthType,
-    //     code,
-    //   },
-    // });
-  };
 
   onTabChange = authType => {
     this.setState({ authType });
@@ -69,12 +53,18 @@ class LoginPage extends Component {
   handleSubmit = (err, values) => {
     const { authType } = this.state;
     if (!err) {
-      const { dispatch } = this.props;
+      const {
+        login: { type, data },
+        dispatch,
+      } = this.props;
       dispatch({
         type: 'login/login',
         payload: {
           ...values,
           authType,
+          bindType: type,
+          bindUid: data ? data.uid : undefined,
+          bindName: data ? data.name : undefined,
         },
       });
     }
@@ -104,6 +94,28 @@ class LoginPage extends Component {
     }
   };
 
+  oAuth = (authType, authCode) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'login/login',
+      payload: {
+        // ...values,
+        authType,
+        authCode,
+        // password: '123',
+      },
+    });
+
+    // 登录；
+    // dispatch({
+    //   type: 'login/auth',
+    //   payload: {
+    //     oAuthType,
+    //     code,
+    //   },
+    // });
+  };
+
   changeAutoLogin = e => {
     this.setState({
       autoLogin: e.target.checked,
@@ -131,7 +143,8 @@ class LoginPage extends Component {
             {login.status === 'fail' &&
               authType === 'account' &&
               !submitting &&
-              this.renderMessage(formatMessage({ id: login.data.errCode }))}
+              login.error &&
+              this.renderMessage(formatMessage({ id: login.error.errCode }))}
             <UserName
               name="userName"
               placeholder={`${formatMessage({ id: 'app.login.userName' })}`}

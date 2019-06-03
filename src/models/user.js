@@ -33,6 +33,8 @@ export default {
       });
     },
 
+    // *bind({ payload }, { call, put }) {},
+
     *query({ payload }, { call, put }) {
       const response = yield call(queryUser, payload);
       const {
