@@ -12,10 +12,7 @@ class Editor extends PureComponent {
   };
 
   componentDidMount() {
-    // const _this = this;
-    // eslint-disable-next-line react/no-string-refs
-    const elem = this.refs.editorElem;
-    const editor = new E(elem);
+    const editor = new E(this.editorElem);
     this.editor = editor;
 
     const { onChange } = this.props;
@@ -85,10 +82,13 @@ class Editor extends PureComponent {
   render() {
     const { isUpload } = this.state;
     return (
-      // eslint-disable-next-line react/jsx-no-comment-textnodes
       <div className={styles.editor}>
         <Spin className={styles.spin} spinning={isUpload} />
-        <div ref="editorElem" />
+        <div
+          ref={input => {
+            this.editorElem = input;
+          }}
+        />
       </div>
     );
   }
