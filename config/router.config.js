@@ -316,7 +316,17 @@ export default [
       {
         path: '/article',
         name: 'article',
-        component: './Article',
+        routes: [
+          // exception
+          {
+            path: '/article/list',
+            component: './Article',
+          },
+          {
+            path: '/article/add',
+            component: './Article/AddArticle',
+          },
+        ],
       },
       {
         component: '404',

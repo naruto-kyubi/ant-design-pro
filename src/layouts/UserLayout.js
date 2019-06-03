@@ -1,13 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { connect } from 'dva';
-import Link from 'umi/link';
-import { Icon } from 'antd';
+import { Icon, Card } from 'antd';
 import GlobalFooter from '@/components/GlobalFooter';
 import DocumentTitle from 'react-document-title';
 import SelectLang from '@/components/SelectLang';
 import styles from './UserLayout.less';
-import logo from '../assets/logo.svg';
 import getPageTitle from '@/utils/getPageTitle';
 
 const links = [
@@ -59,17 +57,19 @@ class UserLayout extends Component {
             <SelectLang />
           </div>
           <div className={styles.content}>
-            <div className={styles.top}>
-              <div className={styles.header}>
-                <Link to="/">
-                  <img alt="logo" className={styles.logo} src={logo} />
-                  <span className={styles.title}>Ant Design</span>
-                </Link>
-              </div>
-              <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
-            </div>
-            {children}
+            <Card
+              style={{ width: 500, margin: '0 auto' }}
+              cover={
+                <img
+                  alt="example"
+                  src="https://hbimg.huabanimg.com/2e7d947536e1e1f566cb6211e171d01eb5f0177678aa1-efzvaC_fw658"
+                />
+              }
+            >
+              {children}
+            </Card>
           </div>
+
           <GlobalFooter links={links} copyright={copyright} />
         </div>
       </DocumentTitle>

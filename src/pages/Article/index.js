@@ -3,6 +3,8 @@ import { List, Icon, Tag, Card, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
 import ArticleListContent from '@/components/ArticleListContent';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
+import router from 'umi/router';
+
 import styles from './index.less';
 
 @connect(({ article }) => ({
@@ -39,6 +41,10 @@ class Article extends PureComponent {
       owner: nickname,
       avatar,
     };
+  };
+
+  addArticle = () => {
+    router.push('/article/add');
   };
 
   render() {
@@ -98,7 +104,7 @@ class Article extends PureComponent {
           </Col>
           <Col lg={7} md={24}>
             <Card bordered={false} style={{ marginBottom: 24 }}>
-              <Button type="primary" icon="edit">
+              <Button type="primary" icon="edit" onClick={this.addArticle}>
                 发表新帖
               </Button>
             </Card>

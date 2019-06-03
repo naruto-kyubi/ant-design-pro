@@ -1,4 +1,4 @@
-import { queryArticles } from '../services/article';
+import { queryArticles, addArticle } from '../services/article';
 
 export default {
   namespace: 'article',
@@ -12,6 +12,10 @@ export default {
         type: 'queryList',
         payload: response,
       });
+    },
+
+    *add({ payload }, { call }) {
+      yield call(addArticle, payload);
     },
   },
   reducers: {
