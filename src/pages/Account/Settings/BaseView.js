@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-import { Form, Input, Upload, Select, Button } from 'antd';
+import { Form, Input, Upload, Select, Button, message } from 'antd';
 import { connect } from 'dva';
 import styles from './BaseView.less';
 import GeographicView from './GeographicView';
@@ -10,8 +10,16 @@ import PhoneView from './PhoneView';
 const FormItem = Form.Item;
 const { Option } = Select;
 
+const uploadProps = {
+  name: 'file',
+  action: '/naruto/v1/user/avatar',
+  headers: {
+    authorization: 'authorization-text',
+  },
+  showUploadList: false,
+};
 // 头像组件 方便以后独立，增加裁剪之类的功能
-const AvatarView = ({ avatar }) => (
+const AvatarView = ({ avatar, onChange }) => (
   <Fragment>
     <div className={styles.avatar_title}>
       <FormattedMessage id="app.settings.basic.avatar" defaultMessage="Avatar" />
@@ -19,7 +27,7 @@ const AvatarView = ({ avatar }) => (
     <div className={styles.avatar}>
       <img src={avatar} alt="avatar" />
     </div>
-    <Upload fileList={[]}>
+    <Upload {...uploadProps} onChange={onChange}>
       <div className={styles.button_view}>
         <Button icon="upload">
           <FormattedMessage id="app.settings.basic.change-avatar" defaultMessage="Change avatar" />
@@ -80,6 +88,48 @@ class BaseView extends Component {
 
   getViewDom = ref => {
     this.view = ref;
+  };
+
+  handleSubmit = () => {
+    const { form, currentUser, dispatch } = this.props;
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      dispatch({
+        type: 'user/update',
+        payload: {
+          body: {
+            id: currentUser.id,
+            ...fieldsValue,
+          },
+        },
+        callback: status => {
+          if (status && status === 'ok')
+            dispatch({
+              type: 'user/fetchCurrent',
+            });
+          message.success(`Update Information success！`);
+        },
+      });
+    });
+  };
+
+  onChange = info => {
+    // if (info.file.status !== 'uploading') {
+    //   console.log(info.file, info.fileList);
+    // }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+      const { status } = info.file.response;
+      if (status && status === 'ok') {
+        const { dispatch } = this.props;
+
+        dispatch({
+          type: 'user/fetchCurrent',
+        });
+      }
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
   };
 
   render() {
@@ -163,7 +213,7 @@ class BaseView extends Component {
               })(<Input />)}
             </FormItem>
             <FormItem label={formatMessage({ id: 'app.settings.basic.phone' })}>
-              {getFieldDecorator('phone', {
+              {getFieldDecorator('mobile', {
                 rules: [
                   {
                     required: true,
@@ -173,7 +223,7 @@ class BaseView extends Component {
                 ],
               })(<PhoneView />)}
             </FormItem>
-            <Button type="primary">
+            <Button type="primary" onClick={this.handleSubmit}>
               <FormattedMessage
                 id="app.settings.basic.update"
                 defaultMessage="Update Information"
@@ -182,7 +232,7 @@ class BaseView extends Component {
           </Form>
         </div>
         <div className={styles.right}>
-          <AvatarView avatar={this.getAvatarURL()} />
+          <AvatarView avatar={this.getAvatarURL()} onChange={this.onChange} />
         </div>
       </div>
     );

@@ -100,7 +100,7 @@ export default {
           // data,
         },
       });
-      if (callback) callback();
+      if (callback) callback(status);
     },
   },
 
