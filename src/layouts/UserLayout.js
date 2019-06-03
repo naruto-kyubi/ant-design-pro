@@ -58,11 +58,11 @@ class UserLayout extends Component {
           </div>
           <div className={styles.content}>
             <Card
-              style={{ width: 500, margin: '0 auto' }}
+              style={{ width: 450, margin: '0 auto' }}
               cover={
                 <img
                   alt="example"
-                  src="https://hbimg.huabanimg.com/2e7d947536e1e1f566cb6211e171d01eb5f0177678aa1-efzvaC_fw658"
+                  src="https://gw.alipayobjects.com/zos/rmsportal/iZBVOIhGJiAnhplqjvZW.png"
                 />
               }
             >
