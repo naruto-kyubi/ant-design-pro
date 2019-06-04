@@ -16,7 +16,7 @@ class Article extends PureComponent {
     dispatch({
       type: 'article/fetch',
       payload: {
-        count: 8,
+        sorter: 'updatedAt_desc',
       },
     });
   }

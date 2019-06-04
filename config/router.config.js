@@ -27,7 +27,7 @@ export default [
     Routes: ['src/pages/Authorized'],
     routes: [
       // dashboard
-      { path: '/', redirect: '/dashboard/analysis', authority: ['admin', 'user'] },
+      { path: '/', redirect: '/article/list', authority: ['admin', 'user'] },
       {
         path: '/dashboard',
         name: 'dashboard',
