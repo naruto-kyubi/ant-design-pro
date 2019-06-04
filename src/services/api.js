@@ -206,3 +206,15 @@ export async function queryUser(params) {
 export async function queryMenus() {
   return request('/naruto/v1//logon/function');
 }
+
+export async function bind(params) {
+  return request(`/naruto/v1/user/bind?${stringify(params)}`);
+}
+
+export async function unbind(params) {
+  return request(`/naruto/v1/user/unbind?${stringify(params)}`);
+}
+
+export async function queryBinds() {
+  return request(`/naruto/v1/user/queryBinds`);
+}

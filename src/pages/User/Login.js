@@ -24,9 +24,7 @@ class LoginPage extends Component {
     // }
   };
 
-  componentDidMount() {
-    window.oAuth = this.oAuth;
-  }
+  componentDidMount() {}
 
   onTabChange = authType => {
     this.setState({ authType });
@@ -82,6 +80,7 @@ class LoginPage extends Component {
       const url = `https://api.weibo.com/oauth2/authorize?client_id=3274457296&response_type=code&redirect_uri=${
         window.location.origin
       }/user/weibo`;
+      window.oAuth = this.oAuth;
       window.open(
         url,
         name,
