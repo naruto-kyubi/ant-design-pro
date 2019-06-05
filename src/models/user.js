@@ -50,12 +50,15 @@ export default {
         meta: { pagination },
       } = response;
 
+      const v = {
+        list: data,
+        pagination,
+      };
       yield put({
         type: 'saveHandle',
         payload: {
           status,
-          list: data,
-          pagination,
+          data: v,
         },
       });
     },
