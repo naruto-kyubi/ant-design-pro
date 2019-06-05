@@ -5,16 +5,16 @@ import ArticleListContent from '@/components/ArticleListContent';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import router from 'umi/router';
 
-import styles from './index.less';
+import styles from './list.less';
 
 @connect(({ article }) => ({
   article,
 }))
-class Article extends PureComponent {
+class Articles extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'article/fetch',
+      type: 'article/fetchList',
       payload: {
         sorter: 'updatedAt_desc',
       },
@@ -25,7 +25,7 @@ class Article extends PureComponent {
     const { content, owner, updatedAt } = item;
     const { nickname, avatar } = owner;
     return {
-      content,
+      content: `${content.substring(0, 200)}...`,
       updatedAt,
       owner: nickname,
       avatar,
@@ -44,7 +44,7 @@ class Article extends PureComponent {
   };
 
   addArticle = () => {
-    router.push('/article/add');
+    router.push('/articles/add');
   };
 
   render() {
@@ -84,7 +84,7 @@ class Article extends PureComponent {
                   >
                     <List.Item.Meta
                       title={
-                        <a className={styles.listItemMetaTitle} href={item.href}>
+                        <a className={styles.listItemMetaTitle} href={`/articles/${item.id}`}>
                           {item.title}
                         </a>
                       }
@@ -129,4 +129,4 @@ class Article extends PureComponent {
   }
 }
 
-export default Article;
+export default Articles;

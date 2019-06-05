@@ -1,21 +1,30 @@
-import { queryArticles, addArticle } from '../services/article';
+import { queryList, queryById, add } from '../services/article';
 
 export default {
   namespace: 'article',
   state: {
     list: [],
+    content: null,
   },
   effects: {
-    *fetch({ payload }, { call, put }) {
-      const response = yield call(queryArticles, payload);
+    *fetchList({ payload }, { call, put }) {
+      const response = yield call(queryList, payload);
       yield put({
         type: 'queryList',
         payload: response,
       });
     },
 
+    *fetch({ payload }, { call, put }) {
+      const response = yield call(queryById, payload);
+      yield put({
+        type: 'queryById',
+        payload: response,
+      });
+    },
+
     *add({ payload }, { call }) {
-      yield call(addArticle, payload);
+      yield call(add, payload);
     },
   },
   reducers: {
@@ -23,6 +32,12 @@ export default {
       return {
         ...state,
         list: action.payload,
+      };
+    },
+    queryById(state, action) {
+      return {
+        ...state,
+        content: action.payload,
       };
     },
   },

@@ -192,3 +192,7 @@ export const importCDN = (url, name) =>
     };
     document.head.appendChild(dom);
   });
+
+export function formatDate(date) {
+  return moment(date).format('YYYY-MM-DD HH:mm');
+}

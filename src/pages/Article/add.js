@@ -4,10 +4,11 @@ import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
 import { Card, Button, Form, Row, Col, Input, message } from 'antd';
 
-import styles from './addArticle.less';
+import styles from './add.less';
 
-@connect(({ article }) => ({
+@connect(({ article, user }) => ({
   article,
+  user,
 }))
 class AddArticle extends PureComponent {
   state = {
@@ -30,8 +31,12 @@ class AddArticle extends PureComponent {
 
     form.validateFields((err, values) => {
       if (!err) {
-        //  const {user} = this.props;
-        const payload = { ...values, ...this.state, owner: '4028839b6b015d9c016b015ef4430000' };
+        const { user } = this.props;
+        if (!user.currentUser.id) {
+          message.warning('请登录后发表');
+          return;
+        }
+        const payload = { ...values, ...this.state, owner: user.currentUser.id };
         const { dispatch } = this.props;
 
         dispatch({
