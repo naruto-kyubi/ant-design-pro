@@ -218,3 +218,7 @@ export async function unbind(params) {
 export async function queryBinds() {
   return request(`/naruto/v1/user/queryBinds`);
 }
+
+export async function logout() {
+  return request(`/naruto/v1/logon/logout`);
+}

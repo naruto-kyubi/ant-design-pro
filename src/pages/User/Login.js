@@ -15,7 +15,7 @@ const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 class LoginPage extends Component {
   state = {
     authType: 'account',
-    autoLogin: true,
+    rememberMe: true,
 
     // bindInfo:{
     //   bindType: this.props.type ,
@@ -49,17 +49,19 @@ class LoginPage extends Component {
     });
 
   handleSubmit = (err, values) => {
-    const { authType } = this.state;
+    const { authType, rememberMe } = this.state;
     if (!err) {
       const {
         login: { type, data },
         dispatch,
       } = this.props;
+
       dispatch({
         type: 'login/login',
         payload: {
           ...values,
           authType,
+          rememberMe,
           bindType: type,
           bindUid: data ? data.uid : undefined,
           bindName: data ? data.name : undefined,
@@ -115,9 +117,9 @@ class LoginPage extends Component {
     // });
   };
 
-  changeAutoLogin = e => {
+  changeRememberMe = e => {
     this.setState({
-      autoLogin: e.target.checked,
+      rememberMe: e.target.checked,
     });
   };
 
@@ -127,7 +129,7 @@ class LoginPage extends Component {
 
   render() {
     const { login, submitting } = this.props;
-    const { authType, autoLogin } = this.state;
+    const { authType, rememberMe } = this.state;
     return (
       <div className={styles.main}>
         <Login
@@ -204,7 +206,7 @@ class LoginPage extends Component {
             />
           </Tab>
           <div>
-            <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
+            <Checkbox name="rememberMe" checked={rememberMe} onChange={this.changeRememberMe}>
               <FormattedMessage id="app.login.remember-me" />
             </Checkbox>
             <a style={{ float: 'right' }} href="/user/forgotpassword">
