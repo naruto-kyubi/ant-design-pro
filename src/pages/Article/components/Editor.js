@@ -12,6 +12,7 @@ class Editor extends PureComponent {
   };
 
   componentDidMount() {
+    const self = this;
     const editor = new E(this.editorElem);
     this.editor = editor;
 
@@ -49,22 +50,22 @@ class Editor extends PureComponent {
     ];
 
     editor.customConfig.uploadFileName = 'file';
-    editor.customConfig.uploadImgServer = '/community/v1/api/files/upload'; // 上传图片到服务器
+    editor.customConfig.uploadImgServer = '/naruto/uploadEditorFile'; // 上传图片到服务器
     // 限制一次最多上传 5 张图片
     editor.customConfig.uploadImgMaxLength = 5;
     editor.customConfig.uploadImgHooks = {
       before() {
         // 加载中
-        this.setState({ isUpload: true });
+        self.setState({ isUpload: true });
       },
 
       customInsert(insertImg, result) {
         const url = result.data;
         url.forEach(element => {
-          insertImg(element);
+          insertImg(`/naruto${element}`);
         });
         // 关闭加载
-        this.setState({ isUpload: false });
+        self.setState({ isUpload: false });
       },
     };
     editor.create();
