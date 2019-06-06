@@ -3,7 +3,9 @@ import { List, Icon, Tag, Card, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
 import ArticleListContent from '@/components/ArticleListContent';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
+
 import router from 'umi/router';
+import HostArticleList from './hostList';
 
 import styles from './list.less';
 
@@ -26,17 +28,6 @@ class Articles extends PureComponent {
     const { nickname, avatar } = owner;
     return {
       content: `${content.substring(0, 200)}...`,
-      updatedAt,
-      owner: nickname,
-      avatar,
-    };
-  };
-
-  getTitle = item => {
-    const { title, owner, updatedAt } = item;
-    const { nickname, avatar } = owner;
-    return {
-      content: title,
       updatedAt,
       owner: nickname,
       avatar,
@@ -108,20 +99,7 @@ class Articles extends PureComponent {
                 发表新帖
               </Button>
             </Card>
-            <Card bordered={false} style={{ marginBottom: 24 }} title="本周热议">
-              <List
-                size="large"
-                className={styles.articleList}
-                rowKey="id"
-                itemLayout="vertical"
-                dataSource={list.data}
-                renderItem={item => (
-                  <List.Item key={item.id}>
-                    <ArticleListContent data={this.getTitle(item)} />
-                  </List.Item>
-                )}
-              />
-            </Card>
+            <HostArticleList />
           </Col>
         </Row>
       </GridContent>

@@ -320,15 +320,15 @@ export default [
           // exception
           {
             path: '/articles/list',
-            component: './Article/list.js',
+            component: './articles/list.js',
           },
           {
             path: '/articles/add',
-            component: './Article/add.js',
+            component: './articles/add.js',
           },
           {
             path: '/articles/:id?',
-            component: './Article/$id.js',
+            component: './articles/$id.js',
           },
         ],
       },

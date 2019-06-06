@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import Editor from '@/pages/Article/components/Editor';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
 import { Card, Button, Form, Row, Col, Input, message } from 'antd';
+import Editor from './components/Editor';
 
 import styles from './add.less';
 
