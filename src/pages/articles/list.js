@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { List, Icon, Tag, Card, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
+import router from 'umi/router';
+import Catalog from './catalog';
 import ArticleListContent from '@/components/ArticleListContent';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 
-import router from 'umi/router';
 import HostArticleList from './hostList';
 
 import styles from './list.less';
@@ -55,6 +56,7 @@ class Articles extends PureComponent {
     );
     return (
       <GridContent>
+        <Catalog />
         <Row gutter={24}>
           <Col lg={17} md={24}>
             <Card className={styles.tabsCard} bordered={false}>

@@ -1,9 +1,10 @@
-import { queryList, queryById, add } from '../services/article';
+import { queryList, queryById, add, queryCatalog } from '../services/article';
 
 export default {
   namespace: 'article',
   state: {
     list: [],
+    catalog: null,
     content: null,
   },
   effects: {
@@ -12,6 +13,14 @@ export default {
       yield put({
         type: 'queryList',
         payload: response,
+      });
+    },
+
+    *fetchCatalog({ payload }, { call, put }) {
+      const reponse = yield call(queryCatalog, payload);
+      yield put({
+        type: 'queryCatalog',
+        payload: reponse,
       });
     },
 
@@ -34,6 +43,14 @@ export default {
         list: action.payload,
       };
     },
+
+    queryCatalog(state, action) {
+      return {
+        ...state,
+        catalog: action.payload,
+      };
+    },
+
     queryById(state, action) {
       return {
         ...state,

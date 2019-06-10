@@ -11,6 +11,10 @@ export async function queryById(payload) {
   return request(`/naruto/v1/articles/${id}`);
 }
 
+export async function queryCatalog(payload) {
+  return request(`/naruto/v1/catalogs/query?${stringify(payload)}`);
+}
+
 export async function add(payload) {
   return request('/naruto/v1/article/add', {
     method: 'POST',
