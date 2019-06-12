@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
-import { Card, Button, Form, Row, Col, Input, message } from 'antd';
+import { Card, Button, Form, Row, Col, Input, message, TreeSelect } from 'antd';
 import Editor from './components/Editor';
 
 import styles from './add.less';
@@ -15,6 +15,16 @@ class AddArticle extends PureComponent {
     content: '',
     contentHtml: '',
   };
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'article/fetchCatalog',
+      payload: {
+        sorter: 'sort_desc',
+      },
+    });
+  }
 
   onChange = (html, txt) => {
     this.setState({ contentHtml: html, content: txt });
@@ -52,6 +62,17 @@ class AddArticle extends PureComponent {
       form: { getFieldDecorator },
     } = this.props;
     const FormItem = Form.Item;
+    const {
+      article: { catalog },
+    } = this.props;
+    if (!catalog) return null;
+    const { data } = catalog;
+    const treedata = data.map(item => ({
+      title: item.name,
+      value: item.id,
+      key: item.id,
+      disabled: false,
+    }));
     return (
       <GridContent>
         <Card title="发表新帖">
@@ -62,6 +83,28 @@ class AddArticle extends PureComponent {
               hideRequiredMark
               style={{ marginTop: 8, marginBottom: 8 }}
             >
+              <Row gutter={12}>
+                <Col span={8}>
+                  <FormItem label="板块">
+                    {getFieldDecorator('catalogId', {
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入板块',
+                        },
+                      ],
+                    })(
+                      <TreeSelect
+                        style={{ width: 300 }}
+                        dropdownStyle={{ maxHeight: 800, overflow: 'auto' }}
+                        treeData={treedata}
+                        placeholder="板块"
+                        onChange={this.onChange}
+                      />
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
               <Row>
                 <Col span={16}>
                   <FormItem label="标题">

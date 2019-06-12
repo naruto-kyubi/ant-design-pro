@@ -5,23 +5,16 @@ import router from 'umi/router';
 import Catalog from './catalog';
 import ArticleListContent from '@/components/ArticleListContent';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
-
 import HostArticleList from './hostList';
 
-import styles from './list.less';
+import styles from './index.less';
 
 @connect(({ article }) => ({
   article,
 }))
 class Articles extends PureComponent {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'article/fetchList',
-      payload: {
-        sorter: 'updatedAt_desc',
-      },
-    });
+    this.queryArticlesByCatalog();
   }
 
   getContent = item => {
@@ -39,15 +32,26 @@ class Articles extends PureComponent {
     router.push('/articles/add');
   };
 
+  handleClick = e => {
+    this.queryArticlesByCatalog(e.key);
+  };
+
+  queryArticlesByCatalog = catalogId => {
+    const { dispatch } = this.props;
+    let payload = { sorter: 'updatedAt_desc' };
+    if (catalogId !== 'recommand') {
+      payload = { ...payload, catalogId_equal: catalogId };
+    }
+    dispatch({
+      type: 'article/fetchList',
+      payload,
+    });
+  };
+
   render() {
     const { article } = this.props;
     const { list } = article;
 
-    /*
-    const {
-      // eslint-disable-next-line no-unused-vars
-      list: { article },
-    } = this.props; */
     const IconText = ({ type, text }) => (
       <span>
         <Icon type={type} style={{ marginRight: 8 }} />
@@ -56,7 +60,7 @@ class Articles extends PureComponent {
     );
     return (
       <GridContent>
-        <Catalog />
+        <Catalog onMenuClick={this.handleClick} />
         <Row gutter={24}>
           <Col lg={17} md={24}>
             <Card className={styles.tabsCard} bordered={false}>

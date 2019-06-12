@@ -9,7 +9,7 @@ import styles from './catalog.less';
 }))
 class Catalog extends React.Component {
   state = {
-    current: 'mail',
+    current: null,
   };
 
   componentDidMount() {
@@ -22,23 +22,18 @@ class Catalog extends React.Component {
     });
   }
 
-  handleClick = e => {
-    this.setState({
-      current: e.key,
-    });
-  };
-
   render() {
     const {
       article: { catalog },
+      onMenuClick,
     } = this.props;
     if (!catalog) return null;
     const { data } = catalog;
     const { current } = this.state;
     return (
       <div className={styles.nav}>
-        <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal">
-          <Menu.Item key="mail">
+        <Menu onClick={onMenuClick} selectedKeys={[current]} mode="horizontal">
+          <Menu.Item key="recommand">
             {/* <Icon type="mail" /> */}
             推荐
           </Menu.Item>

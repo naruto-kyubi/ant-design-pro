@@ -316,12 +316,8 @@ export default [
       {
         path: '/articles',
         name: 'articles',
+        component: './articles/index.js',
         routes: [
-          // exception
-          {
-            path: '/articles/list',
-            component: './articles/list.js',
-          },
           {
             path: '/articles/add',
             component: './articles/add.js',
