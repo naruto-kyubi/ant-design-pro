@@ -370,12 +370,12 @@ class User extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="昵称">
-              {getFieldDecorator('nickname-like')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('nickname_like')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="手机">
-              {getFieldDecorator('mobile-like')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('mobile_like')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
 

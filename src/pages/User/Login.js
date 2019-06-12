@@ -97,24 +97,15 @@ class LoginPage extends Component {
 
   oAuth = (authType, authCode) => {
     const { dispatch } = this.props;
+    const { rememberMe } = this.state;
     dispatch({
       type: 'login/login',
       payload: {
-        // ...values,
         authType,
         authCode,
-        // password: '123',
+        rememberMe,
       },
     });
-
-    // 登录；
-    // dispatch({
-    //   type: 'login/auth',
-    //   payload: {
-    //     oAuthType,
-    //     code,
-    //   },
-    // });
   };
 
   changeRememberMe = e => {
