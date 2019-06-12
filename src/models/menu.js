@@ -120,6 +120,13 @@ export default {
     //     payload: { menuData, breadcrumbNameMap, routerData: routes },
     //   });
     // },
+    //     function compare(property){
+    //       return function(obj1,obj2){
+    //           var value1 = obj1[property];
+    //           var value2 = obj2[property];
+    //           return value1 - value2;     // 升序
+    //       }
+    //  }
 
     *getMenuData({ payload }, { call, put }) {
       // const { routes, authority, path } = payload;
@@ -132,7 +139,9 @@ export default {
 
         // 递归函数，遍历菜单数据，并且支持多语言。
         const localeMenuData = data => {
-          const menuData = [...data];
+          const menuData = [...data].sort((obj1, obj2) => {
+            return obj1.seq - obj2.seq;
+          });
           const newData = menuData.map(item => {
             let menuItem = { ...item };
 
