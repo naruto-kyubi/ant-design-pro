@@ -27,7 +27,7 @@ export default [
     Routes: ['src/pages/Authorized'],
     routes: [
       // dashboard
-      { path: '/', redirect: '/articles/list', authority: ['admin', 'user'] },
+      { path: '/', redirect: '/articles', authority: ['admin', 'user'] },
       {
         path: '/dashboard',
         name: 'dashboard',
@@ -316,8 +316,12 @@ export default [
       {
         path: '/articles',
         name: 'articles',
-        component: './articles/index.js',
         routes: [
+          // exception
+          {
+            path: '/articles',
+            component: './articles/index.js',
+          },
           {
             path: '/articles/add',
             component: './articles/add.js',
