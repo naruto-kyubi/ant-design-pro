@@ -3,7 +3,7 @@ import { Card, List } from 'antd';
 import { connect } from 'dva';
 import ArticleListContent from '@/components/ArticleListContent';
 
-import styles from './index.less';
+import styles from './components/ArticleList.less';
 
 @connect(({ article }) => ({
   article,

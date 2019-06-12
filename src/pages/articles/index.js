@@ -1,13 +1,12 @@
 import React, { PureComponent } from 'react';
-import { List, Icon, Tag, Card, Row, Col, Button } from 'antd';
+import { Card, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
 import Catalog from './catalog';
-import ArticleListContent from '@/components/ArticleListContent';
+
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import HostArticleList from './hostList';
-
-import styles from './index.less';
+import ArticleList from './components/ArticleList';
 
 @connect(({ article }) => ({
   article,
@@ -16,17 +15,6 @@ class Articles extends PureComponent {
   componentDidMount() {
     this.queryArticlesByCatalog();
   }
-
-  getContent = article => {
-    const { content, owner, updatedAt } = article;
-    const { nickname, avatar } = owner;
-    return {
-      content: `${content.substring(0, 200)}...`,
-      updatedAt,
-      owner: nickname,
-      avatar,
-    };
-  };
 
   addArticle = () => {
     router.push('/articles/add');
@@ -52,57 +40,12 @@ class Articles extends PureComponent {
     const { article } = this.props;
     const { list } = article;
 
-    const IconText = ({ type, text }) => (
-      <span>
-        <Icon type={type} style={{ marginRight: 8 }} />
-        {text}
-      </span>
-    );
     return (
       <GridContent>
         <Catalog onMenuClick={this.handleClick} />
         <Row gutter={24}>
           <Col lg={17} md={24}>
-            <Card className={styles.tabsCard} bordered={false}>
-              <List
-                size="large"
-                className={styles.articleList}
-                rowKey="id"
-                itemLayout="vertical"
-                dataSource={list.data}
-                renderItem={item => (
-                  <List.Item
-                    key={item.id}
-                    actions={[
-                      <IconText type="star-o" text={item.starCount} />,
-                      <IconText type="like-o" text={item.likeCount} />,
-                      <IconText type="message" text={item.commentCount} />,
-                    ]}
-                  >
-                    <List.Item.Meta
-                      title={
-                        <a
-                          className={styles.listItemMetaTitle}
-                          href={`/articles/${item.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {item.title}
-                        </a>
-                      }
-                      description={
-                        <span>
-                          <Tag>Ant Design</Tag>
-                          <Tag>设计语言</Tag>
-                          <Tag>蚂蚁金服</Tag>
-                        </span>
-                      }
-                    />
-                    <ArticleListContent data={this.getContent(item)} />
-                  </List.Item>
-                )}
-              />
-            </Card>
+            <ArticleList list={list} />
           </Col>
           <Col lg={7} md={24}>
             <Card bordered={false} style={{ marginBottom: 24 }}>
