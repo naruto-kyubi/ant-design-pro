@@ -16,7 +16,6 @@ class ArticleContent extends PureComponent {
       title,
     } = article;
     const content = article.contentHtml;
-    // const btnName = isTopicConcern==='0'? '关注主题':'取消关注';
     return (
       <div className={styles.articleContent}>
         <div className={styles.title}>

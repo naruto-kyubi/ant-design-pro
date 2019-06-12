@@ -17,8 +17,8 @@ class Articles extends PureComponent {
     this.queryArticlesByCatalog();
   }
 
-  getContent = item => {
-    const { content, owner, updatedAt } = item;
+  getContent = article => {
+    const { content, owner, updatedAt } = article;
     const { nickname, avatar } = owner;
     return {
       content: `${content.substring(0, 200)}...`,

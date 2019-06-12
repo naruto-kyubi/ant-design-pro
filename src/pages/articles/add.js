@@ -37,15 +37,16 @@ class AddArticle extends PureComponent {
       message.warning('请输入发表内容');
       return;
     }
+
+    const { user } = this.props;
+    if (!user.currentUser.id) {
+      message.warning('请登录后发表');
+      return;
+    }
     const { form } = this.props;
 
     form.validateFields((err, values) => {
       if (!err) {
-        const { user } = this.props;
-        if (!user.currentUser.id) {
-          message.warning('请登录后发表');
-          return;
-        }
         const payload = { ...values, ...this.state, owner: user.currentUser.id };
         const { dispatch } = this.props;
 

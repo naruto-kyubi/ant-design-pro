@@ -38,10 +38,7 @@ class Catalog extends React.Component {
     return (
       <div className={styles.nav}>
         <Menu onClick={this.onClick} selectedKeys={[current]} mode="horizontal">
-          <Menu.Item key="recommand">
-            {/* <Icon type="mail" /> */}
-            推荐
-          </Menu.Item>
+          <Menu.Item key="recommand">推荐</Menu.Item>
           {data.map(element => {
             return <Menu.Item key={element.id}>{element.name}</Menu.Item>;
           })}
