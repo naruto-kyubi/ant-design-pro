@@ -81,7 +81,12 @@ class Articles extends PureComponent {
                   >
                     <List.Item.Meta
                       title={
-                        <a className={styles.listItemMetaTitle} href={`/articles/${item.id}`}>
+                        <a
+                          className={styles.listItemMetaTitle}
+                          href={`/articles/${item.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           {item.title}
                         </a>
                       }
