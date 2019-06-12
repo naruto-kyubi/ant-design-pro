@@ -22,17 +22,22 @@ class Catalog extends React.Component {
     });
   }
 
+  onClick = e => {
+    const { onMenuClick } = this.props;
+    this.setState({ current: e.key });
+    onMenuClick(e);
+  };
+
   render() {
     const {
       article: { catalog },
-      onMenuClick,
     } = this.props;
     if (!catalog) return null;
     const { data } = catalog;
     const { current } = this.state;
     return (
       <div className={styles.nav}>
-        <Menu onClick={onMenuClick} selectedKeys={[current]} mode="horizontal">
+        <Menu onClick={this.onClick} selectedKeys={[current]} mode="horizontal">
           <Menu.Item key="recommand">
             {/* <Icon type="mail" /> */}
             推荐
