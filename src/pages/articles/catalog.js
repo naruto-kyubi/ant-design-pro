@@ -9,7 +9,7 @@ import styles from './catalog.less';
 }))
 class Catalog extends React.Component {
   state = {
-    current: null,
+    current: 'recommand',
   };
 
   componentDidMount() {
