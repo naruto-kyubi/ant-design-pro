@@ -12,23 +12,37 @@ import ArticleList from './components/ArticleList';
   article,
 }))
 class Articles extends PureComponent {
+  state = {
+    catalog: 'recommand',
+  };
+
   componentDidMount() {
-    this.queryArticlesByCatalog();
+    this.queryArticles();
   }
 
-  addArticle = () => {
-    router.push('/articles/add');
-  };
-
   handleClick = e => {
-    this.queryArticlesByCatalog(e.key);
+    this.setState({ catalog: e.key }, () => {
+      this.queryArticles(e.key);
+    });
   };
 
-  queryArticlesByCatalog = catalogId => {
-    const { dispatch } = this.props;
-    let payload = { sorter: 'updatedAt_desc' };
-    if (catalogId !== 'recommand') {
-      payload = { ...payload, catalogId_equal: catalogId };
+  loadMore = () => {
+    this.queryArticles();
+  };
+
+  queryArticles = catalogId => {
+    const {
+      dispatch,
+      article: {
+        list: { meta },
+      },
+    } = this.props;
+    const { catalog } = this.state;
+    let currentPage = meta ? meta.pagination.current + 1 : 1;
+    currentPage = catalogId ? 1 : currentPage;
+    let payload = { sorter: 'updatedAt_desc', currentPage };
+    if (catalog !== 'recommand') {
+      payload = { ...payload, catalogId_equal: catalog };
     }
     dispatch({
       type: 'article/fetchList',
@@ -36,16 +50,31 @@ class Articles extends PureComponent {
     });
   };
 
+  hasMore = () => {
+    const {
+      article: {
+        list: { meta },
+      },
+    } = this.props;
+    return meta
+      ? meta.pagination.current * meta.pagination.pageSize < meta.pagination.total
+      : false;
+  };
+
+  addArticle = () => {
+    router.push('/articles/add');
+  };
+
   render() {
     const { article } = this.props;
-    const { list } = article;
-
+    const { articleList } = article;
+    const hasMore = this.hasMore();
     return (
       <GridContent>
         <Catalog onMenuClick={this.handleClick} />
         <Row gutter={24}>
           <Col lg={17} md={24}>
-            <ArticleList list={list} />
+            <ArticleList data={articleList} loadMore={this.loadMore} hasMore={hasMore} />
           </Col>
           <Col lg={7} md={24}>
             <Card bordered={false} style={{ marginBottom: 24 }}>

@@ -3,9 +3,10 @@ import { queryList, queryById, add, queryCatalog } from '../services/article';
 export default {
   namespace: 'article',
   state: {
-    list: [],
+    list: {},
     catalog: null,
     content: null,
+    articleList: [],
   },
   effects: {
     *fetchList({ payload }, { call, put }) {
@@ -38,9 +39,18 @@ export default {
   },
   reducers: {
     queryList(state, action) {
+      const {
+        meta: {
+          pagination: { current },
+        },
+      } = action.payload;
+      const articleList =
+        current === 1 ? [...action.payload.data] : [...state.articleList, ...action.payload.data];
+
       return {
         ...state,
         list: action.payload,
+        articleList,
       };
     },
 
