@@ -22,7 +22,7 @@ class HostArticleList extends PureComponent {
 
   render() {
     const { article } = this.props;
-    const { list } = article;
+    const { articleList } = article;
     return (
       <Card bordered={false} style={{ marginBottom: 24 }} title="本周热议">
         <List
@@ -30,7 +30,7 @@ class HostArticleList extends PureComponent {
           className={styles.articleList}
           rowKey="id"
           itemLayout="vertical"
-          dataSource={list.data}
+          dataSource={articleList.data}
           renderItem={item => (
             <List.Item key={item.id}>
               <ArticleListContent data={this.getTitle(item)} />

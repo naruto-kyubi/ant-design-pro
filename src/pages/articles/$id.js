@@ -18,13 +18,7 @@ class Article extends PureComponent {
       dispatch,
     } = this.props;
     dispatch({
-      type: 'article/fetchList',
-      payload: {
-        sorter: 'updatedAt_desc',
-      },
-    });
-    dispatch({
-      type: 'article/fetch',
+      type: 'article/fetchArticleById',
       payload: {
         id,
       },
@@ -33,11 +27,12 @@ class Article extends PureComponent {
 
   render() {
     const { article } = this.props;
-    const { content } = article;
-    if (!content) {
+    const {
+      articleDetail: { data },
+    } = article;
+    if (!data) {
       return null;
     }
-    const { data } = content;
     return (
       <GridContent>
         <Row gutter={24}>

@@ -51,7 +51,7 @@ class AddArticle extends PureComponent {
         const { dispatch } = this.props;
 
         dispatch({
-          type: 'article/add',
+          type: 'article/addArticle',
           payload,
         });
       }

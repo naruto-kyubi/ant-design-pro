@@ -30,10 +30,11 @@ class Catalog extends React.Component {
 
   render() {
     const {
-      article: { catalog },
+      article: {
+        catalog: { data },
+      },
     } = this.props;
-    if (!catalog) return null;
-    const { data } = catalog;
+    if (!data) return null;
     const { current } = this.state;
     return (
       <div className={styles.nav}>

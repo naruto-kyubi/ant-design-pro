@@ -34,7 +34,7 @@ class Articles extends PureComponent {
     const {
       dispatch,
       article: {
-        list: { meta },
+        articleList: { meta },
       },
     } = this.props;
     const { catalog } = this.state;
@@ -45,7 +45,7 @@ class Articles extends PureComponent {
       payload = { ...payload, catalogId_equal: catalog };
     }
     dispatch({
-      type: 'article/fetchList',
+      type: 'article/fetchArticleList',
       payload,
     });
   };
@@ -53,7 +53,7 @@ class Articles extends PureComponent {
   hasMore = () => {
     const {
       article: {
-        list: { meta },
+        articleList: { meta },
       },
     } = this.props;
     return meta
@@ -67,14 +67,14 @@ class Articles extends PureComponent {
 
   render() {
     const { article } = this.props;
-    const { articleList } = article;
+    const { articlePool } = article;
     const hasMore = this.hasMore();
     return (
       <GridContent>
         <Catalog onMenuClick={this.handleClick} />
         <Row gutter={24}>
           <Col lg={17} md={24}>
-            <ArticleList data={articleList} loadMore={this.loadMore} hasMore={hasMore} />
+            <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={hasMore} />
           </Col>
           <Col lg={7} md={24}>
             <Card bordered={false} style={{ marginBottom: 24 }}>

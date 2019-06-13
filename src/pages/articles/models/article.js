@@ -1,18 +1,18 @@
-import { queryList, queryById, add, queryCatalog } from '../services/article';
+import { queryArticleList, queryArticleById, addArticle, queryCatalog } from '../services/article';
 
 export default {
   namespace: 'article',
   state: {
-    list: {},
-    catalog: null,
-    content: null,
-    articleList: [],
+    articleList: {}, // one page articles
+    articlePool: [], // all articles from server
+    articleDetail: {}, // one article
+    catalog: {},
   },
   effects: {
-    *fetchList({ payload }, { call, put }) {
-      const response = yield call(queryList, payload);
+    *fetchArticleList({ payload }, { call, put }) {
+      const response = yield call(queryArticleList, payload);
       yield put({
-        type: 'queryList',
+        type: 'setArticleList',
         payload: response,
       });
     },
@@ -20,51 +20,51 @@ export default {
     *fetchCatalog({ payload }, { call, put }) {
       const reponse = yield call(queryCatalog, payload);
       yield put({
-        type: 'queryCatalog',
+        type: 'setCatalog',
         payload: reponse,
       });
     },
 
-    *fetch({ payload }, { call, put }) {
-      const response = yield call(queryById, payload);
+    *fetchArticleById({ payload }, { call, put }) {
+      const response = yield call(queryArticleById, payload);
       yield put({
-        type: 'queryById',
+        type: 'setArticleDetail',
         payload: response,
       });
     },
 
-    *add({ payload }, { call }) {
-      yield call(add, payload);
+    *addArticle({ payload }, { call }) {
+      yield call(addArticle, payload);
     },
   },
   reducers: {
-    queryList(state, action) {
+    setArticleList(state, action) {
       const {
         meta: {
           pagination: { current },
         },
       } = action.payload;
-      const articleList =
-        current === 1 ? [...action.payload.data] : [...state.articleList, ...action.payload.data];
+      const articlePool =
+        current === 1 ? [...action.payload.data] : [...state.articlePool, ...action.payload.data];
 
       return {
         ...state,
-        list: action.payload,
-        articleList,
+        articleList: action.payload,
+        articlePool,
       };
     },
 
-    queryCatalog(state, action) {
+    setCatalog(state, action) {
       return {
         ...state,
         catalog: action.payload,
       };
     },
 
-    queryById(state, action) {
+    setArticleDetail(state, action) {
       return {
         ...state,
-        content: action.payload,
+        articleDetail: action.payload,
       };
     },
   },
