@@ -21,3 +21,7 @@ export async function addArticle(payload) {
     data: payload,
   });
 }
+
+export async function queryCommentList(payload) {
+  return request(`/naruto/v1/articles/comments?${stringify(payload)}`);
+}

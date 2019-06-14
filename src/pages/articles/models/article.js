@@ -1,4 +1,10 @@
-import { queryArticleList, queryArticleById, addArticle, queryCatalog } from '../services/article';
+import {
+  queryArticleList,
+  queryArticleById,
+  addArticle,
+  queryCatalog,
+  queryCommentList,
+} from '../services/article';
 
 export default {
   namespace: 'article',
@@ -7,12 +13,22 @@ export default {
     articlePool: [], // all articles from server
     articleDetail: {}, // one article
     catalog: {},
+    commentList: {},
+    commentPool: [],
   },
   effects: {
     *fetchArticleList({ payload }, { call, put }) {
       const response = yield call(queryArticleList, payload);
       yield put({
         type: 'setArticleList',
+        payload: response,
+      });
+    },
+
+    *fetchCommentList({ payload }, { call, put }) {
+      const response = yield call(queryCommentList, payload);
+      yield put({
+        type: 'setCommentList',
         payload: response,
       });
     },
@@ -51,6 +67,22 @@ export default {
         ...state,
         articleList: action.payload,
         articlePool,
+      };
+    },
+
+    setCommentList(state, action) {
+      const {
+        meta: {
+          pagination: { current },
+        },
+      } = action.payload;
+      const commentPool =
+        current === 1 ? [...action.payload.data] : [...state.commentPool, ...action.payload.data];
+
+      return {
+        ...state,
+        commentList: action.payload,
+        commentPool,
       };
     },
 
