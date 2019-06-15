@@ -62,6 +62,7 @@ class ArticleComment extends React.Component {
 
     this.setState({
       submitting: false,
+      content: '',
     });
   };
 
