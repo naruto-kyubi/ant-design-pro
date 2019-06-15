@@ -12,7 +12,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
     </Form.Item>
     <Form.Item>
       <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
-        Add Comment
+        发表评论
       </Button>
     </Form.Item>
   </div>
@@ -84,21 +84,19 @@ class ArticleComment extends React.Component {
 
   render() {
     const { submitting, content } = this.state;
-    const { comments } = this.props;
+    const {
+      comments,
+      user: {
+        currentUser: { avatar },
+      },
+    } = this.props;
 
     if (!comments) return null;
 
     return (
       <div>
         <Comment
-          avatar={
-            <Avatar
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              alt="Han Solo"
-              size={32}
-              style={{ backgroundColor: '#87d068' }}
-            />
-          }
+          avatar={<Avatar src={avatar} size={32} icon="user" />}
           content={
             <Editor
               onChange={this.handleChange}
