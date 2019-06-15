@@ -25,3 +25,10 @@ export async function addArticle(payload) {
 export async function queryCommentList(payload) {
   return request(`/naruto/v1/articles/comments?${stringify(payload)}`);
 }
+
+export async function addCommnet(payload) {
+  return request('/naruto/v1/article/comment/add', {
+    method: 'POST',
+    data: payload,
+  });
+}

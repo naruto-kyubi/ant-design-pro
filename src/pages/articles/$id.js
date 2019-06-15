@@ -3,6 +3,7 @@ import { Row, Col, Card } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
 import ArticleContent from './components/ArticleContent';
+import ArticleComment from './comment';
 
 import HostArticleList from './hostList';
 
@@ -23,16 +24,26 @@ class Article extends PureComponent {
         id,
       },
     });
+
+    dispatch({
+      type: 'article/fetchCommentList',
+      payload: {
+        articleId: id,
+        sorter: 'updatedAt_desc',
+      },
+    });
   }
 
   render() {
     const { article } = this.props;
     const {
       articleDetail: { data },
+      commentPool,
     } = article;
     if (!data) {
       return null;
     }
+
     return (
       <GridContent>
         <Row gutter={24}>
@@ -40,6 +51,7 @@ class Article extends PureComponent {
             <Card>
               <div>
                 <ArticleContent article={data} />
+                <ArticleComment comments={commentPool} />
               </div>
             </Card>
           </Col>

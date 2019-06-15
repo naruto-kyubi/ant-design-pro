@@ -4,6 +4,7 @@ import {
   addArticle,
   queryCatalog,
   queryCommentList,
+  addCommnet,
 } from '../services/article';
 
 export default {
@@ -51,6 +52,20 @@ export default {
 
     *addArticle({ payload }, { call }) {
       yield call(addArticle, payload);
+    },
+
+    *addComment({ payload }, { call, put }) {
+      yield call(addCommnet, payload);
+
+      const { articleId } = payload;
+      const response = yield call(queryCommentList, {
+        articleId_equal: articleId,
+        sorter: 'updatedAt_desc',
+      });
+      yield put({
+        type: 'setCommentList',
+        payload: response,
+      });
     },
   },
   reducers: {
