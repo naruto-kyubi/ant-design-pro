@@ -1,7 +1,7 @@
 import React from 'react';
-import { Comment, Avatar, Form, Button, List, Input, message } from 'antd';
+import { Comment, Avatar, Form, Button, Input, message } from 'antd';
 import { connect } from 'dva';
-import { formatDate } from '@/utils/utils';
+import CommentList from './components/CommentList';
 
 const { TextArea } = Input;
 
@@ -24,7 +24,6 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 }))
 class ArticleComment extends React.Component {
   state = {
-    // comments: [],
     submitting: false,
     content: '',
   };
@@ -72,17 +71,6 @@ class ArticleComment extends React.Component {
     });
   };
 
-  getContent = comment => {
-    const { content, userId, updatedAt } = comment;
-    const { nickname, avatar } = userId;
-    return {
-      content,
-      datetime: formatDate(updatedAt),
-      author: nickname,
-      avatar,
-    };
-  };
-
   render() {
     const { submitting, content } = this.state;
     const {
@@ -108,14 +96,7 @@ class ArticleComment extends React.Component {
           }
         />
 
-        {comments.length > 0 && (
-          <List
-            dataSource={comments}
-            header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
-            itemLayout="horizontal"
-            renderItem={item => <Comment {...this.getContent(item)} />}
-          />
-        )}
+        {comments.length > 0 && <CommentList comments={comments} loadMore="" hasMore={false} />}
       </div>
     );
   }
