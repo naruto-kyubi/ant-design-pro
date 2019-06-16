@@ -38,10 +38,14 @@ class Article extends PureComponent {
   onClick = () => {};
 
   render() {
-    const { article } = this.props;
+    const {
+      article,
+      match: {
+        params: { id },
+      },
+    } = this.props;
     const {
       articleDetail: { data },
-      commentPool,
     } = article;
     if (!data) {
       return null;
@@ -88,7 +92,7 @@ class Article extends PureComponent {
             <Card>
               <div>
                 <ArticleContent article={data} />
-                <ArticleComment comments={commentPool} />
+                <ArticleComment articleId={id} />
               </div>
             </Card>
           </Col>

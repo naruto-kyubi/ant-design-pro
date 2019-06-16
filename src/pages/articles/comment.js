@@ -28,6 +28,10 @@ class ArticleComment extends React.Component {
     content: '',
   };
 
+  componentDidMount() {
+    this.queryComments(true);
+  }
+
   handleSubmit = () => {
     const { content } = this.state;
     if (!content) {
@@ -71,17 +75,58 @@ class ArticleComment extends React.Component {
     });
   };
 
+  queryComments = resetPool => {
+    const {
+      dispatch,
+      article: {
+        commentList: { meta },
+      },
+      articleId,
+    } = this.props;
+    let currentPage = meta ? meta.pagination.current + 1 : 1;
+    currentPage = resetPool ? 1 : currentPage;
+    const payload = { sorter: 'updatedAt_desc', currentPage, articleId };
+    dispatch({
+      type: 'article/fetchCommentList',
+      payload,
+    });
+  };
+
+  hasMore = () => {
+    const {
+      article: {
+        commentList: { meta },
+      },
+    } = this.props;
+    return meta
+      ? meta.pagination.current * meta.pagination.pageSize < meta.pagination.total
+      : false;
+  };
+
+  loadMore = () => {
+    this.queryComments(false);
+  };
+
+  getCommentCount = () => {
+    const {
+      article: {
+        commentList: { meta },
+      },
+    } = this.props;
+    return meta ? meta.pagination.total : 0;
+  };
+
   render() {
     const { submitting, content } = this.state;
     const {
-      comments,
+      article: { commentPool },
       user: {
         currentUser: { avatar },
       },
     } = this.props;
 
-    if (!comments) return null;
-
+    const hasMore = this.hasMore();
+    const commentCount = this.getCommentCount();
     return (
       <div>
         <Comment
@@ -96,7 +141,14 @@ class ArticleComment extends React.Component {
           }
         />
 
-        {comments.length > 0 && <CommentList comments={comments} loadMore="" hasMore={false} />}
+        {commentPool.length > 0 && (
+          <CommentList
+            comments={commentPool}
+            loadMore={this.loadMore}
+            hasMore={hasMore}
+            commentCount={commentCount}
+          />
+        )}
       </div>
     );
   }

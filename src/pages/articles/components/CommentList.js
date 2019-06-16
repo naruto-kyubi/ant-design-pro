@@ -16,7 +16,7 @@ class CommentList extends PureComponent {
   };
 
   render() {
-    const { comments, hasMore, loadMore } = this.props;
+    const { comments, hasMore, loadMore, commentCount } = this.props;
 
     return (
       <InfiniteScroll
@@ -31,7 +31,7 @@ class CommentList extends PureComponent {
       >
         <List
           dataSource={comments}
-          header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+          header={`${commentCount} ${commentCount > 1 ? 'replies' : 'reply'}`}
           itemLayout="horizontal"
           renderItem={item => <Comment {...this.getContent(item)} />}
         />

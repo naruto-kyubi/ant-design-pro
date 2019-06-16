@@ -22,7 +22,7 @@ class Articles extends PureComponent {
 
   handleClick = e => {
     this.setState({ catalog: e.key }, () => {
-      this.queryArticles(e.key);
+      this.queryArticles(true);
     });
   };
 
@@ -30,7 +30,7 @@ class Articles extends PureComponent {
     this.queryArticles();
   };
 
-  queryArticles = catalogId => {
+  queryArticles = resetPool => {
     const {
       dispatch,
       article: {
@@ -39,7 +39,7 @@ class Articles extends PureComponent {
     } = this.props;
     const { catalog } = this.state;
     let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = catalogId ? 1 : currentPage;
+    currentPage = resetPool ? 1 : currentPage;
     let payload = { sorter: 'updatedAt_desc', currentPage };
     if (catalog !== 'recommand') {
       payload = { ...payload, catalogId_equal: catalog };
