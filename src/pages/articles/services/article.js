@@ -3,7 +3,7 @@ import { stringify } from 'qs';
 import request from '@/utils/request';
 
 export async function queryArticleList(payload) {
-  return request(`/naruto/v1/article/query?${stringify(payload)}`);
+  return request(`/naruto/v1/articles/query?${stringify(payload)}`);
 }
 
 export async function queryArticleById(payload) {
@@ -16,7 +16,7 @@ export async function queryCatalog(payload) {
 }
 
 export async function addArticle(payload) {
-  return request('/naruto/v1/article/add', {
+  return request('/naruto/v1/articles/add', {
     method: 'POST',
     data: payload,
   });
@@ -27,8 +27,13 @@ export async function queryCommentList(payload) {
 }
 
 export async function addCommnet(payload) {
-  return request('/naruto/v1/article/comment/add', {
+  return request('/naruto/v1/articles/comment/add', {
     method: 'POST',
     data: payload,
   });
+}
+
+export async function queryArticleLikeById(payload) {
+  const { id } = payload;
+  return request(`/naruto/v1/articles/likes/article/${id}`);
 }
