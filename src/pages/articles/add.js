@@ -1,21 +1,16 @@
 import React, { PureComponent } from 'react';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
-import { Card, Button, Form, Row, Col, Input, message, TreeSelect } from 'antd';
-import Editor from './components/Editor';
+import { Card, Button, Form, Input, message, TreeSelect } from 'antd';
+import BraftEditor from 'braft-editor';
 
-import styles from './add.less';
+import 'braft-editor/dist/index.css';
 
 @connect(({ article, user }) => ({
   article,
   user,
 }))
 class AddArticle extends PureComponent {
-  state = {
-    content: '',
-    contentHtml: '',
-  };
-
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -26,17 +21,8 @@ class AddArticle extends PureComponent {
     });
   }
 
-  onChange = (html, txt) => {
-    this.setState({ contentHtml: html, content: txt });
-  };
-
   handleSubmit = e => {
     e.preventDefault();
-    const { content, contentHtml } = this.state;
-    if (content === '' || contentHtml === null) {
-      message.warning('请输入发表内容');
-      return;
-    }
 
     const { user } = this.props;
     if (!user.currentUser.id) {
@@ -47,7 +33,12 @@ class AddArticle extends PureComponent {
 
     form.validateFields((err, values) => {
       if (!err) {
-        const payload = { ...values, ...this.state, owner: user.currentUser.id };
+        const payload = {
+          title: values.title,
+          content: values.content.toRAW(),
+          contentHtml: values.content.toHTML(),
+          owner: user.currentUser.id,
+        };
         const { dispatch } = this.props;
 
         dispatch({
@@ -64,70 +55,98 @@ class AddArticle extends PureComponent {
     } = this.props;
     const FormItem = Form.Item;
     const {
-      article: { catalog },
+      article: {
+        catalog: { data },
+      },
     } = this.props;
-    if (!catalog) return null;
-    const { data } = catalog;
+    if (!data) return null;
     const treedata = data.map(item => ({
       title: item.name,
       value: item.id,
       key: item.id,
       disabled: false,
     }));
+
+    const controls = [
+      'bold',
+      'italic',
+      'underline',
+      'text-color',
+      'separator',
+      'link',
+      'separator',
+      'media',
+    ];
     return (
       <GridContent>
         <Card title="发表新帖">
-          <div className={styles.addArticle}>
-            <Form
-              layout="horizontal"
-              onSubmit={this.handleSubmit}
-              hideRequiredMark
-              style={{ marginTop: 8, marginBottom: 8 }}
-            >
-              <Row gutter={12}>
-                <Col span={8}>
-                  <FormItem label="板块">
-                    {getFieldDecorator('catalogId', {
-                      rules: [
-                        {
-                          required: true,
-                          message: '请输入板块',
-                        },
-                      ],
-                    })(
-                      <TreeSelect
-                        style={{ width: 300 }}
-                        dropdownStyle={{ maxHeight: 800, overflow: 'auto' }}
-                        treeData={treedata}
-                        placeholder="板块"
-                        onChange={this.onChange}
-                      />
-                    )}
-                  </FormItem>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={16}>
-                  <FormItem label="标题">
-                    {getFieldDecorator('title', {
-                      rules: [
-                        {
-                          required: true,
-                          message: '请输入标题',
-                        },
-                      ],
-                    })(<Input placeholder="标题，一句话说明您要发表的内容" />)}
-                  </FormItem>
-                </Col>
-              </Row>
+          <Form
+            layout="horizontal"
+            // {...formItemLayout}
+            onSubmit={this.handleSubmit}
+            // hideRequiredMark
+            style={{ marginTop: 8, marginBottom: 8 }}
+          >
+            <FormItem label="板块">
+              {getFieldDecorator('catalogId', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入板块',
+                  },
+                ],
+              })(
+                <TreeSelect
+                  style={{ width: 300 }}
+                  dropdownStyle={{ maxHeight: 800, overflow: 'auto' }}
+                  treeData={treedata}
+                  placeholder="板块"
+                  onChange={this.onChange}
+                />
+              )}
+            </FormItem>
 
-              <Editor onChange={this.onChange} />
-              <Button type="primary" htmlType="submit">
-                {' '}
-                立即发布
-              </Button>
-            </Form>
-          </div>
+            <FormItem label="标题">
+              {getFieldDecorator('title', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入标题',
+                  },
+                ],
+              })(<Input placeholder="标题，一句话说明您要发表的内容" />)}
+            </FormItem>
+
+            <FormItem label="文章正文">
+              {getFieldDecorator('content', {
+                validateTrigger: 'onBlur',
+                rules: [
+                  {
+                    required: true,
+                    validator: (_, value, callback) => {
+                      if (value.isEmpty()) {
+                        callback('请输入正文内容');
+                      } else {
+                        callback();
+                      }
+                    },
+                  },
+                ],
+              })(
+                <BraftEditor
+                  contentStyle={{ height: 300 }}
+                  controls={controls}
+                  placeholder="请输入正文内容"
+                />
+              )}
+            </FormItem>
+
+            {/* <Editor onChange={this.onChange} /> */}
+            <Button type="primary" htmlType="submit">
+              {' '}
+              立即发布
+            </Button>
+          </Form>
         </Card>
       </GridContent>
     );
