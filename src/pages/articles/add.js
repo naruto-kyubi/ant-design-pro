@@ -34,6 +34,7 @@ class AddArticle extends PureComponent {
     form.validateFields((err, values) => {
       if (!err) {
         const payload = {
+          catalogId: values.catalogId,
           title: values.title,
           content: values.content.toRAW(),
           contentHtml: values.content.toHTML(),
