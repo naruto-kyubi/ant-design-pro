@@ -5,6 +5,12 @@ import {
   queryCatalog,
   queryCommentList,
   addCommnet,
+  queryArticleLikeById,
+  addLike,
+  deleteLike,
+  queryArticleStarById,
+  addStar,
+  deleteStar,
 } from '../services/article';
 
 export default {
@@ -16,7 +22,10 @@ export default {
     catalog: {},
     commentList: {},
     commentPool: [],
+    like: {},
+    star: {},
   },
+
   effects: {
     *fetchArticleList({ payload }, { call, put }) {
       const response = yield call(queryArticleList, payload);
@@ -35,18 +44,20 @@ export default {
     },
 
     *fetchCatalog({ payload }, { call, put }) {
-      const reponse = yield call(queryCatalog, payload);
+      const response = yield call(queryCatalog, payload);
       yield put({
-        type: 'setCatalog',
-        payload: reponse,
+        type: 'setState',
+        payload: { catalog: response },
       });
     },
 
     *fetchArticleById({ payload }, { call, put }) {
       const response = yield call(queryArticleById, payload);
       yield put({
-        type: 'setArticleDetail',
-        payload: response,
+        type: 'setState',
+        payload: {
+          articleDetail: response,
+        },
       });
     },
 
@@ -67,8 +78,65 @@ export default {
         payload: response,
       });
     },
+
+    *fetchArticleLikeById({ payload }, { call, put }) {
+      const response = yield call(queryArticleLikeById, payload);
+      yield put({
+        type: 'setState',
+        payload: { like: response },
+      });
+    },
+
+    *addLike({ payload }, { call, put }) {
+      const response = yield call(addLike, payload);
+      yield put({
+        type: 'setState',
+        payload: { like: response },
+      });
+    },
+
+    *deleteLike({ payload }, { call, put }) {
+      const response = yield call(deleteLike, payload);
+      yield put({
+        type: 'setState',
+        payload: { like: response },
+      });
+    },
+
+    *fetchArticleStarById({ payload }, { call, put }) {
+      const response = yield call(queryArticleStarById, payload);
+      yield put({
+        type: 'setState',
+        payload: { star: response },
+      });
+    },
+
+    *addStar({ payload }, { call, put }) {
+      const response = yield call(addStar, payload);
+      yield put({
+        type: 'setState',
+        payload: { star: response },
+      });
+    },
+
+    *deleteStar({ payload }, { call, put }) {
+      const response = yield call(deleteStar, payload);
+      yield put({
+        type: 'setState',
+        payload: { star: response },
+      });
+    },
   },
+
   reducers: {
+    setState(state, action) {
+      return { ...state, ...action.payload };
+    },
+
+    setState2(state, action) {
+      return { ...state, ...action.payload };
+    },
+
     setArticleList(state, action) {
       const {
         meta: {
@@ -105,13 +173,6 @@ export default {
       return {
         ...state,
         catalog: action.payload,
-      };
-    },
-
-    setArticleDetail(state, action) {
-      return {
-        ...state,
-        articleDetail: action.payload,
       };
     },
   },
