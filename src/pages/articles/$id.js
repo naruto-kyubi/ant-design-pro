@@ -111,20 +111,28 @@ class Article extends PureComponent {
       return null;
     }
 
-    const { starCount, likeCount, commentCount } = data;
+    const { likeCount, commentCount } = data;
+    const { data: likeData } = like;
+    if(!likeData) return null;
+    const { data: starData } = star;
+    if(!starData) return null;
+
+    const { likeCount:likeCount_=0,like: like_=undefined } =  likeData; 
+    const { starCount:startCount_=0,star: star_=undefined } =  starData; 
+
     const v = [
       {
         type: 'like',
         title: '喜欢',
-        count: likeCount,
-        selected: like.data ? true : false,
+        count: likeCount_,
+        selected: like_ ? true : false,
         onClick: this.onClick,
       },
       {
         type: 'star',
         title: '收藏',
-        count: starCount,
-        selected: star.data ? true : false,
+        count: startCount_,
+        selected: star_? true : false,
         onClick: this.onClick,
       },
       {
