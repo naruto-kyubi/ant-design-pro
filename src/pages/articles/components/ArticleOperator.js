@@ -15,7 +15,7 @@ export default class ArticleOperator extends PureComponent {
 
     return (
       <div className={styles.operator} onClick={() => onClick(obj)}>
-        <Badge count={count} offset={[0, 0]}>
+        <Badge count={count} offset={[0, 0]} style={{ backgroundColor: '#b2b2b5' }}>
           <div className={selected ? styles.selected_circle : styles.circle}>
             <Icon type={type} className={styles.icon} />
           </div>
