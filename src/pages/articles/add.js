@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
-import { Card, Button, Form, Input, message, TreeSelect } from 'antd';
+import { Card, Button, Form, Input, message, TreeSelect, Upload, Icon } from 'antd';
 import BraftEditor from 'braft-editor';
+
+import { ContentUtils } from 'braft-utils';
+import { context } from '@/defaultSettings';
 
 import 'braft-editor/dist/index.css';
 
@@ -11,6 +14,10 @@ import 'braft-editor/dist/index.css';
   user,
 }))
 class AddArticle extends PureComponent {
+  state = {
+    editorState: BraftEditor.createEditorState(null),
+  };
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -23,21 +30,20 @@ class AddArticle extends PureComponent {
 
   handleSubmit = e => {
     e.preventDefault();
-
-    const { user } = this.props;
+    const { editorState } = this.state;
+    const { user, form } = this.props;
     if (!user.currentUser.id) {
       message.warning('请登录后发表');
       return;
     }
-    const { form } = this.props;
 
     form.validateFields((err, values) => {
       if (!err) {
         const payload = {
           catalogId: values.catalogId,
           title: values.title,
-          content: values.content.toRAW(),
-          contentHtml: values.content.toHTML(),
+          content: editorState.toRAW(),
+          contentHtml: editorState.toHTML(),
           owner: user.currentUser.id,
         };
         const { dispatch } = this.props;
@@ -50,16 +56,42 @@ class AddArticle extends PureComponent {
     });
   };
 
+  handleChange = editorState => {
+    this.setState({ editorState });
+  };
+
+  onFileChange = info => {
+    const { editorState } = this.state;
+
+    if (info.file.status === 'done') {
+      //   message.success(`${info.file.name} file uploaded successfully`);
+      const { status } = info.file.response;
+      if (status && status === 'ok') {
+        this.setState({
+          editorState: ContentUtils.insertMedias(editorState, [
+            {
+              type: 'IMAGE',
+              url: context ? context.concat(info.file.response.data) : info.file.response.data,
+            },
+          ]),
+        });
+      }
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  };
+
   render() {
     const {
       form: { getFieldDecorator },
-    } = this.props;
-    const FormItem = Form.Item;
-    const {
       article: {
         catalog: { data },
       },
     } = this.props;
+
+    const { editorState } = this.state;
+    const FormItem = Form.Item;
+
     if (!data) return null;
     const treedata = data.map(item => ({
       title: item.name,
@@ -76,14 +108,41 @@ class AddArticle extends PureComponent {
       'separator',
       'link',
       'separator',
-      'media',
+    ];
+
+    const uploadProps = {
+      name: 'file',
+      accept: 'image/*',
+      action: context ? context.concat('/v1/file/upload') : '/v1/file/upload',
+      headers: {
+        authorization: 'authorization-text',
+      },
+      showUploadList: false,
+    };
+
+    const extendControls = [
+      {
+        key: 'antd-uploader',
+        type: 'component',
+        component: (
+          <Upload {...uploadProps} onChange={this.onFileChange}>
+            {/* 这里的按钮最好加上type="button"，以避免在表单容器中触发表单提交，用Antd的Button组件则无需如此 */}
+            <button
+              type="button"
+              className="control-item button upload-button"
+              data-title="插入图片"
+            >
+              <Icon type="upload" /> 插入图片
+            </button>
+          </Upload>
+        ),
+      },
     ];
     return (
       <GridContent>
         <Card title="发表新帖">
           <Form
             layout="horizontal"
-            // {...formItemLayout}
             onSubmit={this.handleSubmit}
             // hideRequiredMark
             style={{ marginTop: 8, marginBottom: 8 }}
@@ -118,31 +177,15 @@ class AddArticle extends PureComponent {
               })(<Input placeholder="标题，一句话说明您要发表的内容" />)}
             </FormItem>
 
-            <FormItem label="文章正文">
-              {getFieldDecorator('content', {
-                validateTrigger: 'onBlur',
-                rules: [
-                  {
-                    required: true,
-                    validator: (_, value, callback) => {
-                      if (value.isEmpty()) {
-                        callback('请输入正文内容');
-                      } else {
-                        callback();
-                      }
-                    },
-                  },
-                ],
-              })(
-                <BraftEditor
-                  contentStyle={{ height: 300 }}
-                  controls={controls}
-                  placeholder="请输入正文内容"
-                />
-              )}
-            </FormItem>
+            <BraftEditor
+              contentStyle={{ height: 300 }}
+              controls={controls}
+              extendControls={extendControls}
+              value={editorState}
+              onChange={this.handleChange}
+              placeholder="请输入正文内容"
+            />
 
-            {/* <Editor onChange={this.onChange} /> */}
             <Button type="primary" htmlType="submit">
               {' '}
               立即发布
