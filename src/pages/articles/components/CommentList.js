@@ -1,18 +1,17 @@
 import React, { PureComponent } from 'react';
-import { Comment, List } from 'antd';
-import { formatDate } from '@/utils/utils';
+import { List } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
+import Comment from './Comment';
 
 class CommentList extends PureComponent {
-  getContent = comment => {
-    const { content, userId, updatedAt } = comment;
-    const { nickname, avatar } = userId;
-    return {
-      content,
-      datetime: formatDate(updatedAt),
-      author: nickname,
-      avatar,
-    };
+  rendCommentItem = item => {
+    return (
+      <Comment comment={item}>
+        {item.children.map(child => (
+          <Comment comment={child} />
+        ))}
+      </Comment>
+    );
   };
 
   render() {
@@ -33,7 +32,7 @@ class CommentList extends PureComponent {
           dataSource={comments}
           header={`${commentCount} ${commentCount > 1 ? 'replies' : 'reply'}`}
           itemLayout="horizontal"
-          renderItem={item => <Comment {...this.getContent(item)} />}
+          renderItem={this.rendCommentItem}
         />
       </InfiniteScroll>
     );

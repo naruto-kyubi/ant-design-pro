@@ -1,22 +1,8 @@
 import React from 'react';
-import { Comment, Avatar, Form, Button, Input, message } from 'antd';
+import { message } from 'antd';
 import { connect } from 'dva';
 import CommentList from './components/CommentList';
-
-const { TextArea } = Input;
-
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
-  <div>
-    <Form.Item>
-      <TextArea rows={4} onChange={onChange} value={value} />
-    </Form.Item>
-    <Form.Item>
-      <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
-        发表评论
-      </Button>
-    </Form.Item>
-  </div>
-);
+import Reply from './components/Reply';
 
 @connect(({ article, user }) => ({
   article,
@@ -69,9 +55,9 @@ class ArticleComment extends React.Component {
     });
   };
 
-  handleChange = e => {
+  handleChange = content => {
     this.setState({
-      content: e.target.value,
+      content,
     });
   };
 
@@ -129,16 +115,12 @@ class ArticleComment extends React.Component {
     const commentCount = this.getCommentCount();
     return (
       <div>
-        <Comment
-          avatar={<Avatar src={avatar} size={32} icon="user" />}
-          content={
-            <Editor
-              onChange={this.handleChange}
-              onSubmit={this.handleSubmit}
-              submitting={submitting}
-              value={content}
-            />
-          }
+        <Reply
+          avatar={avatar}
+          submitting={submitting}
+          handleChange={this.handleChange}
+          handleSubmit={this.handleSubmit}
+          value={content}
         />
 
         {commentPool.length > 0 && (

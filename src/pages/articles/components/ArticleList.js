@@ -7,10 +7,14 @@ import styles from './ArticleList.less';
 
 class ArticleList extends PureComponent {
   getContent = article => {
-    const { content, owner, updatedAt } = article;
+    const { contentHtml, owner, updatedAt } = article;
     const { nickname, avatar } = owner;
+
     return {
-      content: `${content.substring(0, 200)}...`,
+      content: `${JSON.parse(JSON.stringify(contentHtml).replace(/<\/?.+?\/?>/g, '')).substring(
+        0,
+        200
+      )}...`,
       updatedAt,
       owner: nickname,
       avatar,

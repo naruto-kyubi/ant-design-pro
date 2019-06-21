@@ -111,28 +111,28 @@ class Article extends PureComponent {
       return null;
     }
 
-    const { likeCount, commentCount } = data;
+    const { commentCount } = data;
     const { data: likeData } = like;
-    if(!likeData) return null;
+    if (!likeData) return null;
     const { data: starData } = star;
-    if(!starData) return null;
+    if (!starData) return null;
 
-    const { likeCount:likeCount_=0,like: like_=undefined } =  likeData; 
-    const { starCount:startCount_=0,star: star_=undefined } =  starData; 
+    const { likeCount: likeCount_ = 0, like: like_ = undefined } = likeData;
+    const { starCount: startCount_ = 0, star: star_ = undefined } = starData;
 
     const v = [
       {
         type: 'like',
         title: '喜欢',
         count: likeCount_,
-        selected: like_ ? true : false,
+        selected: !!like_,
         onClick: this.onClick,
       },
       {
         type: 'star',
         title: '收藏',
         count: startCount_,
-        selected: star_? true : false,
+        selected: !!star_,
         onClick: this.onClick,
       },
       {
@@ -167,7 +167,7 @@ class Article extends PureComponent {
         </Affix>
         <Row gutter={24}>
           <Col lg={17} md={24}>
-            <Card>
+            <Card bordered={false}>
               <div>
                 <ArticleContent article={data} />
                 <ArticleComment articleId={id} />
