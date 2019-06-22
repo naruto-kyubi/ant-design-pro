@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import router from 'umi/router';
@@ -6,14 +6,16 @@ import { Card, Row, Col, Icon, Avatar, Tag, Divider, Spin, Input } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import styles from './Center.less';
 
-@connect(({ loading, user, project }) => ({
+@connect(({ loading, user, project, article }) => ({
   listLoading: loading.effects['list/fetch'],
-  currentUser: user.currentUser,
-  currentUserLoading: loading.effects['user/fetchCurrent'],
+  currentUser: user.user.data,
+  currentUserLoading: loading.effects['user/fetchUserById'],
   project,
   projectLoading: loading.effects['project/fetchNotice'],
+  article,
+  user,
 }))
-class Center extends PureComponent {
+class Center extends Component {
   state = {
     newTags: [],
     inputVisible: false,
@@ -21,10 +23,21 @@ class Center extends PureComponent {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {
+      match: {
+        params: { id },
+      },
+      dispatch,
+    } = this.props;
+
+    // const { query:{id} } = location;
     dispatch({
-      type: 'user/fetchCurrent',
+      type: 'user/fetchUserById',
+      payload: {
+        id,
+      },
     });
+
     dispatch({
       type: 'list/fetch',
       payload: {
@@ -38,15 +51,20 @@ class Center extends PureComponent {
 
   onTabChange = key => {
     const { match } = this.props;
+
+    const {
+      params: { id },
+    } = match;
+
     switch (key) {
       case 'articles':
-        router.push(`${match.url}/articles`);
+        router.push(`${match.url}/articles/${id}`);
         break;
       case 'applications':
-        router.push(`${match.url}/applications`);
+        router.push(`${match.url}/applications/${id}`);
         break;
       case 'projects':
-        router.push(`${match.url}/projects`);
+        router.push(`${match.url}/projects/${id}`);
         break;
       default:
         break;
@@ -105,7 +123,7 @@ class Center extends PureComponent {
         key: 'applications',
         tab: (
           <span>
-            应用 <span style={{ fontSize: 14 }}>(8)</span>
+            收藏 <span style={{ fontSize: 14 }}>(8)</span>
           </span>
         ),
       },

@@ -238,16 +238,16 @@ export default [
         path: '/account',
         routes: [
           {
-            path: '/account/center',
+            path: '/account/center/:id',
             name: 'center',
             component: './Account/Center/Center',
             routes: [
               {
-                path: '/account/center',
-                redirect: '/account/center/articles',
+                path: '/account/center/:id',
+                redirect: '/account/center/articles/:id',
               },
               {
-                path: '/account/center/articles',
+                path: '/account/center/articles/:id',
                 component: './Account/Center/Articles',
               },
               {
@@ -284,6 +284,17 @@ export default [
               {
                 path: '/account/settings/notification',
                 component: './Account/Settings/NotificationView',
+              },
+            ],
+          },
+          {
+            path: '/account/users',
+            name: 'users',
+            component: './Account/Center/Center',
+            routes: [
+              {
+                path: '/account/users/:id?',
+                component: './Account/User/$id.js',
               },
             ],
           },

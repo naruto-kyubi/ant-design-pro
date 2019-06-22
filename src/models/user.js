@@ -7,7 +7,7 @@ import {
   unbind,
   queryBinds,
 } from '@/services/api';
-import { queryCurrent } from '@/services/user';
+import { queryCurrent, queryUserById } from '@/services/user';
 
 export default {
   namespace: 'user',
@@ -22,6 +22,7 @@ export default {
       pagination: {},
     },
     binds: [],
+    user: {},
   },
 
   effects: {
@@ -167,6 +168,21 @@ export default {
         type: 'saveHandle',
         payload: {
           binds: data,
+        },
+      });
+    },
+
+    *fetchUserById({ payload, callback }, { call, put }) {
+      const response = yield call(queryUserById, payload);
+
+      if (callback) {
+        callback(response);
+      }
+
+      yield put({
+        type: 'saveHandle',
+        payload: {
+          user: response,
         },
       });
     },

@@ -9,8 +9,12 @@ import {
   addLike,
   deleteLike,
   queryArticleStarById,
+  queryStarList,
   addStar,
   deleteStar,
+  queryFollow,
+  addFollow,
+  deleteFollow,
 } from '../services/article';
 
 export default {
@@ -23,7 +27,9 @@ export default {
     commentList: {},
     commentPool: [],
     like: {},
+    stars: [],
     star: {},
+    follow: {},
   },
 
   effects: {
@@ -51,8 +57,13 @@ export default {
       });
     },
 
-    *fetchArticleById({ payload }, { call, put }) {
+    *fetchArticleById({ payload, callback }, { call, put }) {
       const response = yield call(queryArticleById, payload);
+
+      if (callback) {
+        callback(response);
+      }
+
       yield put({
         type: 'setState',
         payload: {
@@ -111,6 +122,14 @@ export default {
       });
     },
 
+    *fetchStarList({ payload }, { call, put }) {
+      const response = yield call(queryStarList, payload);
+      yield put({
+        type: 'setState',
+        payload: { stars: response },
+      });
+    },
+
     *addStar({ payload }, { call, put }) {
       const response = yield call(addStar, payload);
       yield put({
@@ -124,6 +143,33 @@ export default {
       yield put({
         type: 'setState',
         payload: { star: response },
+      });
+    },
+
+    *queryFollow({ payload }, { call, put }) {
+      const response = yield call(queryFollow, payload);
+      //
+      yield put({
+        type: 'setState',
+        payload: {
+          follow: response,
+        },
+      });
+    },
+
+    *addFollow({ payload }, { call, put }) {
+      const response = yield call(addFollow, payload);
+      yield put({
+        type: 'setState',
+        payload: { follow: response },
+      });
+    },
+
+    *deleteFollow({ payload }, { call, put }) {
+      const response = yield call(deleteFollow, payload);
+      yield put({
+        type: 'setState',
+        payload: { follow: response },
       });
     },
   },

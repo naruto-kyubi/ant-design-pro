@@ -56,6 +56,7 @@ class ArticleList extends PureComponent {
                   <IconText type="star-o" text={item.starCount} />,
                   <IconText type="like-o" text={item.likeCount} />,
                   <IconText type="message" text={item.commentCount} />,
+                  <IconText type="read" text={item.viewCount} />,
                 ]}
               >
                 <List.Item.Meta
