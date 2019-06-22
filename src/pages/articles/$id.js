@@ -7,6 +7,7 @@ import ArticleComment from './comment';
 import ArticleSuspendPanel from './components/ArticleSuspendPanel';
 
 import HostArticleList from './hostList';
+import router from 'umi/router';
 
 @connect(({ article }) => ({
   article,
@@ -23,6 +24,18 @@ class Article extends PureComponent {
       type: 'article/fetchArticleById',
       payload: {
         id,
+      },
+      callback: obj => {
+        const {
+          data: { owner },
+        } = obj;
+        const { id: userId } = owner;
+        dispatch({
+          type: 'article/queryFollow',
+          payload: {
+            id: userId,
+          },
+        });
       },
     });
 
@@ -95,6 +108,42 @@ class Article extends PureComponent {
     }
   };
 
+  onFollowClick = followed => {
+    const {
+      dispatch,
+      article: {
+        articleDetail: {
+          data: {
+            owner: { id },
+          },
+        },
+      },
+    } = this.props;
+    if (followed) {
+      //delete;
+      dispatch({
+        type: 'article/deleteFollow',
+        payload: {
+          id,
+        },
+      });
+    } else {
+      //add
+      dispatch({
+        type: 'article/addFollow',
+        payload: {
+          followUserId: id,
+        },
+      });
+    }
+  };
+
+  onUserClick = owner => {
+    // alert(owner);
+    const { id } = owner;
+    router.push(`/account/center/${id}`);
+  };
+
   render() {
     const {
       article,
@@ -106,11 +155,13 @@ class Article extends PureComponent {
       articleDetail: { data },
       like,
       star,
+      follow,
     } = article;
     if (!data) {
       return null;
     }
-
+    if (!follow) return null;
+    const { data: followData } = follow;
     const { commentCount } = data;
     const { data: likeData } = like;
     if (!likeData) return null;
@@ -169,7 +220,12 @@ class Article extends PureComponent {
           <Col lg={17} md={24}>
             <Card bordered={false}>
               <div>
-                <ArticleContent article={data} />
+                <ArticleContent
+                  article={data}
+                  followed={followData ? true : false}
+                  onFollowClick={this.onFollowClick}
+                  onUserClick={this.onUserClick}
+                />
                 <ArticleComment articleId={id} />
               </div>
             </Card>
