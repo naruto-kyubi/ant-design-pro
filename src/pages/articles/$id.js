@@ -9,8 +9,9 @@ import ArticleSuspendPanel from './components/ArticleSuspendPanel';
 import HostArticleList from './hostList';
 import router from 'umi/router';
 
-@connect(({ article }) => ({
+@connect(({ article, follow }) => ({
   article,
+  follow: follow.follow,
 }))
 class Article extends PureComponent {
   componentDidMount() {
@@ -31,7 +32,7 @@ class Article extends PureComponent {
         } = obj;
         const { id: userId } = owner;
         dispatch({
-          type: 'article/queryFollow',
+          type: 'follow/queryFollow',
           payload: {
             id: userId,
           },
@@ -94,7 +95,7 @@ class Article extends PureComponent {
         dispatch({
           type: 'article/addStar',
           payload: {
-            articleId: id,
+            article: id,
           },
         });
       } else {
@@ -122,7 +123,7 @@ class Article extends PureComponent {
     if (followed) {
       //delete;
       dispatch({
-        type: 'article/deleteFollow',
+        type: 'follow/deleteFollow',
         payload: {
           id,
         },
@@ -130,9 +131,9 @@ class Article extends PureComponent {
     } else {
       //add
       dispatch({
-        type: 'article/addFollow',
+        type: 'follow/addFollow',
         payload: {
-          followUserId: id,
+          followUser: id,
         },
       });
     }
@@ -141,12 +142,13 @@ class Article extends PureComponent {
   onUserClick = owner => {
     // alert(owner);
     const { id } = owner;
-    router.push(`/account/center/${id}`);
+    router.push(`/account/center/articles?id=${id}`);
   };
 
   render() {
     const {
       article,
+      follow,
       match: {
         params: { id },
       },
@@ -155,13 +157,14 @@ class Article extends PureComponent {
       articleDetail: { data },
       like,
       star,
-      follow,
     } = article;
+
     if (!data) {
       return null;
     }
     if (!follow) return null;
     const { data: followData } = follow;
+
     const { commentCount } = data;
     const { data: likeData } = like;
     if (!likeData) return null;
