@@ -24,13 +24,16 @@ class Center extends Component {
 
   componentDidMount() {
     const {
-      match: {
-        params: { id },
-      },
+      // match: {
+      //   params: { id },
+      // },
+      location,
       dispatch,
     } = this.props;
 
-    // const { query:{id} } = location;
+    const {
+      query: { id },
+    } = location;
     dispatch({
       type: 'user/fetchUserById',
       payload: {
@@ -50,21 +53,30 @@ class Center extends Component {
   }
 
   onTabChange = key => {
-    const { match } = this.props;
-
+    const { match, location } = this.props;
     const {
-      params: { id },
-    } = match;
+      query: { id },
+    } = location;
+
+    // const {
+    //   params: { id },
+    // } = match;
 
     switch (key) {
       case 'articles':
-        router.push(`${match.url}/articles/${id}`);
+        router.push(`${match.url}/articles?id=${id}`);
         break;
-      case 'applications':
-        router.push(`${match.url}/applications/${id}`);
+      case 'stars':
+        router.push(`${match.url}/stars?id=${id}`);
+        break;
+      case 'follows':
+        router.push(`${match.url}/follows?id=${id}`);
+        break;
+      case 'fans':
+        router.push(`${match.url}/fans?id=${id}`);
         break;
       case 'projects':
-        router.push(`${match.url}/projects/${id}`);
+        router.push(`${match.url}/projects?id=${id}`);
         break;
       default:
         break;
@@ -115,23 +127,47 @@ class Center extends Component {
         key: 'articles',
         tab: (
           <span>
-            文章 <span style={{ fontSize: 14 }}>(8)</span>
+            <span style={{ fontSize: 14 }}>文章(100)</span>
           </span>
         ),
       },
       {
-        key: 'applications',
+        key: 'stars',
         tab: (
           <span>
-            收藏 <span style={{ fontSize: 14 }}>(8)</span>
+            <span style={{ fontSize: 14 }}> 收藏</span>
           </span>
         ),
       },
       {
-        key: 'projects',
+        key: 'follows',
         tab: (
           <span>
-            项目 <span style={{ fontSize: 14 }}>(8)</span>
+            <span style={{ fontSize: 14 }}>关注了</span>
+          </span>
+        ),
+      },
+      {
+        key: 'fans',
+        tab: (
+          <span>
+            <span style={{ fontSize: 14 }}>粉丝</span>
+          </span>
+        ),
+      },
+      {
+        key: 'projects1',
+        tab: (
+          <span>
+            <span style={{ fontSize: 14 }}>项目</span>
+          </span>
+        ),
+      },
+      {
+        key: 'projects2',
+        tab: (
+          <span>
+            <span style={{ fontSize: 14 }}>项目</span>
           </span>
         ),
       },
@@ -146,22 +182,21 @@ class Center extends Component {
                 <div>
                   <div className={styles.avatarHolder}>
                     <img alt="" src={currentUser.avatar} />
-                    <div className={styles.name}>{currentUser.name}</div>
-                    <div>{currentUser.signature}</div>
+                    <div className={styles.name}>{currentUser.nickname}</div>
+                    <div>{currentUser.profile}</div>
                   </div>
                   <div className={styles.detail}>
-                    <p>
+                    {/* <p>
                       <i className={styles.title} />
                       {currentUser.title}
                     </p>
                     <p>
                       <i className={styles.group} />
                       {currentUser.group}
-                    </p>
+                    </p> */}
                     <p>
                       <i className={styles.address} />
-                      {/* {currentUser.geographic.province.label}
-                      {currentUser.geographic.city.label} */}
+                      {currentUser.geographic.province.label}-{currentUser.geographic.city.label}
                     </p>
                   </div>
                   <Divider dashed />

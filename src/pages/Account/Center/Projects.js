@@ -8,7 +8,7 @@ import stylesProjects from '../../List/Projects.less';
 @connect(({ list }) => ({
   list,
 }))
-class Center extends PureComponent {
+class Projects extends PureComponent {
   render() {
     const {
       list: { list },
@@ -49,4 +49,4 @@ class Center extends PureComponent {
   }
 }
 
-export default Center;
+export default Projects;

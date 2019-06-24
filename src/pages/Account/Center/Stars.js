@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-// import ArticleListContent from '@/components/ArticleListContent';
 import ArticleList from '@/pages/articles/components/ArticleList';
 
 @connect(({ article, user }) => ({
   article,
   user,
 }))
-class Articles extends Component {
+class Stars extends Component {
   componentDidMount() {
     const { location, dispatch } = this.props;
 
@@ -15,22 +14,24 @@ class Articles extends Component {
       query: { id },
     } = location;
 
-    // const { dispatch , user: { data :{id}} }  = this.props;
     dispatch({
-      type: 'article/fetchArticleList',
+      type: 'article/fetchStarList',
       payload: {
-        'owner.id': id,
+        userId: id,
         sorter: 'updatedAt_desc',
       },
     });
   }
 
   loadMore = () => {
-    this.queryArticles();
+    this.queryStars();
   };
 
-  queryArticles = resetPool => {
+  queryStars = resetPool => {
     const {
+      // match: {
+      //   params: { id },
+      // },
       dispatch,
       location,
       article: {
@@ -47,11 +48,11 @@ class Articles extends Component {
     const payload = {
       sorter: 'updatedAt_desc',
       currentPage,
-      'owner.id': id,
+      userId: id,
     };
 
     dispatch({
-      type: 'article/fetchArticleList',
+      type: 'article/fetchStarList',
       payload,
     });
   };
@@ -59,7 +60,7 @@ class Articles extends Component {
   hasMore = () => {
     const {
       article: {
-        articleList: { meta },
+        starList: { meta },
       },
     } = this.props;
     return meta
@@ -70,12 +71,17 @@ class Articles extends Component {
   render() {
     const { article } = this.props;
     if (!article) return null;
-    const { articlePool } = article;
-    if (!articlePool) return null;
+    const { starPool } = article;
+    if (!starPool) return null;
     const hasMore = this.hasMore();
 
-    return <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={hasMore} />;
+    const stars = starPool.map(item => {
+      const { article: ar } = item;
+      return ar;
+    });
+
+    return <ArticleList data={stars} loadMore={this.loadMore} hasMore={hasMore} />;
   }
 }
 
-export default Articles;
+export default Stars;

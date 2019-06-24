@@ -69,20 +69,3 @@ export async function deleteStar(payload) {
   const { articleId } = payload;
   return request(`/naruto/v1/articles/stars/delete/${articleId}`);
 }
-
-export async function queryFollow(payload) {
-  const { id } = payload;
-  return request(`/naruto/v1/follows/${id}`);
-}
-
-export async function addFollow(payload) {
-  return request('/naruto/v1/follows/add', {
-    method: 'POST',
-    data: payload,
-  });
-}
-
-export async function deleteFollow(payload) {
-  const { id } = payload;
-  return request(`/naruto/v1/follows/delete/${id}`);
-}

@@ -23,6 +23,9 @@ export default {
     },
     binds: [],
     user: {},
+
+    fans: {},
+    follows: {},
   },
 
   effects: {
