@@ -39,13 +39,12 @@ class ArticleContent extends PureComponent {
               onClick={this.onUserClick}
             />
           </div>
-          s
-          <div>
+          <div style={{ width: '100%' }}>
             <div className={styles.author}>
               <span>
                 <a onClick={this.onUserClick}>{nickname}</a>
               </span>
-              <span style={{ float: 'right', right: '10px' }}>
+              <span style={{ float: 'right' }}>
                 <FollowButton followed={followed} onFollowClick={onFollowClick} />
               </span>
             </div>

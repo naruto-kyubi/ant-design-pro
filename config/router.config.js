@@ -238,17 +238,29 @@ export default [
         path: '/account',
         routes: [
           {
-            path: '/account/center/:id',
+            path: '/account/center',
             name: 'center',
             component: './Account/Center/Center',
             routes: [
               {
-                path: '/account/center/:id',
-                redirect: '/account/center/articles/:id',
+                path: '/account/center',
+                redirect: '/account/center/articles',
               },
               {
-                path: '/account/center/articles/:id',
+                path: '/account/center/articles',
                 component: './Account/Center/Articles',
+              },
+              {
+                path: '/account/center/stars',
+                component: './Account/Center/Stars',
+              },
+              {
+                path: '/account/center/follows',
+                component: './Account/Center/Follows',
+              },
+              {
+                path: '/account/center/fans',
+                component: './Account/Center/Fans',
               },
               {
                 path: '/account/center/applications',

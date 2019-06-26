@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-// import ArticleListContent from '@/components/ArticleListContent';
-import ArticleList from '@/pages/articles/components/ArticleList';
 
-@connect(({ article, user }) => ({
-  article,
+import UserList from '../components/UserList';
+
+@connect(({ user, follow }) => ({
   user,
+  follow,
 }))
-class Articles extends Component {
+class Follows extends Component {
   componentDidMount() {
     const { location, dispatch } = this.props;
 
@@ -15,26 +15,25 @@ class Articles extends Component {
       query: { id },
     } = location;
 
-    // const { dispatch , user: { data :{id}} }  = this.props;
     dispatch({
-      type: 'article/fetchArticleList',
+      type: 'follow/fetchFollows',
       payload: {
-        'owner.id': id,
+        'user.id': id,
         sorter: 'updatedAt_desc',
       },
     });
   }
 
   loadMore = () => {
-    this.queryArticles();
+    this.queryFollows();
   };
 
-  queryArticles = resetPool => {
+  queryFollows = resetPool => {
     const {
       dispatch,
       location,
-      article: {
-        articleList: { meta },
+      follow: {
+        follows: { meta },
       },
     } = this.props;
 
@@ -47,19 +46,19 @@ class Articles extends Component {
     const payload = {
       sorter: 'updatedAt_desc',
       currentPage,
-      'owner.id': id,
+      'user.id': id,
     };
 
     dispatch({
-      type: 'article/fetchArticleList',
+      type: 'follow/fetchFollows',
       payload,
     });
   };
 
   hasMore = () => {
     const {
-      article: {
-        articleList: { meta },
+      follow: {
+        follows: { meta },
       },
     } = this.props;
     return meta
@@ -68,14 +67,23 @@ class Articles extends Component {
   };
 
   render() {
-    const { article } = this.props;
-    if (!article) return null;
-    const { articlePool } = article;
-    if (!articlePool) return null;
+    const { follow } = this.props;
+    if (!follow) return null;
+    const { follows } = follow;
+    if (!follows) return null;
+
+    const { data } = follows;
+    if (!data) return null;
+
     const hasMore = this.hasMore();
 
-    return <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={hasMore} />;
+    const followsData = data.map(item => {
+      const { followUser } = item;
+      return followUser;
+    });
+
+    return <UserList data={followsData} loadMore={this.loadMore} hasMore={hasMore} />;
   }
 }
 
-export default Articles;
+export default Follows;

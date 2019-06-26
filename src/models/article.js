@@ -12,10 +12,7 @@ import {
   queryStarList,
   addStar,
   deleteStar,
-  queryFollow,
-  addFollow,
-  deleteFollow,
-} from '../services/article';
+} from '@/pages/articles/services/article';
 
 export default {
   namespace: 'article',
@@ -27,9 +24,11 @@ export default {
     commentList: {},
     commentPool: [],
     like: {},
-    stars: [],
+    starList: {},
+    starPool: [],
+
     star: {},
-    follow: {},
+    // follow: {},
   },
 
   effects: {
@@ -125,8 +124,8 @@ export default {
     *fetchStarList({ payload }, { call, put }) {
       const response = yield call(queryStarList, payload);
       yield put({
-        type: 'setState',
-        payload: { stars: response },
+        type: 'setStarList',
+        payload: response,
       });
     },
 
@@ -143,33 +142,6 @@ export default {
       yield put({
         type: 'setState',
         payload: { star: response },
-      });
-    },
-
-    *queryFollow({ payload }, { call, put }) {
-      const response = yield call(queryFollow, payload);
-      //
-      yield put({
-        type: 'setState',
-        payload: {
-          follow: response,
-        },
-      });
-    },
-
-    *addFollow({ payload }, { call, put }) {
-      const response = yield call(addFollow, payload);
-      yield put({
-        type: 'setState',
-        payload: { follow: response },
-      });
-    },
-
-    *deleteFollow({ payload }, { call, put }) {
-      const response = yield call(deleteFollow, payload);
-      yield put({
-        type: 'setState',
-        payload: { follow: response },
       });
     },
   },
@@ -196,6 +168,22 @@ export default {
         ...state,
         articleList: action.payload,
         articlePool,
+      };
+    },
+
+    setStarList(state, action) {
+      const {
+        meta: {
+          pagination: { current },
+        },
+      } = action.payload;
+      const starPool =
+        current === 1 ? [...action.payload.data] : [...state.starPool, ...action.payload.data];
+
+      return {
+        ...state,
+        starList: action.payload,
+        starPool,
       };
     },
 
