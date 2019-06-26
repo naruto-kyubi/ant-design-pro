@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import { Row, Col, Card, Affix } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
+import router from 'umi/router';
 import ArticleContent from './components/ArticleContent';
 import ArticleComment from './comment';
 import ArticleSuspendPanel from './components/ArticleSuspendPanel';
 
 import HostArticleList from './hostList';
-import router from 'umi/router';
 
 @connect(({ article, follow }) => ({
   article,
@@ -59,6 +59,7 @@ class Article extends PureComponent {
       payload: {
         articleId: id,
         sorter: 'updatedAt_desc',
+        parent: '0',
       },
     });
   }
@@ -121,7 +122,6 @@ class Article extends PureComponent {
       },
     } = this.props;
     if (followed) {
-      //delete;
       dispatch({
         type: 'follow/deleteFollow',
         payload: {
@@ -129,7 +129,6 @@ class Article extends PureComponent {
         },
       });
     } else {
-      //add
       dispatch({
         type: 'follow/addFollow',
         payload: {
@@ -225,7 +224,7 @@ class Article extends PureComponent {
               <div>
                 <ArticleContent
                   article={data}
-                  followed={followData ? true : false}
+                  followed={!!followData}
                   onFollowClick={this.onFollowClick}
                   onUserClick={this.onUserClick}
                 />
