@@ -29,6 +29,7 @@ class Comment extends PureComponent {
     const replyto = comment.id;
 
     handleComment(replyto, parent, commentTxt);
+    this.setState({ isReplying: false });
   };
 
   like = () => {
