@@ -129,6 +129,7 @@ class ArticleComment extends React.Component {
             loadMore={this.loadMore}
             hasMore={hasMore}
             commentCount={commentCount}
+            avatar={avatar}
           />
         )}
       </div>

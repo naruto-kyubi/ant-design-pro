@@ -16,15 +16,30 @@ class Comment extends PureComponent {
     });
   };
 
+  /*
   handleSubmit = () => {
     const { commentTxt } = this.state;
     const { handleSubmit } = this.props;
     handleSubmit(commentTxt);
+  }; */
+
+  handleSubmit = () => {
+    const { commentTxt } = this.state;
+    const { handleComment, comment, parent } = this.props;
+    const replyto = comment.id;
+
+    handleComment(replyto, parent, commentTxt);
   };
 
-  like = () => {};
+  like = () => {
+    const { handleLike, comment } = this.props;
+    handleLike(comment);
+  };
 
-  dislike = () => {};
+  dislike = () => {
+    const { handleDisLike, comment } = this.props;
+    handleDisLike(comment);
+  };
 
   replyto = () => {
     const { isReplying } = this.state;
