@@ -41,7 +41,7 @@ class ArticleComment extends React.Component {
       return;
     }
 
-    const payload = { ...this.state, userId: user.currentUser.id, articleId: id, parent: '0' };
+    const payload = { ...this.state, userId: user.currentUser.id, articleId: id };
     const { dispatch } = this.props;
 
     dispatch({

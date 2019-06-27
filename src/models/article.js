@@ -76,15 +76,9 @@ export default {
     },
 
     *addComment({ payload }, { call, put }) {
-      yield call(addCommnet, payload);
-
-      const { articleId } = payload;
-      const response = yield call(queryCommentList, {
-        articleId_equal: articleId,
-        sorter: 'updatedAt_desc',
-      });
+      const response = yield call(addCommnet, payload);
       yield put({
-        type: 'setCommentList',
+        type: 'setComment',
         payload: response,
       });
     },
@@ -200,6 +194,29 @@ export default {
         ...state,
         commentList: action.payload,
         commentPool,
+      };
+    },
+
+    setComment(state, action) {
+      const {
+        data: { articleId },
+      } = action.payload;
+      if (articleId)
+        return {
+          ...state,
+          commentPool: [action.payload.data, ...state.commentPool],
+        };
+
+      const commentParent = action.payload.data.replyId;
+      const newCommentPool = state.commentPool.map(item => {
+        if (item.id === commentParent) {
+          item.children.push(action.payload.data);
+        }
+        return item;
+      });
+      return {
+        ...state,
+        commentPool: newCommentPool,
       };
     },
 

@@ -22,7 +22,7 @@ class CommentList extends PureComponent {
     const payload = {
       replyId: replyto,
       userId: user.currentUser.id,
-      articleId: parent.articleId,
+      //   articleId: parent.articleId,
       parent: parent.id,
       content: commentTxt,
     };

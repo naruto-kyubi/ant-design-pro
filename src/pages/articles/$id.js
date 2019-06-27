@@ -59,7 +59,6 @@ class Article extends PureComponent {
       payload: {
         articleId: id,
         sorter: 'updatedAt_desc',
-        parent: '0',
       },
     });
   }
