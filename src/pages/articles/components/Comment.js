@@ -62,16 +62,16 @@ class Comment extends PureComponent {
         </Tooltip>
         <span style={{ paddingLeft: 8, cursor: 'auto' }}>{20}</span>
       </span>,
-      <span>
-        <Tooltip title="Dislike">
-          <Icon
-            type="dislike"
-            // theme={action === 'disliked' ? 'filled' : 'outlined'}
-            onClick={this.dislike}
-          />
-        </Tooltip>
-        <span style={{ paddingLeft: 8, cursor: 'auto' }}>{30}</span>
-      </span>,
+      // <span>
+      //   <Tooltip title="Dislike">
+      //     <Icon
+      //       type="dislike"
+      //       // theme={action === 'disliked' ? 'filled' : 'outlined'}
+      //       onClick={this.dislike}
+      //     />
+      //   </Tooltip>
+      //   <span style={{ paddingLeft: 8, cursor: 'auto' }}>{30}</span>
+      // </span>,
       <span>
         <Tooltip title="Reply to">
           <Icon
@@ -80,7 +80,7 @@ class Comment extends PureComponent {
             onClick={this.replyto}
           />
         </Tooltip>
-        <span style={{ paddingLeft: 8, cursor: 'auto' }}>reply to</span>
+        <span style={{ paddingLeft: 8, cursor: 'auto' }}>回复</span>
       </span>,
     ];
 
