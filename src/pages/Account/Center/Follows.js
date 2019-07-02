@@ -18,8 +18,8 @@ class Follows extends Component {
     dispatch({
       type: 'follow/fetchFollows',
       payload: {
-        'user.id': id,
-        sorter: 'updatedAt_desc',
+        userId: id,
+        sorter: 'updated_at_desc',
       },
     });
   }
@@ -43,15 +43,14 @@ class Follows extends Component {
 
     let currentPage = meta ? meta.pagination.current + 1 : 1;
     currentPage = resetPool ? 1 : currentPage;
-    const payload = {
-      sorter: 'updatedAt_desc',
-      currentPage,
-      'user.id': id,
-    };
 
     dispatch({
       type: 'follow/fetchFollows',
-      payload,
+      payload: {
+        sorter: 'updated_at_desc',
+        currentPage,
+        userId: id,
+      },
     });
   };
 
@@ -66,6 +65,34 @@ class Follows extends Component {
       : false;
   };
 
+  onFollowClick = (follow, item) => {
+    const { dispatch } = this.props;
+    const { id } = item;
+    switch (follow) {
+      case 'both':
+      case 'follow':
+        // 取消关注；
+        dispatch({
+          type: 'follow/deleteFollows',
+          payload: {
+            id,
+          },
+        });
+        break;
+      case null:
+      case 'none':
+        // 新增关注；
+        dispatch({
+          type: 'follow/addFollows',
+          payload: {
+            followUser: id,
+          },
+        });
+        break;
+      default:
+    }
+  };
+
   render() {
     const { follow } = this.props;
     if (!follow) return null;
@@ -77,12 +104,14 @@ class Follows extends Component {
 
     const hasMore = this.hasMore();
 
-    const followsData = data.map(item => {
-      const { followUser } = item;
-      return followUser;
-    });
-
-    return <UserList data={followsData} loadMore={this.loadMore} hasMore={hasMore} />;
+    return (
+      <UserList
+        data={data}
+        loadMore={this.loadMore}
+        hasMore={hasMore}
+        onFollowClick={this.onFollowClick}
+      />
+    );
   }
 }
 

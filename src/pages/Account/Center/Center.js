@@ -5,15 +5,16 @@ import router from 'umi/router';
 import { Card, Row, Col, Icon, Avatar, Tag, Divider, Spin, Input } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import styles from './Center.less';
+import FollowButton from '@/pages/articles/components/FollowButton';
 
-@connect(({ loading, user, project, article }) => ({
+@connect(({ loading, user, project, follow }) => ({
   listLoading: loading.effects['list/fetch'],
   currentUser: user.user.data,
   currentUserLoading: loading.effects['user/fetchUserById'],
   project,
   projectLoading: loading.effects['project/fetchNotice'],
-  article,
   user,
+  follow: follow.follow,
 }))
 class Center extends Component {
   state = {
@@ -23,19 +24,20 @@ class Center extends Component {
   };
 
   componentDidMount() {
-    const {
-      // match: {
-      //   params: { id },
-      // },
-      location,
-      dispatch,
-    } = this.props;
+    const { location, dispatch } = this.props;
 
     const {
       query: { id },
     } = location;
     dispatch({
       type: 'user/fetchUserById',
+      payload: {
+        id,
+      },
+    });
+
+    dispatch({
+      type: 'follow/queryFollow',
       payload: {
         id,
       },
@@ -58,10 +60,6 @@ class Center extends Component {
       query: { id },
     } = location;
 
-    // const {
-    //   params: { id },
-    // } = match;
-
     switch (key) {
       case 'articles':
         router.push(`${match.url}/articles?id=${id}`);
@@ -74,9 +72,6 @@ class Center extends Component {
         break;
       case 'fans':
         router.push(`${match.url}/fans?id=${id}`);
-        break;
-      case 'projects':
-        router.push(`${match.url}/projects?id=${id}`);
         break;
       default:
         break;
@@ -109,6 +104,63 @@ class Center extends Component {
     });
   };
 
+  onFollowClick = follow => {
+    const {
+      dispatch,
+      location: {
+        query: { id },
+      },
+    } = this.props;
+
+    if (follow !== 'none') {
+      dispatch({
+        type: 'follow/deleteFollow',
+        payload: {
+          id,
+        },
+        // callback: ( response )=>{
+        //   const {
+        //     location,
+        //     dispatch,
+        //   } = this.props;
+
+        //   const {
+        //     query: { id },
+        //   } = location;
+        //   dispatch({
+        //     type: 'user/fetchUserById',
+        //     payload: {
+        //       id,
+        //     },
+        //   });
+        // },
+      });
+    } else {
+      dispatch({
+        type: 'follow/addFollow',
+        payload: {
+          followUser: id,
+        },
+        // callback: ( response )=>{
+        //   const {
+        //     location,
+        //     dispatch,
+        //   } = this.props;
+
+        //   const {
+        //     query: { id },
+        //   } = location;
+        //   dispatch({
+        //     type: 'user/fetchUserById',
+        //     payload: {
+        //       id,
+        //     },
+        //   });
+        // },
+      });
+    }
+  };
+
   render() {
     const { newTags, inputVisible, inputValue } = this.state;
     const {
@@ -120,14 +172,34 @@ class Center extends Component {
       match,
       location,
       children,
+      follow,
     } = this.props;
+
+    if (!currentUser) return null;
+    const {
+      articleCount = 0,
+      // likeCount = 0,
+      starCount = 0,
+      fanCount = 0,
+      followCount = 0,
+    } = currentUser;
+
+    if (!follow) return null;
+    const { data: followData } = follow;
+    let mu = 'none';
+    if (followData) {
+      const { mutual } = followData;
+      if (mutual) {
+        mu = mutual;
+      }
+    }
 
     const operationTabList = [
       {
         key: 'articles',
         tab: (
           <span>
-            <span style={{ fontSize: 14 }}>文章(100)</span>
+            <span style={{ fontSize: 14 }}>文章{articleCount > 0 ? `(${articleCount})` : ''}</span>
           </span>
         ),
       },
@@ -135,7 +207,7 @@ class Center extends Component {
         key: 'stars',
         tab: (
           <span>
-            <span style={{ fontSize: 14 }}> 收藏</span>
+            <span style={{ fontSize: 14 }}> 收藏{starCount > 0 ? `(${starCount})` : ''}</span>
           </span>
         ),
       },
@@ -143,7 +215,7 @@ class Center extends Component {
         key: 'follows',
         tab: (
           <span>
-            <span style={{ fontSize: 14 }}>关注了</span>
+            <span style={{ fontSize: 14 }}>关注了{followCount > 0 ? `(${followCount})` : ''}</span>
           </span>
         ),
       },
@@ -151,23 +223,7 @@ class Center extends Component {
         key: 'fans',
         tab: (
           <span>
-            <span style={{ fontSize: 14 }}>粉丝</span>
-          </span>
-        ),
-      },
-      {
-        key: 'projects1',
-        tab: (
-          <span>
-            <span style={{ fontSize: 14 }}>项目</span>
-          </span>
-        ),
-      },
-      {
-        key: 'projects2',
-        tab: (
-          <span>
-            <span style={{ fontSize: 14 }}>项目</span>
+            <span style={{ fontSize: 14 }}>粉丝{fanCount > 0 ? `(${fanCount})` : ''}</span>
           </span>
         ),
       },
@@ -185,6 +241,7 @@ class Center extends Component {
                     <div className={styles.name}>{currentUser.nickname}</div>
                     <div>{currentUser.profile}</div>
                   </div>
+
                   <div className={styles.detail}>
                     {/* <p>
                       <i className={styles.title} />
@@ -198,6 +255,9 @@ class Center extends Component {
                       <i className={styles.address} />
                       {currentUser.geographic.province.label}-{currentUser.geographic.city.label}
                     </p>
+                  </div>
+                  <div style={{ width: '100%', textAlign: 'center', marginTop: '10px' }}>
+                    <FollowButton follow={mu} onFollowClick={this.onFollowClick} />
                   </div>
                   <Divider dashed />
                   <div className={styles.tags}>

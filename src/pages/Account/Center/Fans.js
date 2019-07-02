@@ -18,8 +18,8 @@ class Fans extends Component {
     dispatch({
       type: 'follow/fetchFans',
       payload: {
-        'followUser.id': id,
-        sorter: 'updatedAt_desc',
+        followUserId: id,
+        sorter: 'updated_at_desc',
       },
     });
   }
@@ -33,7 +33,7 @@ class Fans extends Component {
       dispatch,
       location,
       follow: {
-        users: { meta },
+        follows: { meta },
       },
     } = this.props;
 
@@ -44,9 +44,9 @@ class Fans extends Component {
     let currentPage = meta ? meta.pagination.current + 1 : 1;
     currentPage = resetPool ? 1 : currentPage;
     const payload = {
-      sorter: 'updatedAt_desc',
+      sorter: 'updated_at_desc',
       currentPage,
-      'followUser.id': id,
+      followUserId: id,
     };
 
     dispatch({
@@ -66,6 +66,32 @@ class Fans extends Component {
       : false;
   };
 
+  onFollowClick = (follow, item) => {
+    const { dispatch } = this.props;
+    const { id } = item;
+    switch (follow) {
+      case 'both':
+      case 'follow':
+        dispatch({
+          type: 'follow/deleteFans',
+          payload: {
+            id,
+          },
+        });
+        break;
+      case null:
+      case 'none':
+        dispatch({
+          type: 'follow/addFans',
+          payload: {
+            followUser: id,
+          },
+        });
+        break;
+      default:
+    }
+  };
+
   render() {
     const { follow } = this.props;
     if (!follow) return null;
@@ -77,12 +103,14 @@ class Fans extends Component {
 
     const hasMore = this.hasMore();
 
-    const fansData = data.map(item => {
-      const { user } = item;
-      return user;
-    });
-
-    return <UserList data={fansData} loadMore={this.loadMore} hasMore={hasMore} />;
+    return (
+      <UserList
+        data={data}
+        loadMore={this.loadMore}
+        hasMore={hasMore}
+        onFollowClick={this.onFollowClick}
+      />
+    );
   }
 }
 

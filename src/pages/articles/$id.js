@@ -109,7 +109,7 @@ class Article extends PureComponent {
     }
   };
 
-  onFollowClick = followed => {
+  onFollowClick = follow => {
     const {
       dispatch,
       article: {
@@ -120,7 +120,8 @@ class Article extends PureComponent {
         },
       },
     } = this.props;
-    if (followed) {
+    if (follow!=="none") {
+      //delete;
       dispatch({
         type: 'follow/deleteFollow',
         payload: {
@@ -163,6 +164,13 @@ class Article extends PureComponent {
     if (!follow) return null;
     const { data: followData } = follow;
 
+    let mu = "none";
+    if(followData){
+      const { mutual  } = followData;
+      if(mutual){
+        mu = mutual;
+      }
+    }
     const { commentCount } = data;
     const { data: likeData } = like;
     if (!likeData) return null;
@@ -223,7 +231,8 @@ class Article extends PureComponent {
               <div>
                 <ArticleContent
                   article={data}
-                  followed={!!followData}
+                  // followed={followData ? true : false}
+                  follow={ mu }
                   onFollowClick={this.onFollowClick}
                   onUserClick={this.onUserClick}
                 />

@@ -23,7 +23,7 @@ class ArticleContent extends PureComponent {
   };
 
   render() {
-    const { article, followed, onFollowClick } = this.props;
+    const { article, follow, onFollowClick } = this.props;
     if (!article) return null;
     const {
       owner: { avatar, nickname },
@@ -50,7 +50,7 @@ class ArticleContent extends PureComponent {
                 <a onClick={this.onUserClick}>{nickname}</a>
               </span>
               <span style={{ float: 'right' }}>
-                <FollowButton followed={followed} onFollowClick={onFollowClick} />
+                <FollowButton follow={follow} onFollowClick={onFollowClick} />
               </span>
             </div>
             <div className={styles.time}>
