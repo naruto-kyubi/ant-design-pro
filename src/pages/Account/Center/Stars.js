@@ -35,7 +35,7 @@ class Stars extends Component {
       dispatch,
       location,
       article: {
-        articleList: { meta },
+        starList: { meta },
       },
     } = this.props;
 
