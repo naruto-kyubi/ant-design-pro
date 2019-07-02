@@ -346,8 +346,8 @@ export default [
             component: './articles/index.js',
           },
           {
-            path: '/articles/add',
-            component: './articles/add.js',
+            path: '/articles/edit',
+            component: './articles/edit.js',
           },
           {
             path: '/articles/:id?',

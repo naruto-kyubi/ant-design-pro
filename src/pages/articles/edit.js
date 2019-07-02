@@ -13,7 +13,7 @@ import 'braft-editor/dist/index.css';
   article,
   user,
 }))
-class AddArticle extends PureComponent {
+class EditArticle extends PureComponent {
   state = {
     editorState: BraftEditor.createEditorState(null),
   };
@@ -31,7 +31,17 @@ class AddArticle extends PureComponent {
   handleSubmit = e => {
     e.preventDefault();
     const { editorState } = this.state;
-    const { user, form } = this.props;
+    const {
+      user,
+      form,
+      location: {
+        query: { isEdit },
+      },
+    } = this.props;
+
+    // eslint-disable-next-line react/destructuring-assignment
+    const id = isEdit ? this.props.article.articleDetail.data.id : null;
+
     if (!user.currentUser.id) {
       message.warning('请登录后发表');
       return;
@@ -40,6 +50,7 @@ class AddArticle extends PureComponent {
     form.validateFields((err, values) => {
       if (!err) {
         const payload = {
+          id,
           catalogId: values.catalogId,
           title: values.title,
           content: editorState.toRAW(),
@@ -87,12 +98,32 @@ class AddArticle extends PureComponent {
       article: {
         catalog: { data },
       },
+      location: {
+        query: { isEdit },
+      },
     } = this.props;
+
+    if (!data) return null;
+
+    let currentAticle = {
+      content: '',
+      catalogId: '',
+      title: '',
+      id: '',
+    };
+
+    if (isEdit) {
+      const {
+        article: {
+          articleDetail: { data: d },
+        },
+      } = this.props;
+      currentAticle = { ...d };
+    }
 
     const { editorState } = this.state;
     const FormItem = Form.Item;
 
-    if (!data) return null;
     const treedata = data.map(item => ({
       title: item.name,
       value: item.id,
@@ -138,9 +169,16 @@ class AddArticle extends PureComponent {
         ),
       },
     ];
+
+    const extra = (
+      <Button type="primary" onClick={this.handleSubmit}>
+        立即发布
+      </Button>
+    );
+
     return (
       <GridContent>
-        <Card title="发表新帖">
+        <Card title="发表新帖" extra={extra}>
           <Form
             layout="horizontal"
             onSubmit={this.handleSubmit}
@@ -155,6 +193,7 @@ class AddArticle extends PureComponent {
                     message: '请输入板块',
                   },
                 ],
+                initialValue: currentAticle.catalogId,
               })(
                 <TreeSelect
                   style={{ width: 300 }}
@@ -174,22 +213,19 @@ class AddArticle extends PureComponent {
                     message: '请输入标题',
                   },
                 ],
+                initialValue: currentAticle.title,
               })(<Input placeholder="标题，一句话说明您要发表的内容" />)}
             </FormItem>
 
             <BraftEditor
-              contentStyle={{ height: 300 }}
+              contentStyle={{ height: 700 }}
               controls={controls}
               extendControls={extendControls}
               value={editorState}
+              defaultValue={BraftEditor.createEditorState(currentAticle.content)}
               onChange={this.handleChange}
               placeholder="请输入正文内容"
             />
-
-            <Button type="primary" htmlType="submit">
-              {' '}
-              立即发布
-            </Button>
           </Form>
         </Card>
       </GridContent>
@@ -197,4 +233,4 @@ class AddArticle extends PureComponent {
   }
 }
 
-export default Form.create()(AddArticle);
+export default Form.create()(EditArticle);
