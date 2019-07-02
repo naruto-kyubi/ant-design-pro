@@ -3,6 +3,7 @@ import { Avatar, Divider } from 'antd';
 import { formatDate } from '@/utils/utils';
 import classnames from 'classnames';
 import { connect } from 'dva';
+import router from 'umi/router';
 import styles from './ArticleContent.less';
 
 import FollowButton from './FollowButton';
@@ -15,6 +16,10 @@ class ArticleContent extends PureComponent {
       onUserClick,
     } = this.props;
     onUserClick(owner);
+  };
+
+  editArticle = () => {
+    router.push('/articles/edit?isEdit=true');
   };
 
   render() {
@@ -51,7 +56,10 @@ class ArticleContent extends PureComponent {
             <div className={styles.time}>
               <span>{formatDate(updatedAt)}</span>
               <Divider type="vertical" />
-              <span>阅读数:{viewCount}</span>{' '}
+              <span>阅读数:{viewCount}</span> <Divider type="vertical" />
+              <span>
+                <a onClick={this.editArticle}> 编辑</a>
+              </span>
             </div>
           </div>
         </div>

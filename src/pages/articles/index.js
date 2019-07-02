@@ -62,7 +62,7 @@ class Articles extends PureComponent {
   };
 
   addArticle = () => {
-    router.push('/articles/add');
+    router.push('/articles/edit');
   };
 
   render() {
