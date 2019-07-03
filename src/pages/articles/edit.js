@@ -81,7 +81,7 @@ class EditArticle extends PureComponent {
         this.setState({
           editorState: ContentUtils.insertMedias(editorState, [
             {
-              type: 'IMAGE',
+              type: info.file.name.endsWith('mp4') ? 'VIDEO' : 'IMAGE',
               url: context ? context.concat(info.file.response.data) : info.file.response.data,
             },
           ]),
@@ -143,7 +143,7 @@ class EditArticle extends PureComponent {
 
     const uploadProps = {
       name: 'file',
-      accept: 'image/*',
+      accept: 'image,mp4/*',
       action: context ? context.concat('/v1/file/upload') : '/v1/file/upload',
       headers: {
         authorization: 'authorization-text',
@@ -161,9 +161,9 @@ class EditArticle extends PureComponent {
             <button
               type="button"
               className="control-item button upload-button"
-              data-title="插入图片"
+              data-title="插入图片/视频"
             >
-              <Icon type="upload" /> 插入图片
+              <Icon type="upload" /> 插入图片/视频
             </button>
           </Upload>
         ),
