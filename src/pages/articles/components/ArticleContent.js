@@ -8,7 +8,9 @@ import styles from './ArticleContent.less';
 
 import FollowButton from './FollowButton';
 
-@connect(() => ({}))
+@connect(({ user }) => ({
+  user,
+}))
 class ArticleContent extends PureComponent {
   onUserClick = () => {
     const {
@@ -23,14 +25,18 @@ class ArticleContent extends PureComponent {
   };
 
   render() {
-    const { article, follow, onFollowClick } = this.props;
+    const { article, follow, onFollowClick, user } = this.props;
     if (!article) return null;
     const {
-      owner: { avatar, nickname },
+      owner: { avatar, nickname, id },
       viewCount,
       updatedAt,
       title,
     } = article;
+
+    const currentUserid = user.currentUser ? user.currentUser.id : null;
+    const isOwner = currentUserid === id;
+
     const content = article.contentHtml;
     return (
       <div className={styles.articleContent}>
@@ -56,10 +62,12 @@ class ArticleContent extends PureComponent {
             <div className={styles.time}>
               <span>{formatDate(updatedAt)}</span>
               <Divider type="vertical" />
-              <span>阅读数:{viewCount}</span> <Divider type="vertical" />
-              <span>
-                <a onClick={this.editArticle}> 编辑</a>
-              </span>
+              <span>阅读数:{viewCount}</span>
+              {isOwner ? (
+                <span>
+                  <a onClick={this.editArticle}> 编辑</a>
+                </span>
+              ) : null}
             </div>
           </div>
         </div>
