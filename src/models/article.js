@@ -12,6 +12,7 @@ import {
   queryStarList,
   addStar,
   deleteStar,
+  queryTag,
 } from '@/pages/articles/services/article';
 
 export default {
@@ -29,6 +30,7 @@ export default {
 
     star: {},
     // follow: {},
+    tag: {},
   },
 
   effects: {
@@ -53,6 +55,14 @@ export default {
       yield put({
         type: 'setState',
         payload: { catalog: response },
+      });
+    },
+
+    *fetchTag({ payload }, { call, put }) {
+      const response = yield call(queryTag, payload);
+      yield put({
+        type: 'setState',
+        payload: { tag: response },
       });
     },
 

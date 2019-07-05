@@ -72,9 +72,9 @@ class ArticleList extends PureComponent {
                   }
                   description={
                     <span>
-                      <Tag>Ant Design</Tag>
-                      <Tag>设计语言</Tag>
-                      <Tag>蚂蚁金服</Tag>
+                      {item.tags.map(tag => (
+                        <Tag color={tag.color}>{tag.name}</Tag>
+                      ))}
                     </span>
                   }
                 />

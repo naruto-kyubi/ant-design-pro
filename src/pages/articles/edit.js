@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
-import { Card, Button, Form, Input, message, TreeSelect, Upload, Icon } from 'antd';
+import { Card, Button, Form, Input, message, TreeSelect, Upload, Icon, Select } from 'antd';
 import BraftEditor from 'braft-editor';
 
 import { ContentUtils } from 'braft-utils';
@@ -24,6 +24,12 @@ class EditArticle extends PureComponent {
       type: 'article/fetchCatalog',
       payload: {
         sorter: 'sort_desc',
+      },
+    });
+    dispatch({
+      type: 'article/fetchTag',
+      payload: {
+        sorter: 'name_desc',
       },
     });
   }
@@ -53,6 +59,7 @@ class EditArticle extends PureComponent {
           id,
           catalogId: values.catalogId,
           title: values.title,
+          tags: values.tags,
           content: editorState.toRAW(),
           contentHtml: editorState.toHTML(),
           owner: user.currentUser.id,
@@ -97,19 +104,24 @@ class EditArticle extends PureComponent {
       form: { getFieldDecorator },
       article: {
         catalog: { data },
+        tag: { data: tags },
       },
       location: {
         query: { isEdit },
       },
     } = this.props;
 
-    if (!data) return null;
+    if (!data || !tags) return null;
+
+    const { Option } = Select;
+    const children = tags.map(item => <Option key={item.id}>{item.name}</Option>);
 
     let currentAticle = {
       content: '',
-      catalogId: '',
+      catalogId: null,
       title: '',
       id: '',
+      tags: [],
     };
 
     if (isEdit) {
@@ -118,7 +130,7 @@ class EditArticle extends PureComponent {
           articleDetail: { data: d },
         },
       } = this.props;
-      currentAticle = { ...d };
+      currentAticle = { ...d, tags: d.tags.map(item => item.id) };
     }
 
     const { editorState } = this.state;
@@ -200,8 +212,32 @@ class EditArticle extends PureComponent {
                   dropdownStyle={{ maxHeight: 800, overflow: 'auto' }}
                   treeData={treedata}
                   placeholder="板块"
+                  // eslint-disable-next-line react/jsx-no-duplicate-props
+                  style={{ width: '100%' }}
                   onChange={this.onChange}
                 />
+              )}
+            </FormItem>
+
+            <FormItem label="标签">
+              {getFieldDecorator('tags', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入标签',
+                  },
+                ],
+                initialValue: currentAticle.tags,
+              })(
+                <Select
+                  mode="multiple"
+                  style={{ width: '100%' }}
+                  placeholder="至少选择一个标签"
+                  //    defaultValue={['a10', 'c12']}
+                  //    onChange={this.handleTagChange}
+                >
+                  {children}
+                </Select>
               )}
             </FormItem>
 

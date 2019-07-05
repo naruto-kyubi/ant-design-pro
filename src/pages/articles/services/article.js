@@ -15,6 +15,10 @@ export async function queryCatalog(payload) {
   return request(`/naruto/v1/catalogs/query?${stringify(payload)}`);
 }
 
+export async function queryTag(payload) {
+  return request(`/naruto/v1/articles/tags?${stringify(payload)}`);
+}
+
 export async function addArticle(payload) {
   return request('/naruto/v1/articles/add', {
     method: 'POST',
