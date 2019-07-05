@@ -4,6 +4,7 @@ import { Tag, Menu, Icon, Avatar, Tooltip, message } from 'antd';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import Link from 'umi/link';
+import router from 'umi/router';
 import NoticeIcon from '../NoticeIcon';
 import HeaderSearch from '../HeaderSearch';
 import HeaderDropdown from '../HeaderDropdown';
@@ -64,6 +65,12 @@ export default class GlobalHeaderRight extends PureComponent {
     });
   };
 
+  handSearch = value => {
+    // alert(value);
+
+    router.push(`/search?keyword=${value}`);
+  };
+
   render() {
     const {
       currentUser,
@@ -112,9 +119,12 @@ export default class GlobalHeaderRight extends PureComponent {
           ]}
           onSearch={value => {
             console.log('input', value); // eslint-disable-line
+            // this.handSearch(value);
           }}
           onPressEnter={value => {
-            console.log('enter', value); // eslint-disable-line
+            // alert(value);
+            // console.log('enter', value); // eslint-disable-line
+            this.handSearch(value);
           }}
         />
         <Tooltip title={formatMessage({ id: 'component.globalHeader.help' })}>

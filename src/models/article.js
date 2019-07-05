@@ -13,6 +13,7 @@ import {
   addStar,
   deleteStar,
   queryTag,
+  querySearchList,
 } from '@/pages/articles/services/article';
 
 export default {
@@ -146,6 +147,14 @@ export default {
       yield put({
         type: 'setState',
         payload: { star: response },
+      });
+    },
+
+    *fetchSearchList({ payload }, { call, put }) {
+      const response = yield call(querySearchList, payload);
+      yield put({
+        type: 'setArticleList',
+        payload: response,
       });
     },
   },

@@ -356,6 +356,17 @@ export default [
         ],
       },
       {
+        path: '/search',
+        name: 'search',
+        routes: [
+          // exception
+          {
+            path: '/search',
+            component: './search/index.js',
+          },
+        ],
+      },
+      {
         component: '404',
       },
     ],
