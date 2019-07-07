@@ -117,7 +117,7 @@ class EditArticle extends PureComponent {
     const children = tags.map(item => <Option key={item.id}>{item.name}</Option>);
 
     let currentAticle = {
-      content: '',
+      content: null,
       catalogId: null,
       title: '',
       id: '',
@@ -131,6 +131,7 @@ class EditArticle extends PureComponent {
         },
       } = this.props;
       currentAticle = { ...d, tags: d.tags.map(item => item.id) };
+      this.setState({ editorState: BraftEditor.createEditorState(currentAticle.content) });
     }
 
     const { editorState } = this.state;
@@ -229,13 +230,7 @@ class EditArticle extends PureComponent {
                 ],
                 initialValue: currentAticle.tags,
               })(
-                <Select
-                  mode="multiple"
-                  style={{ width: '100%' }}
-                  placeholder="至少选择一个标签"
-                  //    defaultValue={['a10', 'c12']}
-                  //    onChange={this.handleTagChange}
-                >
+                <Select mode="multiple" style={{ width: '100%' }} placeholder="至少选择一个标签">
                   {children}
                 </Select>
               )}
