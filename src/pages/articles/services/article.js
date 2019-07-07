@@ -73,3 +73,7 @@ export async function deleteStar(payload) {
   const { articleId } = payload;
   return request(`/naruto/v1/articles/stars/delete/${articleId}`);
 }
+
+export async function querySearchList(payload) {
+  return request(`/naruto/v1/articles/search?${stringify(payload)}`);
+}
