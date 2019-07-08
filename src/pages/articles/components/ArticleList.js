@@ -15,7 +15,7 @@ class ArticleList extends PureComponent {
       //   0,
       //   200
       // )}...`,
-      content: <div dangerouslySetInnerHTML={{ __html: contentHtml }} />,
+      content: <div className={styles.content} dangerouslySetInnerHTML={{ __html: contentHtml }} />,
       updatedAt,
       owner: nickname,
       avatar,
