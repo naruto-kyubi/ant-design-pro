@@ -253,7 +253,7 @@ class EditArticle extends PureComponent {
               controls={controls}
               extendControls={extendControls}
               value={editorState}
-              defaultValue={BraftEditor.createEditorState(currentAticle.content)}
+              //   defaultValue={BraftEditor.createEditorState(currentAticle.content)}
               onChange={this.handleChange}
               placeholder="请输入正文内容"
             />
