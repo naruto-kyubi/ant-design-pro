@@ -1,8 +1,11 @@
 import React from 'react';
 import { message } from 'antd';
 import { connect } from 'dva';
+import BraftEditor from 'braft-editor';
 import CommentList from './components/CommentList';
 import Reply from './components/Reply';
+
+import 'braft-editor/dist/index.css';
 
 @connect(({ article, user }) => ({
   article,
@@ -11,7 +14,7 @@ import Reply from './components/Reply';
 class ArticleComment extends React.Component {
   state = {
     submitting: false,
-    content: '',
+    editorState: BraftEditor.createEditorState(null),
   };
 
   componentDidMount() {
@@ -19,8 +22,8 @@ class ArticleComment extends React.Component {
   }
 
   handleSubmit = () => {
-    const { content } = this.state;
-    if (!content) {
+    const { editorState } = this.state;
+    if (!editorState) {
       return;
     }
 
@@ -41,7 +44,12 @@ class ArticleComment extends React.Component {
       return;
     }
 
-    const payload = { ...this.state, userId: user.currentUser.id, articleId: id };
+    const payload = {
+      content: editorState.toRAW(),
+      contentHtml: editorState.toHTML(),
+      userId: user.currentUser.id,
+      articleId: id,
+    };
     const { dispatch } = this.props;
 
     dispatch({
@@ -51,13 +59,13 @@ class ArticleComment extends React.Component {
 
     this.setState({
       submitting: false,
-      content: '',
+      editorState: BraftEditor.createEditorState(null),
     });
   };
 
-  handleChange = content => {
+  handleChange = editorState => {
     this.setState({
-      content,
+      editorState,
     });
   };
 

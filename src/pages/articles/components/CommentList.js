@@ -8,8 +8,8 @@ import Comment from './Comment';
   user,
 }))
 class CommentList extends PureComponent {
-  handleComment = (replyto, parent, commentTxt) => {
-    if (!commentTxt) {
+  handleComment = (replyto, parent, content, contentHtml) => {
+    if (!content) {
       return;
     }
 
@@ -24,7 +24,8 @@ class CommentList extends PureComponent {
       userId: user.currentUser.id,
       //   articleId: parent.articleId,
       parent: parent.id,
-      content: commentTxt,
+      content,
+      contentHtml,
     };
 
     dispatch({

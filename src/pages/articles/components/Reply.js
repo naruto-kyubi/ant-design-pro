@@ -1,11 +1,18 @@
 import React, { PureComponent } from 'react';
-import { Comment, Avatar, Form, Input, Button } from 'antd';
+import { Comment, Avatar, Form, Button } from 'antd';
 
-const { TextArea } = Input;
-const Editor = ({ onChange, onSubmit, submitting, value }) => (
+import BraftEditor from 'braft-editor';
+import 'braft-editor/dist/index.css';
+
+const Editor = ({ onChange, onSubmit, submitting, value, controls }) => (
   <div>
     <Form.Item>
-      <TextArea rows={4} onChange={onChange} value={value} />
+      <BraftEditor
+        contentStyle={{ height: 100, boxShadow: 'inset 0 1px 3px rgba(0,0,0,.1)' }}
+        value={value}
+        onChange={onChange}
+        controls={controls}
+      />
     </Form.Item>
     <Form.Item>
       <Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
@@ -16,14 +23,13 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 );
 
 class Replay extends PureComponent {
-  onChange = e => {
+  onChange = editorState => {
     const { handleChange } = this.props;
-    const content = e.target.value;
-    handleChange(content);
+    handleChange(editorState);
   };
 
   render() {
-    const { handleSubmit, avatar = null, value, submitting } = this.props;
+    const { handleSubmit, avatar = null, submitting, value } = this.props;
 
     return (
       <Comment
@@ -32,6 +38,7 @@ class Replay extends PureComponent {
           <Editor
             onChange={this.onChange}
             onSubmit={handleSubmit}
+            controls={['font-size', 'text-color']}
             value={value}
             submitting={submitting}
           />
