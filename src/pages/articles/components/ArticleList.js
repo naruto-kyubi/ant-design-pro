@@ -11,10 +11,11 @@ class ArticleList extends PureComponent {
     const { nickname, avatar } = owner;
 
     return {
-      content: `${JSON.parse(JSON.stringify(contentHtml).replace(/<\/?.+?\/?>/g, '')).substring(
-        0,
-        200
-      )}...`,
+      // content: `${JSON.parse(JSON.stringify(contentHtml).replace(/<\/?.+?\/?>/g, '')).substring(
+      //   0,
+      //   200
+      // )}...`,
+      content: <div dangerouslySetInnerHTML={{ __html: contentHtml }} />,
       updatedAt,
       owner: nickname,
       avatar,
