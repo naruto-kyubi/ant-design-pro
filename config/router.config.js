@@ -358,11 +358,16 @@ export default [
       {
         path: '/search',
         name: 'search',
+        component: './search/Search',
         routes: [
           // exception
           {
-            path: '/search',
-            component: './search/index.js',
+            path: '/search/articles',
+            component: './search/Articles.js',
+          },
+          {
+            path: '/search/users',
+            component: './search/Users.js',
           },
         ],
       },

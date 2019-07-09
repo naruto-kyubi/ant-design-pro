@@ -25,3 +25,7 @@ export async function deleteFollow(payload) {
 export async function queryFans(payload) {
   return request(`/naruto/v1/follows/fans?${stringify(payload)}`);
 }
+
+export async function search(payload) {
+  return request(`/naruto/v1/follows/search?${stringify(payload)}`);
+}

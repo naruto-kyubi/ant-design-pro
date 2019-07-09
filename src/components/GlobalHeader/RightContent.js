@@ -68,7 +68,7 @@ export default class GlobalHeaderRight extends PureComponent {
   handSearch = value => {
     // alert(value);
 
-    router.push(`/search?keyword=${value}`);
+    router.push(`/search/articles?keyword=${value}`);
   };
 
   render() {

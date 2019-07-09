@@ -35,8 +35,12 @@ export default class UserList extends PureComponent {
                 <Skeleton avatar title={false} loading={item.loading} active>
                   <List.Item.Meta
                     avatar={<Avatar src={item.avatar} />}
-                    title={<a href="https://ant.design">{item.nickname}</a>}
-                    description={item.profile}
+                    title={
+                      <a href="https://ant.design">
+                        <div dangerouslySetInnerHTML={{ __html: item.nickname }} />
+                      </a>
+                    }
+                    description={<div dangerouslySetInnerHTML={{ __html: item.profile }} />}
                   />
                 </Skeleton>
               </List.Item>
