@@ -8,7 +8,7 @@ export async function queryArticleList(payload) {
 
 export async function queryArticleById(payload) {
   const { id } = payload;
-  return request(`/v1/articles/${id}`);
+  return request(`/server/api/v1/articles/${id}`);
 }
 
 export async function queryCatalog(payload) {
