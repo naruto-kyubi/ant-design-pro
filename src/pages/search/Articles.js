@@ -1,16 +1,13 @@
 import React, { PureComponent } from 'react';
-import { Row, Col, Menu } from 'antd';
 import { connect } from 'dva';
 // import router from 'umi/router';
-import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import ArticleList from '@/pages/articles/components/ArticleList';
 
 @connect(({ article }) => ({
   article,
 }))
-class SearchLists extends PureComponent {
+class ArticleSearch extends PureComponent {
   state = {
-    current: 'article',
     keyword: '',
   };
 
@@ -101,24 +98,23 @@ class SearchLists extends PureComponent {
     const { articlePool } = article;
     const hasMore = this.hasMore();
 
-    const { current } = this.state;
     return (
-      <GridContent>
-        <div>
-          <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal">
-            <Menu.Item key="article">文章</Menu.Item>
-            <Menu.Item key="recommand">关注</Menu.Item>
-            <Menu.Item key="other">...</Menu.Item>
-          </Menu>
-        </div>
-        <Row gutter={24}>
-          <Col lg={24} md={24}>
-            <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={hasMore} />
-          </Col>
-        </Row>
-      </GridContent>
+      // <GridContent>
+      //   <div>
+      //     <Menu onClick={this.handleClick} selectedKeys={[current]} mode="horizontal">
+      //       <Menu.Item key="article">文章</Menu.Item>
+      //       <Menu.Item key="recommand">关注</Menu.Item>
+      //       <Menu.Item key="other">...</Menu.Item>
+      //     </Menu>
+      //   </div>
+      //   <Row gutter={24}>
+      //     <Col lg={24} md={24}>
+      <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={hasMore} />
+      //     </Col>
+      //   </Row>
+      // </GridContent>
     );
   }
 }
 
-export default SearchLists;
+export default ArticleSearch;

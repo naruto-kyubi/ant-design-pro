@@ -1,4 +1,11 @@
-import { queryFollows, queryFollow, addFollow, deleteFollow, queryFans } from '@/services/follow';
+import {
+  queryFollows,
+  queryFollow,
+  addFollow,
+  deleteFollow,
+  queryFans,
+  search,
+} from '@/services/follow';
 
 export default {
   namespace: 'follow',
@@ -102,6 +109,14 @@ export default {
         payload: { follow: response },
       });
       if (callback) callback(response);
+    },
+
+    *search({ payload }, { call, put }) {
+      const response = yield call(search, payload);
+      yield put({
+        type: 'setFetchFollows',
+        payload: response,
+      });
     },
   },
 
