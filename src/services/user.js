@@ -5,10 +5,10 @@ export async function query() {
 }
 
 export async function queryCurrent() {
-  return request('/naruto/v1/user/currentUser');
+  return request('/server/api/v1/user/currentUser');
 }
 
 export async function queryUserById(payload) {
   const { id } = payload;
-  return request(`/naruto/v1/users/${id}`);
+  return request(`/server/api/v1/users/${id}`);
 }

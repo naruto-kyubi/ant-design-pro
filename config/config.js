@@ -118,9 +118,10 @@ export default {
   chainWebpack: webpackPlugin,
 
   proxy: {
-    '/naruto': {
-      target: 'http://localhost:8080/',
+    '/server/api': {
+      target: 'http://localhost:8080/naruto',
       changeOrigin: true,
+      pathRewrite: { '^/server/api': '' },
     },
   },
 };

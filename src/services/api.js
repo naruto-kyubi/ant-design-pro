@@ -104,7 +104,7 @@ export async function updateFakeList(params) {
 }
 
 export async function fakeAccountLogin(params) {
-  return request('/naruto/v1/logon/account', {
+  return request('/server/api/v1/logon/account', {
     method: 'POST',
     data: params,
   });
@@ -118,7 +118,7 @@ export async function fakeRegister(params) {
 }
 
 export async function register(params) {
-  return request('/naruto/v1/user/register', {
+  return request('/server/api/v1/user/register', {
     method: 'POST',
     data: params,
   });
@@ -132,30 +132,27 @@ export async function getFakeCaptcha(mobile) {
   return request(`/api/captcha?mobile=${mobile}`);
 }
 
-// export async function getCaptcha(mobile) {
-//   return request(`/naruto/v1/getCaptcha?mobile=${mobile}`);
-// }
 export async function getRegisterCaptcha(mobile) {
-  return request(`/naruto/v1/user/registerCaptcha?mobile=${mobile}`);
+  return request(`/server/api/v1/user/registerCaptcha?mobile=${mobile}`);
 }
 
 export async function getForgotpasswordCaptcha(mobile) {
-  return request(`/naruto/v1/user/forgotPasswordCaptcha?mobile=${mobile}`);
+  return request(`/server/api/v1/user/forgotPasswordCaptcha?mobile=${mobile}`);
 }
 
 export async function getLogonCaptcha(mobile) {
-  return request(`/naruto/v1/logon/captcha?mobile=${mobile}`);
+  return request(`/server/api/v1/logon/captcha?mobile=${mobile}`);
 }
 
 export async function resetPassword(params) {
-  return request('/naruto/v1/user/resetPassword', {
+  return request('/server/api/v1/user/resetPassword', {
     method: 'POST',
     data: params,
   });
 }
 
 export async function addUser(params) {
-  return request('/naruto/v1/user/create', {
+  return request('/server/api/v1/user/create', {
     method: 'POST',
     data: {
       ...params,
@@ -172,7 +169,7 @@ export async function removeUser(params) {
   //   },
   // });
   const { key } = params;
-  return request(`/naruto/v1/user/delete/${key}`, {
+  return request(`/server/api/v1/user/delete/${key}`, {
     method: 'DELETE',
   });
 }
@@ -187,7 +184,7 @@ export async function updateUser(params = {}) {
   // });
 
   const { id } = params.body;
-  return request(`/naruto/v1/user/update/${id}`, {
+  return request(`/server/api/v1/user/update/${id}`, {
     method: 'PUT',
     data: {
       ...params.body,
@@ -196,7 +193,7 @@ export async function updateUser(params = {}) {
   });
 }
 export async function queryUser(params) {
-  return request(`/naruto/v1/user/query?${stringify(params)}`);
+  return request(`/server/api/v1/user/query?${stringify(params)}`);
 }
 
 /**
@@ -204,21 +201,21 @@ export async function queryUser(params) {
  * 获取当前登录用户对应的功能菜单。springboot依据token获取userName。
  */
 export async function queryMenus() {
-  return request('/naruto/v1//logon/function');
+  return request('/server/api/v1/logon/function');
 }
 
 export async function bind(params) {
-  return request(`/naruto/v1/user/bind?${stringify(params)}`);
+  return request(`/server/api/v1/user/bind?${stringify(params)}`);
 }
 
 export async function unbind(params) {
-  return request(`/naruto/v1/user/unbind?${stringify(params)}`);
+  return request(`/server/api/v1/user/unbind?${stringify(params)}`);
 }
 
 export async function queryBinds() {
-  return request(`/naruto/v1/user/queryBinds`);
+  return request(`/server/api/v1/user/queryBinds`);
 }
 
 export async function logout() {
-  return request(`/naruto/v1/logon/logout`);
+  return request(`/server/api/v1/logout`);
 }

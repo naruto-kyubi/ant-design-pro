@@ -5,7 +5,6 @@ import { Card, Button, Form, Input, message, TreeSelect, Upload, Icon, Select } 
 import BraftEditor from 'braft-editor';
 
 import { ContentUtils } from 'braft-utils';
-import { context } from '@/defaultSettings';
 
 import 'braft-editor/dist/index.css';
 
@@ -89,7 +88,7 @@ class EditArticle extends PureComponent {
           editorState: ContentUtils.insertMedias(editorState, [
             {
               type: info.file.name.endsWith('mp4') ? 'VIDEO' : 'IMAGE',
-              url: context ? context.concat(info.file.response.data) : info.file.response.data,
+              url: `/server/api${info.file.response.data}`,
             },
           ]),
         });
@@ -157,7 +156,7 @@ class EditArticle extends PureComponent {
     const uploadProps = {
       name: 'file',
       accept: 'image,mp4/*',
-      action: context ? context.concat('/v1/file/upload') : '/v1/file/upload',
+      action: '/server/api/v1/file/upload',
       headers: {
         authorization: 'authorization-text',
       },

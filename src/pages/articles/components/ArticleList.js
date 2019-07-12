@@ -10,12 +10,13 @@ class ArticleList extends PureComponent {
     const { contentHtml, owner, updatedAt } = article;
     const { nickname, avatar } = owner;
 
+    const content = `${JSON.parse(
+      JSON.stringify(contentHtml).replace(/<\/?.+?\/?>/g, '')
+    ).substring(0, 200)}`;
+
     return {
-      // content: `${JSON.parse(JSON.stringify(contentHtml).replace(/<\/?.+?\/?>/g, '')).substring(
-      //   0,
-      //   200
-      // )}...`,
-      content: <div className={styles.content} dangerouslySetInnerHTML={{ __html: contentHtml }} />,
+      // eslint-disable-next-line react/no-danger
+      content: <div dangerouslySetInnerHTML={{ __html: content }} />,
       updatedAt,
       owner: nickname,
       avatar,
