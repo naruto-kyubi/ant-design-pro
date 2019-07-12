@@ -119,9 +119,9 @@ export default {
 
   proxy: {
     '/server/api': {
-      target: 'http://localhost:8080/naruto',
+      target: 'http://localhost:8080',
       changeOrigin: true,
-      pathRewrite: { '^/server/api': '' },
+      pathRewrite: { '^/server/api': '/server' },
     },
   },
 };
