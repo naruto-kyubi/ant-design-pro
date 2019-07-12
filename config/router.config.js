@@ -360,7 +360,10 @@ export default [
         name: 'search',
         component: './search/Search',
         routes: [
-          // exception
+          {
+            path: '/search/all',
+            component: './search/All.js',
+          },
           {
             path: '/search/articles',
             component: './search/Articles.js',

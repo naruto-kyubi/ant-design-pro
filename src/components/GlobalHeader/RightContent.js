@@ -66,9 +66,7 @@ export default class GlobalHeaderRight extends PureComponent {
   };
 
   handSearch = value => {
-    // alert(value);
-
-    router.push(`/search/articles?keyword=${value}`);
+    router.push(`/search/all?keyword=${value}`);
   };
 
   render() {
@@ -110,6 +108,7 @@ export default class GlobalHeaderRight extends PureComponent {
     return (
       <div className={className}>
         <HeaderSearch
+          open="true"
           className={`${styles.action} ${styles.search}`}
           placeholder={formatMessage({ id: 'component.globalHeader.search' })}
           dataSource={[

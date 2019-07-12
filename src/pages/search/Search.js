@@ -12,6 +12,9 @@ class Search extends Component {
     } = location;
 
     switch (key) {
+      case 'all':
+        router.push(`${match.url}/all?keyword=${keyword}`);
+        break;
       case 'articles':
         router.push(`${match.url}/articles?keyword=${keyword}`);
         break;
@@ -28,6 +31,14 @@ class Search extends Component {
     const { match, location, children } = this.props;
 
     const operationTabList = [
+      {
+        key: 'all',
+        tab: (
+          <span>
+            <span style={{ fontSize: 14 }}>综合</span>
+          </span>
+        ),
+      },
       {
         key: 'articles',
         tab: (

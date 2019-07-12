@@ -8,6 +8,7 @@ import ArticleComment from './comment';
 import ArticleSuspendPanel from './components/ArticleSuspendPanel';
 
 import HostArticleList from './hostList';
+import MoreLikeThisArticle from '@/pages/search/MoreLikeThisArticle'
 
 @connect(({ article, follow }) => ({
   article,
@@ -237,11 +238,12 @@ class Article extends PureComponent {
                   onUserClick={this.onUserClick}
                 />
                 <ArticleComment articleId={id} />
+                <MoreLikeThisArticle id={id} />
               </div>
             </Card>
           </Col>
           <Col lg={7} md={24}>
-            <HostArticleList />
+            {/* <MoreLikeThisArticle id={id} /> */}
           </Col>
         </Row>
       </GridContent>
