@@ -27,5 +27,5 @@ export async function queryFans(payload) {
 }
 
 export async function search(payload) {
-  return request(`/naruto/v1/follows/search?${stringify(payload)}`);
+  return request(`/server/api/v1/follows/search?${stringify(payload)}`);
 }
