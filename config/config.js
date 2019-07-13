@@ -123,10 +123,10 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^/server/api': '/server' },
     },
-    '/server/img': {
+    '/images': {
       target: 'http://localhost:8080',
       changeOrigin: true,
-      pathRewrite: { '^/server/img': '/server' },
+      pathRewrite: { '^/images': '/server/images' },
     },
   },
 };
