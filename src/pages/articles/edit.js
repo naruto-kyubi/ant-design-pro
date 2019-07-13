@@ -60,7 +60,7 @@ class EditArticle extends PureComponent {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { editorState } = this.state;
+    const { editorState, currentAticle } = this.state;
     const {
       user,
       form,
@@ -69,8 +69,7 @@ class EditArticle extends PureComponent {
       },
     } = this.props;
 
-    // eslint-disable-next-line react/destructuring-assignment
-    const id = isEdit ? this.props.article.articleDetail.data.id : null;
+    const id = isEdit ? currentAticle.id : null;
 
     if (!user.currentUser.id) {
       message.warning('请登录后发表');
