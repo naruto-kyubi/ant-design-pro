@@ -15,10 +15,22 @@ import 'braft-editor/dist/index.css';
 class EditArticle extends PureComponent {
   state = {
     editorState: BraftEditor.createEditorState(null),
+    currentAticle: {
+      content: null,
+      catalogId: null,
+      title: '',
+      id: '',
+      tags: [],
+    },
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {
+      dispatch,
+      location: {
+        query: { isEdit },
+      },
+    } = this.props;
     dispatch({
       type: 'article/fetchCatalog',
       payload: {
@@ -31,6 +43,19 @@ class EditArticle extends PureComponent {
         sorter: 'name_desc',
       },
     });
+
+    if (isEdit) {
+      const {
+        article: {
+          articleDetail: { data },
+        },
+      } = this.props;
+
+      this.setState({
+        currentAticle: { ...data, tags: data.tags.map(item => item.id) },
+        editorState: BraftEditor.createEditorState(data.content),
+      });
+    }
   }
 
   handleSubmit = e => {
@@ -102,41 +127,20 @@ class EditArticle extends PureComponent {
     const {
       form: { getFieldDecorator },
       article: {
-        catalog: { data },
+        catalog: { data: catalog },
         tag: { data: tags },
-      },
-      location: {
-        query: { isEdit },
       },
     } = this.props;
 
-    if (!data || !tags) return null;
+    if (!catalog || !tags) return null;
 
     const { Option } = Select;
     const children = tags.map(item => <Option key={item.id}>{item.name}</Option>);
 
-    let currentAticle = {
-      content: null,
-      catalogId: null,
-      title: '',
-      id: '',
-      tags: [],
-    };
-
-    if (isEdit) {
-      const {
-        article: {
-          articleDetail: { data: d },
-        },
-      } = this.props;
-      currentAticle = { ...d, tags: d.tags.map(item => item.id) };
-      //   this.setState({ editorState: BraftEditor.createEditorState(currentAticle.content) });
-    }
-
-    const { editorState } = this.state;
+    const { editorState, currentAticle } = this.state;
     const FormItem = Form.Item;
 
-    const treedata = data.map(item => ({
+    const treedata = catalog.map(item => ({
       title: item.name,
       value: item.id,
       key: item.id,
@@ -254,7 +258,6 @@ class EditArticle extends PureComponent {
               controls={controls}
               extendControls={extendControls}
               value={editorState}
-              defaultValue={BraftEditor.createEditorState(currentAticle.content)}
               onChange={this.handleChange}
               placeholder="请输入正文内容"
             />
