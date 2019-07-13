@@ -130,7 +130,7 @@ class EditArticle extends PureComponent {
         },
       } = this.props;
       currentAticle = { ...d, tags: d.tags.map(item => item.id) };
-      this.setState({ editorState: BraftEditor.createEditorState(currentAticle.content) });
+      //   this.setState({ editorState: BraftEditor.createEditorState(currentAticle.content) });
     }
 
     const { editorState } = this.state;
@@ -151,6 +151,8 @@ class EditArticle extends PureComponent {
       'separator',
       'link',
       'separator',
+      'code',
+      'blockquote',
     ];
 
     const uploadProps = {
@@ -252,7 +254,7 @@ class EditArticle extends PureComponent {
               controls={controls}
               extendControls={extendControls}
               value={editorState}
-              //   defaultValue={BraftEditor.createEditorState(currentAticle.content)}
+              defaultValue={BraftEditor.createEditorState(currentAticle.content)}
               onChange={this.handleChange}
               placeholder="请输入正文内容"
             />

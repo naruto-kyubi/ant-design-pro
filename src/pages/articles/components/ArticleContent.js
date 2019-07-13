@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { Avatar, Divider } from 'antd';
 import { formatDate } from '@/utils/utils';
-import classnames from 'classnames';
 import { connect } from 'dva';
 import router from 'umi/router';
 import styles from './ArticleContent.less';
+
+import 'braft-editor/dist/output.css';
 
 import FollowButton from './FollowButton';
 
@@ -74,7 +75,7 @@ class ArticleContent extends PureComponent {
         <div>
           <div className={styles.title}>{title}</div>
         </div>
-        <div className={classnames(styles.content)} dangerouslySetInnerHTML={{ __html: content }} />
+        <div className="braft-output-content" dangerouslySetInnerHTML={{ __html: content }} />
       </div>
     );
   }
