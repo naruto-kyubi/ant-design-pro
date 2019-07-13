@@ -217,5 +217,5 @@ export async function queryBinds() {
 }
 
 export async function logout() {
-  return request(`/server/api/v1/logout`);
+  return request(`/server/api/v1/logon/logout`);
 }
