@@ -88,7 +88,7 @@ class EditArticle extends PureComponent {
           editorState: ContentUtils.insertMedias(editorState, [
             {
               type: info.file.name.endsWith('mp4') ? 'VIDEO' : 'IMAGE',
-              url: `/server/api${info.file.response.data}`,
+              url: info.file.response.data,
             },
           ]),
         });
