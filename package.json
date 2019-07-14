@@ -55,7 +55,7 @@
     "antd": "^3.16.1",
     "bizcharts": "^3.4.3",
     "bizcharts-plugin-slider": "^2.1.1-beta.1",
-    "braft-editor": "^2.3.6",
+    "braft-editor": "^2.3.7",
     "braft-utils": "^3.0.12",
     "classnames": "^2.2.6",
     "dva": "^2.4.1",

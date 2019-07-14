@@ -8,7 +8,8 @@ const Editor = ({ onChange, onSubmit, submitting, value, controls }) => (
   <div>
     <Form.Item>
       <BraftEditor
-        contentStyle={{ height: 100, boxShadow: 'inset 0 1px 3px rgba(0,0,0,.1)' }}
+        contentStyle={{ height: 100 }}
+        style={{ border: '1px solid #D9D9D9' }}
         value={value}
         onChange={onChange}
         controls={controls}

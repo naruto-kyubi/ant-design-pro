@@ -251,9 +251,9 @@ class EditArticle extends PureComponent {
                 initialValue: currentAticle.title,
               })(<Input placeholder="标题，一句话说明您要发表的内容" />)}
             </FormItem>
-
             <BraftEditor
               contentStyle={{ height: 700 }}
+              style={{ border: '1px solid #D9D9D9' }}
               controls={controls}
               extendControls={extendControls}
               value={editorState}
