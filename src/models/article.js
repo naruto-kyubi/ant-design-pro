@@ -16,6 +16,8 @@ import {
   querySearchList,
 } from '@/pages/articles/services/article';
 
+import { routerRedux } from 'dva/router';
+
 export default {
   namespace: 'article',
   state: {
@@ -82,8 +84,13 @@ export default {
       });
     },
 
-    *addArticle({ payload }, { call }) {
-      yield call(addArticle, payload);
+    *addArticle({ payload }, { call, put }) {
+      const response = yield call(addArticle, payload);
+
+      const {
+        data: { id },
+      } = response;
+      yield put(routerRedux.replace(`/articles/${id}`));
     },
 
     *addComment({ payload }, { call, put }) {
