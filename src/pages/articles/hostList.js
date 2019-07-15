@@ -9,11 +9,27 @@ import styles from './components/ArticleList.less';
   article,
 }))
 class HostArticleList extends PureComponent {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'article/fetchHotList',
+    });
+  }
+
   getTitle = item => {
-    const { title, owner, updatedAt } = item;
+    const { id, title, owner, updatedAt } = item;
     const { nickname, avatar } = owner;
     return {
-      content: title,
+      content: (
+        <a
+          className={styles.listItemMetaTitle}
+          href={`/articles/${id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {title}
+        </a>
+      ),
       updatedAt,
       owner: nickname,
       avatar,
@@ -22,7 +38,7 @@ class HostArticleList extends PureComponent {
 
   render() {
     const { article } = this.props;
-    const { articleList } = article;
+    const { hotList } = article;
     return (
       <Card bordered={false} style={{ marginBottom: 24 }} title="本周热议">
         <List
@@ -30,7 +46,7 @@ class HostArticleList extends PureComponent {
           className={styles.articleList}
           rowKey="id"
           itemLayout="vertical"
-          dataSource={articleList.data}
+          dataSource={hotList}
           renderItem={item => (
             <List.Item key={item.id}>
               <ArticleListContent data={this.getTitle(item)} />

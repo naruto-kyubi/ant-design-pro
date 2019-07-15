@@ -6,6 +6,14 @@ export async function queryArticleList(payload) {
   return request(`/server/api/v1/articles/query?${stringify(payload)}`);
 }
 
+export async function queryFollowArticleList(payload) {
+  return request(`/server/api/v1/follows/articles?${stringify(payload)}`);
+}
+
+export async function queryHotList(payload) {
+  return request(`/server/api/v1/articles/hot?${stringify(payload)}`);
+}
+
 export async function queryArticleById(payload) {
   const { id } = payload;
   return request(`/server/api/v1/articles/${id}`);

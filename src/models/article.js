@@ -14,6 +14,8 @@ import {
   deleteStar,
   queryTag,
   querySearchList,
+  queryHotList,
+  queryFollowArticleList,
 } from '@/pages/articles/services/article';
 
 import { routerRedux } from 'dva/router';
@@ -24,6 +26,8 @@ export default {
     articleList: {}, // one page articles
     articlePool: [], // all articles from server
     articleDetail: {}, // one article
+    hotList: [],
+    followArticleList: {},
     catalog: {},
     commentList: {},
     commentPool: [],
@@ -42,6 +46,25 @@ export default {
       yield put({
         type: 'setArticleList',
         payload: response,
+      });
+    },
+
+    *fetchFollowArticleList({ payload }, { call, put }) {
+      const response = yield call(queryFollowArticleList, payload);
+      yield put({
+        type: 'setFollowArticleList',
+        payload: response,
+      });
+    },
+
+    *fetchHotList({ payload }, { call, put }) {
+      const response = yield call(queryHotList, payload);
+      const { data } = response;
+      yield put({
+        type: 'setState',
+        payload: {
+          hotList: data,
+        },
       });
     },
 
@@ -188,6 +211,24 @@ export default {
         ...state,
         articleList: action.payload,
         articlePool,
+      };
+    },
+
+    setFollowArticleList(state, action) {
+      const {
+        meta: {
+          pagination: { current },
+        },
+      } = action.payload;
+
+      const {
+        followArticleList: { data },
+      } = state;
+      const d = current === 1 ? [...action.payload.data] : [...data, ...action.payload.data];
+
+      return {
+        ...state,
+        followArticleList: { ...action.payload, data: d },
       };
     },
 

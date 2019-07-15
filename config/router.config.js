@@ -346,6 +346,10 @@ export default [
             component: './articles/index.js',
           },
           {
+            path: '/articles/follows',
+            component: './articles/follows.js',
+          },
+          {
             path: '/articles/edit',
             component: './articles/edit.js',
           },
@@ -371,6 +375,16 @@ export default [
           {
             path: '/search/users',
             component: './search/Users.js',
+          },
+        ],
+      },
+      {
+        path: '/stars',
+        name: 'stars',
+        routes: [
+          {
+            path: '/stars',
+            component: './Account/Center/Stars',
           },
         ],
       },

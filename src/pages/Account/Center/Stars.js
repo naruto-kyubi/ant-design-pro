@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import ArticleList from '@/pages/articles/components/ArticleList';
+import GridContent from '@/components/PageHeaderWrapper/GridContent';
 
 @connect(({ article, user }) => ({
   article,
@@ -14,10 +15,22 @@ class Stars extends Component {
       query: { id },
     } = location;
 
+    const {
+      user: { currentUser },
+    } = this.props;
+    let uid;
+
+    if (currentUser) {
+      const { id: cid } = currentUser;
+      uid = cid;
+    }
+
+    const userId = id || uid;
+
     dispatch({
       type: 'article/fetchStarList',
       payload: {
-        userId: id,
+        userId,
         sorter: 'updatedAt_desc',
       },
     });
@@ -43,12 +56,24 @@ class Stars extends Component {
       query: { id },
     } = location;
 
+    const {
+      user: { currentUser },
+    } = this.props;
+    let uid;
+
+    if (currentUser) {
+      const { id: cid } = currentUser;
+      uid = cid;
+    }
+
+    const userId = id || uid;
+
     let currentPage = meta ? meta.pagination.current + 1 : 1;
     currentPage = resetPool ? 1 : currentPage;
     const payload = {
       sorter: 'updatedAt_desc',
       currentPage,
-      userId: id,
+      userId,
     };
 
     dispatch({
@@ -80,7 +105,11 @@ class Stars extends Component {
       return ar;
     });
 
-    return <ArticleList data={stars} loadMore={this.loadMore} hasMore={hasMore} />;
+    return (
+      <GridContent>
+        <ArticleList data={stars} loadMore={this.loadMore} hasMore={hasMore} />
+      </GridContent>
+    );
   }
 }
 
