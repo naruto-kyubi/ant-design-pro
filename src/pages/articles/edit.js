@@ -15,20 +15,13 @@ import 'braft-editor/dist/index.css';
 class EditArticle extends PureComponent {
   state = {
     editorState: BraftEditor.createEditorState(null),
-    currentAticle: {
-      content: null,
-      catalogId: null,
-      title: '',
-      id: '',
-      tags: [],
-    },
   };
 
   componentDidMount() {
     const {
       dispatch,
-      location: {
-        query: { isEdit },
+      article: {
+        articleDetail: { data },
       },
     } = this.props;
     dispatch({
@@ -44,32 +37,15 @@ class EditArticle extends PureComponent {
       },
     });
 
-    if (isEdit) {
-      const {
-        article: {
-          articleDetail: { data },
-        },
-      } = this.props;
-
-      this.setState({
-        currentAticle: { ...data, tags: data.tags.map(item => item.id) },
-        editorState: BraftEditor.createEditorState(data.content),
-      });
-    }
+    this.setState({
+      editorState: BraftEditor.createEditorState(data ? data.content : null),
+    });
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    const { editorState, currentAticle } = this.state;
-    const {
-      user,
-      form,
-      location: {
-        query: { isEdit },
-      },
-    } = this.props;
-
-    const id = isEdit ? currentAticle.id : null;
+    const { editorState } = this.state;
+    const { user, form } = this.props;
 
     if (!user.currentUser.id) {
       message.warning('请登录后发表');
@@ -79,7 +55,7 @@ class EditArticle extends PureComponent {
     form.validateFields((err, values) => {
       if (!err) {
         const payload = {
-          id,
+          id: values.id,
           catalogId: values.catalogId,
           title: values.title,
           tags: values.tags,
@@ -128,15 +104,26 @@ class EditArticle extends PureComponent {
       article: {
         catalog: { data: catalog },
         tag: { data: tags },
+        articleDetail: { data },
       },
     } = this.props;
 
     if (!catalog || !tags) return null;
 
+    const currentAticle = data
+      ? { ...data, tags: data.tags.map(item => item.id) }
+      : {
+          content: null,
+          catalogId: null,
+          title: '',
+          id: null,
+          tags: [],
+        };
+
     const { Option } = Select;
     const children = tags.map(item => <Option key={item.id}>{item.name}</Option>);
 
-    const { editorState, currentAticle } = this.state;
+    const { editorState } = this.state;
     const FormItem = Form.Item;
 
     const treedata = catalog.map(item => ({
@@ -202,6 +189,11 @@ class EditArticle extends PureComponent {
             // hideRequiredMark
             style={{ marginTop: 8, marginBottom: 8 }}
           >
+            <FormItem style={{ display: 'none' }}>
+              {getFieldDecorator('id', {
+                initialValue: currentAticle.id,
+              })(<Input placeholder="id" value={currentAticle.id} />)}
+            </FormItem>
             <FormItem label="板块">
               {getFieldDecorator('catalogId', {
                 rules: [

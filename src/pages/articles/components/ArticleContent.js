@@ -22,7 +22,7 @@ class ArticleContent extends PureComponent {
   };
 
   editArticle = () => {
-    router.push('/articles/edit?isEdit=true');
+    router.push('/articles/edit');
   };
 
   render() {

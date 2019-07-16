@@ -110,10 +110,27 @@ export default {
     *addArticle({ payload }, { call, put }) {
       const response = yield call(addArticle, payload);
 
-      const {
-        data: { id },
-      } = response;
-      yield put(routerRedux.replace(`/articles/${id}`));
+      // const {
+      //   data: { id },
+      // } = response;
+      //    yield put(routerRedux.replace(`/articles/${id}`));
+      yield put({
+        type: 'setState',
+        payload: {
+          articleDetail: response,
+        },
+      });
+    },
+
+    // eslint-disable-next-line no-unused-vars
+    *new({ payload }, { put }) {
+      yield put({
+        type: 'setState',
+        payload: {
+          articleDetail: {},
+        },
+      });
+      yield put(routerRedux.replace(`/articles/edit`));
     },
 
     *addComment({ payload }, { call, put }) {
