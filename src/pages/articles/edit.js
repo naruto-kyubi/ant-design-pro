@@ -229,7 +229,7 @@ class EditArticle extends PureComponent {
               {getFieldDecorator('catalogId', {
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: '请输入板块',
                   },
                 ],
@@ -251,7 +251,7 @@ class EditArticle extends PureComponent {
               {getFieldDecorator('tags', {
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: '请输入标签',
                   },
                 ],
@@ -267,7 +267,7 @@ class EditArticle extends PureComponent {
               {getFieldDecorator('title', {
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: '请输入标题',
                   },
                 ],
