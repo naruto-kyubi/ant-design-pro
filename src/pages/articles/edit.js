@@ -8,13 +8,18 @@ import { ContentUtils } from 'braft-utils';
 
 import 'braft-editor/dist/index.css';
 
-@connect(({ article, user }) => ({
+import styles from './edit.less';
+
+@connect(({ article, user, loading }) => ({
   article,
   user,
+  saving: loading.effects['article/addArticle'],
 }))
 class EditArticle extends PureComponent {
   state = {
     editorState: BraftEditor.createEditorState(null),
+    lastSavingTime: null,
+    saved: false,
   };
 
   componentDidMount() {
@@ -43,7 +48,7 @@ class EditArticle extends PureComponent {
   }
 
   handleSubmit = e => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const { editorState } = this.state;
     const { user, form } = this.props;
 
@@ -75,6 +80,20 @@ class EditArticle extends PureComponent {
 
   handleChange = editorState => {
     this.setState({ editorState });
+
+    if (editorState.toHTML().length < 10) return;
+
+    const { lastSavingTime } = this.state;
+    if (!lastSavingTime) {
+      this.setState({ lastSavingTime: new Date() });
+      return;
+    }
+
+    const duration = Math.floor((new Date() - lastSavingTime) / 1000);
+    if (duration > 5) {
+      this.setState({ lastSavingTime: new Date(), saved: true });
+      this.handleSubmit();
+    }
   };
 
   onFileChange = info => {
@@ -96,6 +115,15 @@ class EditArticle extends PureComponent {
     } else if (info.file.status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }
+  };
+
+  getSaveTips = () => {
+    const { saved } = this.state;
+    const { saving } = this.props;
+    if (!saved) {
+      return '文章将会自动保存至草稿';
+    }
+    return saving ? '正在保存文章至草稿' : '已保存文章至草稿';
   };
 
   render() {
@@ -175,9 +203,12 @@ class EditArticle extends PureComponent {
     ];
 
     const extra = (
-      <Button type="primary" onClick={this.handleSubmit}>
-        立即发布
-      </Button>
+      <div>
+        <span className={styles.saveTips}>{this.getSaveTips()}</span>
+        <Button type="primary" onClick={this.handleSubmit}>
+          立即发布
+        </Button>
+      </div>
     );
 
     return (
