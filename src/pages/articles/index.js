@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Card, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
-import router from 'umi/router';
 import Catalog from './catalog';
 
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
@@ -62,7 +61,11 @@ class Articles extends PureComponent {
   };
 
   addArticle = () => {
-    router.push('/articles/edit');
+    // router.push('/articles/edit');
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'article/new',
+    });
   };
 
   render() {

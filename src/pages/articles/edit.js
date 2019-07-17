@@ -18,8 +18,7 @@ import styles from './edit.less';
 class EditArticle extends PureComponent {
   state = {
     editorState: BraftEditor.createEditorState(null),
-    lastSavingTime: null,
-    saved: false,
+    status: 'unsaved', // unsaved, waitingForSave, saved
   };
 
   componentDidMount() {
@@ -45,11 +44,26 @@ class EditArticle extends PureComponent {
     this.setState({
       editorState: BraftEditor.createEditorState(data ? data.content : null),
     });
+
+    this.saveJob = window.setInterval(this.saveArticle, 10000);
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.saveJob);
   }
 
   handleSubmit = e => {
     if (e) e.preventDefault();
-    const { editorState } = this.state;
+    const { form } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        this.saveArticle(values);
+      }
+    });
+  };
+
+  saveArticle = () => {
+    const { editorState, status } = this.state;
     const { user, form } = this.props;
 
     if (!user.currentUser.id) {
@@ -57,43 +71,30 @@ class EditArticle extends PureComponent {
       return;
     }
 
-    form.validateFields((err, values) => {
-      if (!err) {
-        const payload = {
-          id: values.id,
-          catalogId: values.catalogId,
-          title: values.title,
-          tags: values.tags,
-          content: editorState.toRAW(),
-          contentHtml: editorState.toHTML(),
-          owner: user.currentUser.id,
-        };
-        const { dispatch } = this.props;
+    if (status !== 'waitingForSave') return;
+    const values = form.getFieldsValue();
+    const payload = {
+      id: values.id,
+      catalogId: values.catalogId,
+      title: values.title,
+      tags: values.tags,
+      content: editorState.toRAW(),
+      contentHtml: editorState.toHTML(),
+      owner: user.currentUser.id,
+    };
+    const { dispatch } = this.props;
+    this.setState({ status: 'saved' });
 
-        dispatch({
-          type: 'article/addArticle',
-          payload,
-        });
-      }
+    dispatch({
+      type: 'article/saveArticle',
+      payload,
     });
   };
 
   handleChange = editorState => {
     this.setState({ editorState });
-
     if (editorState.toHTML().length < 10) return;
-
-    const { lastSavingTime } = this.state;
-    if (!lastSavingTime) {
-      this.setState({ lastSavingTime: new Date() });
-      return;
-    }
-
-    const duration = Math.floor((new Date() - lastSavingTime) / 1000);
-    if (duration > 5) {
-      this.setState({ lastSavingTime: new Date(), saved: true });
-      this.handleSubmit();
-    }
+    this.setState({ status: 'waitingForSave' });
   };
 
   onFileChange = info => {
@@ -118,12 +119,12 @@ class EditArticle extends PureComponent {
   };
 
   getSaveTips = () => {
-    const { saved } = this.state;
+    const { status } = this.state;
     const { saving } = this.props;
-    if (!saved) {
-      return '文章将会自动保存至草稿';
+    if (status === 'unsaved') {
+      return '文章将会自动保存至';
     }
-    return saving ? '正在保存文章至草稿' : '已保存文章至草稿';
+    return saving ? '正在保存文章至' : '已保存文章至';
   };
 
   render() {
@@ -139,7 +140,7 @@ class EditArticle extends PureComponent {
     if (!catalog || !tags) return null;
 
     const currentAticle = data
-      ? { ...data, tags: data.tags.map(item => item.id) }
+      ? { ...data, tags: data.tags ? data.tags.map(item => item.id) : [] }
       : {
           content: null,
           catalogId: null,
@@ -204,7 +205,7 @@ class EditArticle extends PureComponent {
 
     const extra = (
       <div>
-        <span className={styles.saveTips}>{this.getSaveTips()}</span>
+        <span className={styles.saveTips}>{this.getSaveTips()}草稿</span>
         <Button type="primary" onClick={this.handleSubmit}>
           立即发布
         </Button>
@@ -229,7 +230,7 @@ class EditArticle extends PureComponent {
               {getFieldDecorator('catalogId', {
                 rules: [
                   {
-                    required: false,
+                    required: true,
                     message: '请输入板块',
                   },
                 ],
@@ -251,7 +252,7 @@ class EditArticle extends PureComponent {
               {getFieldDecorator('tags', {
                 rules: [
                   {
-                    required: false,
+                    required: true,
                     message: '请输入标签',
                   },
                 ],
@@ -267,7 +268,7 @@ class EditArticle extends PureComponent {
               {getFieldDecorator('title', {
                 rules: [
                   {
-                    required: false,
+                    required: true,
                     message: '请输入标题',
                   },
                 ],

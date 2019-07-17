@@ -27,8 +27,8 @@ export async function queryTag(payload) {
   return request(`/server/api/v1/articles/tags?${stringify(payload)}`);
 }
 
-export async function addArticle(payload) {
-  return request('/server/api/v1/articles/add', {
+export async function saveArticle(payload) {
+  return request('/server/api/v1/articles/save', {
     method: 'POST',
     data: payload,
   });

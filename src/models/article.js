@@ -1,7 +1,7 @@
 import {
   queryArticleList,
   queryArticleById,
-  addArticle,
+  saveArticle,
   queryCatalog,
   queryCommentList,
   addCommnet,
@@ -107,8 +107,8 @@ export default {
       });
     },
 
-    *addArticle({ payload }, { call, put }) {
-      const response = yield call(addArticle, payload);
+    *saveArticle({ payload }, { call, put }) {
+      const response = yield call(saveArticle, payload);
 
       // const {
       //   data: { id },
