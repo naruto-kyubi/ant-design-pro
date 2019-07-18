@@ -8,7 +8,7 @@ import styles from './components/ArticleList.less';
 @connect(({ article }) => ({
   article,
 }))
-class HostArticleList extends PureComponent {
+class HotArticleList extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -58,4 +58,4 @@ class HostArticleList extends PureComponent {
   }
 }
 
-export default HostArticleList;
+export default HotArticleList;

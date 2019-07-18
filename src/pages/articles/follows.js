@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import router from 'umi/router';
 
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
-import HostArticleList from './hostList';
+import HotArticleList from './hotList';
 import ArticleList from './components/ArticleList';
 
 @connect(({ article }) => ({
@@ -78,7 +78,7 @@ class FollowArticles extends PureComponent {
                 发表新帖
               </Button>
             </Card>
-            <HostArticleList />
+            <HotArticleList />
           </Col>
         </Row>
       </GridContent>
