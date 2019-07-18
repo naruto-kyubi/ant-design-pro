@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Row, Col, Card, Affix } from 'antd';
+import { Row, Col, Card, Affix, Modal } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
 import router from 'umi/router';
@@ -7,14 +7,20 @@ import ArticleContent from './components/ArticleContent';
 import ArticleComment from './comment';
 import ArticleSuspendPanel from './components/ArticleSuspendPanel';
 
-import HostArticleList from './hostList';
+import HotArticleList from './hotList';
 import MoreLikeThisArticle from '@/pages/search/MoreLikeThisArticle'
+import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
 
-@connect(({ article, follow }) => ({
+@connect(({ article, follow  }) => ({
   article,
   follow: follow.follow,
 }))
 class Article extends PureComponent {
+
+  state={
+    showLoginModal: false,
+  };
+
   componentDidMount() {
     const {
       match: {
@@ -65,6 +71,11 @@ class Article extends PureComponent {
   }
 
   onClick = obj => {
+
+    if(AuthorizationUtils.check2login()){
+      return;
+    }
+
     const {
       match: {
         params: { id },
@@ -219,34 +230,44 @@ class Article extends PureComponent {
       },
     ];
 
+    const { showLoginModal } = this.state;
+
+    // const renderLoginModal = ()=>{
+    //   if(showLoginModal)
+    //     return (
+          
+    //     );
+    // };
     return (
-      <GridContent>
-        <Affix offsetTop={240}>
-          <div style={{ float: 'left', marginLeft: '-96px' }}>
-            <ArticleSuspendPanel data={v} direction="v" onClick={this.onClick} />
-          </div>
-        </Affix>
-        <Row gutter={24}>
-          <Col lg={17} md={24}>
-            <Card bordered={false}>
-              <div>
-                <ArticleContent
-                  article={data}
-                  // followed={followData ? true : false}
-                  follow={ mu }
-                  onFollowClick={this.onFollowClick}
-                  onUserClick={this.onUserClick}
-                />
-                <ArticleComment articleId={id} />
-                <MoreLikeThisArticle id={id} />
-              </div>
-            </Card>
-          </Col>
-          <Col lg={7} md={24}>
-            {/* <MoreLikeThisArticle id={id} /> */}
-          </Col>
-        </Row>
-      </GridContent>
+      <div>
+        <GridContent>
+          <Affix offsetTop={240}>
+            <div style={{ float: 'left', marginLeft: '-96px' }}>
+              <ArticleSuspendPanel data={v} direction="v" onClick={this.onClick} />
+            </div>
+          </Affix>
+          <Row gutter={24}>
+            <Col lg={17} md={24}>
+              <Card bordered={false}>
+                <div>
+                  <ArticleContent
+                    article={data}
+                    // followed={followData ? true : false}
+                    follow={ mu }
+                    onFollowClick={this.onFollowClick}
+                    onUserClick={this.onUserClick}
+                  />
+                  <ArticleComment articleId={id} />
+                  <MoreLikeThisArticle id={id} />
+                </div>
+              </Card>
+            </Col>
+            <Col lg={7} md={24}>
+              {/* <MoreLikeThisArticle id={id} /> */}
+            </Col>
+          </Row>
+        </GridContent>
+      </div>
     );
   }
 }
