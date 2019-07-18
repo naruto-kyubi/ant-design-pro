@@ -12,7 +12,7 @@ import ArticleList from './components/ArticleList';
 }))
 class FollowArticles extends PureComponent {
   componentDidMount() {
-    this.queryArticles();
+    this.queryArticles(true);
   }
 
   // handleClick = e => {
