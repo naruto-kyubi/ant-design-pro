@@ -3,17 +3,18 @@ import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
 import { Card, Button, Form, Input, message, TreeSelect, Upload, Icon, Select } from 'antd';
 import BraftEditor from 'braft-editor';
-
 import { ContentUtils } from 'braft-utils';
+import DraftBox from './components/DraftBox';
 
 import 'braft-editor/dist/index.css';
 
 import styles from './edit.less';
 
-@connect(({ article, user, loading }) => ({
+@connect(({ article, user, loading, drafList }) => ({
   article,
   user,
   saving: loading.effects['article/addArticle'],
+  drafList,
 }))
 class EditArticle extends PureComponent {
   state = {
@@ -22,12 +23,7 @@ class EditArticle extends PureComponent {
   };
 
   componentDidMount() {
-    const {
-      dispatch,
-      article: {
-        articleDetail: { data },
-      },
-    } = this.props;
+    const { dispatch } = this.props;
     dispatch({
       type: 'article/fetchCatalog',
       payload: {
@@ -40,12 +36,31 @@ class EditArticle extends PureComponent {
         sorter: 'name_desc',
       },
     });
-
-    this.setState({
-      editorState: BraftEditor.createEditorState(data ? data.content : null),
+    dispatch({
+      type: 'article/fetchDraftList',
+      payload: {
+        status_equal: 'draft',
+        sorter: 'updatedAt_desc',
+      },
     });
 
     this.saveJob = window.setInterval(this.saveArticle, 10000);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { form } = this.props;
+    const id = form.getFieldValue('id');
+    const {
+      article: {
+        articleDetail: { data },
+      },
+    } = nextProps;
+    if (data && id !== data.id) {
+      this.setState({
+        editorState: BraftEditor.createEditorState(data.content),
+        status: 'unsaved',
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -55,14 +70,15 @@ class EditArticle extends PureComponent {
   handleSubmit = e => {
     if (e) e.preventDefault();
     const { form } = this.props;
+    // eslint-disable-next-line no-unused-vars
     form.validateFields((err, values) => {
       if (!err) {
-        this.saveArticle(values);
+        this.saveArticle('publish');
       }
     });
   };
 
-  saveArticle = () => {
+  saveArticle = state => {
     const { editorState, status } = this.state;
     const { user, form } = this.props;
 
@@ -81,6 +97,7 @@ class EditArticle extends PureComponent {
       content: editorState.toRAW(),
       contentHtml: editorState.toHTML(),
       owner: user.currentUser.id,
+      status: state || 'draft',
     };
     const { dispatch } = this.props;
     this.setState({ status: 'saved' });
@@ -124,7 +141,17 @@ class EditArticle extends PureComponent {
     if (status === 'unsaved') {
       return '文章将会自动保存至';
     }
-    return saving ? '正在保存文章至' : '已保存文章至';
+    return saving ? '正在保存文章至' : '文章已于 刚刚 保存到';
+  };
+
+  getDraft = id => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'article/fetchArticleById',
+      payload: {
+        id,
+      },
+    });
   };
 
   render() {
@@ -134,6 +161,7 @@ class EditArticle extends PureComponent {
         catalog: { data: catalog },
         tag: { data: tags },
         articleDetail: { data },
+        draftList,
       },
     } = this.props;
 
@@ -205,7 +233,8 @@ class EditArticle extends PureComponent {
 
     const extra = (
       <div>
-        <span className={styles.saveTips}>{this.getSaveTips()}草稿</span>
+        <span className={styles.saveTips}>{this.getSaveTips()} </span>
+        <DraftBox draftList={draftList} getDraftArticle={this.getDraft} />
         <Button type="primary" onClick={this.handleSubmit}>
           立即发布
         </Button>

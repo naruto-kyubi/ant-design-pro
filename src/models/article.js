@@ -16,6 +16,7 @@ import {
   querySearchList,
   queryHotList,
   queryFollowArticleList,
+  queryDraftList,
 } from '@/pages/articles/services/article';
 
 import { routerRedux } from 'dva/router';
@@ -26,6 +27,7 @@ export default {
     articleList: {}, // one page articles
     articlePool: [], // all articles from server
     articleDetail: {}, // one article
+    draftList: {},
     hotList: [],
     followArticleList: {},
     catalog: {},
@@ -54,6 +56,16 @@ export default {
       yield put({
         type: 'setFollowArticleList',
         payload: response,
+      });
+    },
+
+    *fetchDraftList({ payload }, { call, put }) {
+      const response = yield call(queryDraftList, payload);
+      yield put({
+        type: 'setState',
+        payload: {
+          draftList: response,
+        },
       });
     },
 

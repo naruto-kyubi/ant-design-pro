@@ -23,6 +23,10 @@ export async function queryCatalog(payload) {
   return request(`/server/api/v1/catalogs/query?${stringify(payload)}`);
 }
 
+export async function queryDraftList(payload) {
+  return request(`/server/api/v1/articles/draft/query?${stringify(payload)}`);
+}
+
 export async function queryTag(payload) {
   return request(`/server/api/v1/articles/tags?${stringify(payload)}`);
 }

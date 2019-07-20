@@ -69,7 +69,11 @@ class ArticleList extends PureComponent {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {<div dangerouslySetInnerHTML={{ __html: item.title }} />}
+                      {
+                        <div
+                          dangerouslySetInnerHTML={{ __html: item.title ? item.title : '无标题' }}
+                        />
+                      }
                     </a>
                   }
                   description={
