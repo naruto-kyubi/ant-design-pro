@@ -36,13 +36,8 @@ class EditArticle extends PureComponent {
         sorter: 'name_desc',
       },
     });
-    dispatch({
-      type: 'article/fetchDraftList',
-      payload: {
-        status_equal: 'draft',
-        sorter: 'updatedAt_desc',
-      },
-    });
+
+    this.getDraftList();
 
     this.saveJob = window.setInterval(this.saveArticle, 10000);
   }
@@ -56,16 +51,32 @@ class EditArticle extends PureComponent {
       },
     } = nextProps;
     if (data && id !== data.id) {
-      this.setState({
-        editorState: BraftEditor.createEditorState(data.content),
-        status: 'unsaved',
-      });
+      // change draft article
+      if (data.createdAt !== data.updatedAt) {
+        this.setState({
+          editorState: BraftEditor.createEditorState(data.content),
+        });
+      } else {
+        // fist draft save success
+        this.getDraftList();
+      }
     }
   }
 
   componentWillUnmount() {
     window.clearInterval(this.saveJob);
   }
+
+  getDraftList = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'article/fetchDraftList',
+      payload: {
+        status_equal: 'draft',
+        sorter: 'updatedAt_desc',
+      },
+    });
+  };
 
   handleSubmit = e => {
     if (e) e.preventDefault();
@@ -234,7 +245,11 @@ class EditArticle extends PureComponent {
     const extra = (
       <div>
         <span className={styles.saveTips}>{this.getSaveTips()} </span>
-        <DraftBox draftList={draftList} getDraftArticle={this.getDraft} />
+        <DraftBox
+          draftList={draftList}
+          getDraftArticle={this.getDraft}
+          getDraftList={this.getDraftList}
+        />
         <Button type="primary" onClick={this.handleSubmit}>
           立即发布
         </Button>

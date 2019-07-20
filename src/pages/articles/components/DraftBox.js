@@ -8,6 +8,8 @@ class DraftBox extends PureComponent {
   state = { visible: false };
 
   showDrawer = () => {
+    const { getDraftList } = this.props;
+    getDraftList();
     this.setState({
       visible: true,
     });
