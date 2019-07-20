@@ -379,6 +379,21 @@ export default [
         ],
       },
       {
+        path: '/tags',
+        name: 'tags',
+        component: './tags/Tag',
+        routes: [
+          {
+            path: '/tags/all',
+            component: './tags/All.js',
+          },
+          {
+            path: '/tags/usertags',
+            component: './tags/UserTags.js',
+          },
+        ],
+      },
+      {
         path: '/stars',
         name: 'stars',
         routes: [

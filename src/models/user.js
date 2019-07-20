@@ -202,6 +202,7 @@ export default {
       };
     },
     saveCurrentUser(state, action) {
+      window.currentUser = action.payload || {};
       return {
         ...state,
         currentUser: action.payload || {},

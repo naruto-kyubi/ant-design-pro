@@ -1,3 +1,5 @@
+import router from 'umi/router';
+
 class AuthorizationUtils {
   static getAuthorizedColums(columns) {
     const { authorizeComponents } = window;
@@ -9,6 +11,17 @@ class AuthorizationUtils {
       return false;
     });
     return c;
+  }
+
+  static check2login() {
+    if (window.currentUser) {
+      const { id } = window.currentUser;
+      if (id) {
+        return true;
+      }
+    }
+    router.push(`/user/login?redirect=${window.location.href}`);
+    return false;
   }
 }
 

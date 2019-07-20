@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Card, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
+import router from 'umi/router';
 import Catalog from './catalog';
-
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
-import HostArticleList from './hostList';
+import HotArticleList from './hotList';
 import ArticleList from './components/ArticleList';
 
 @connect(({ article }) => ({
@@ -21,7 +21,12 @@ class Articles extends PureComponent {
 
   handleClick = e => {
     this.setState({ catalog: e.key }, () => {
-      this.queryArticles(true);
+      if (e.key === 'tags') {
+        // nav to user-tag-page
+        router.push('/tags/usertags');
+      } else {
+        this.queryArticles(true);
+      }
     });
   };
 
@@ -74,7 +79,9 @@ class Articles extends PureComponent {
     const hasMore = this.hasMore();
     return (
       <GridContent>
-        <Catalog onMenuClick={this.handleClick} />
+        <div>
+          <Catalog onMenuClick={this.handleClick} />
+        </div>
         <Row gutter={24}>
           <Col lg={17} md={24}>
             <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={hasMore} />
@@ -85,7 +92,7 @@ class Articles extends PureComponent {
                 发表新帖
               </Button>
             </Card>
-            <HostArticleList />
+            <HotArticleList />
           </Col>
         </Row>
       </GridContent>

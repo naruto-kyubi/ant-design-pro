@@ -43,6 +43,9 @@ class Catalog extends React.Component {
           {data.map(element => {
             return <Menu.Item key={element.id}>{element.name}</Menu.Item>;
           })}
+          <Menu.Item key="tags" style={{ float: 'right' }}>
+            标签管理
+          </Menu.Item>
         </Menu>
       </div>
     );
