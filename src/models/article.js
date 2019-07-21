@@ -325,12 +325,19 @@ export default {
       };
     },
 
-    // delDraft(state, action) {
-    //   return {
-    //     ...state,
-    //     draftList: action.payload,
-    //   };
-    // },
+    delDraft(state, action) {
+      const {
+        draftList: { data, meta },
+      } = state;
+      const { pagination } = meta;
+      const newData = data.filter(item => item.id !== action.payload);
+      const newTotal = pagination.total - 1;
+      const newMeta = { ...meta, pagination: { ...pagination, total: newTotal } };
+      return {
+        ...state,
+        draftList: { ...state.draftList, data: newData, meta: newMeta },
+      };
+    },
 
     setCatalog(state, action) {
       return {
