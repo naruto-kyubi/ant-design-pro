@@ -2,6 +2,7 @@ import {
   queryArticleList,
   queryArticleById,
   saveArticle,
+  deleteArticle,
   queryCatalog,
   queryCommentList,
   addCommnet,
@@ -48,6 +49,14 @@ export default {
       yield put({
         type: 'setArticleList',
         payload: response,
+      });
+    },
+
+    *deleteArticle({ payload }, { call, put }) {
+      const response = yield call(deleteArticle, payload);
+      yield put({
+        type: 'delDraft',
+        payload: response.data,
       });
     },
 
@@ -315,6 +324,13 @@ export default {
         commentPool: newCommentPool,
       };
     },
+
+    // delDraft(state, action) {
+    //   return {
+    //     ...state,
+    //     draftList: action.payload,
+    //   };
+    // },
 
     setCatalog(state, action) {
       return {

@@ -165,6 +165,16 @@ class EditArticle extends PureComponent {
     });
   };
 
+  deleteDraft = id => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'article/deleteArticle',
+      payload: {
+        targetId: id,
+      },
+    });
+  };
+
   render() {
     const {
       form: { getFieldDecorator },
@@ -249,6 +259,7 @@ class EditArticle extends PureComponent {
           draftList={draftList}
           getDraftArticle={this.getDraft}
           getDraftList={this.getDraftList}
+          deleteDraft={this.deleteDraft}
         />
         <Button type="primary" onClick={this.handleSubmit}>
           立即发布

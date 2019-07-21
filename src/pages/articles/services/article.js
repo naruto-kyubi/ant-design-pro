@@ -61,6 +61,11 @@ export async function addLike(payload) {
   });
 }
 
+export async function deleteArticle(payload) {
+  const { targetId } = payload;
+  return request(`/server/api/v1/articles/delete/${targetId}`);
+}
+
 export async function deleteLike(payload) {
   const { type, targetId } = payload;
   return request(`/server/api/v1/articles/likes/delete/${type}/${targetId}`);

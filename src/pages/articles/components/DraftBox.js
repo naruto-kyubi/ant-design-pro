@@ -23,7 +23,13 @@ class DraftBox extends PureComponent {
 
   render() {
     const { visible } = this.state;
-    const { draftList, getDraftArticle } = this.props;
+    const { draftList, getDraftArticle, deleteDraft } = this.props;
+    const IconText = ({ type, text, id }) => (
+      <span onClick={() => deleteDraft(id)}>
+        <Icon type={type} style={{ marginRight: 8 }} />
+        {text}
+      </span>
+    );
 
     return (
       <span>
@@ -46,7 +52,10 @@ class DraftBox extends PureComponent {
             bordered={false}
             dataSource={draftList.data || []}
             renderItem={item => (
-              <List.Item key={item.id}>
+              <List.Item
+                key={item.id}
+                actions={[<IconText type="delete" text="删除" id={item.id} />]}
+              >
                 <List.Item.Meta
                   title={
                     <a
