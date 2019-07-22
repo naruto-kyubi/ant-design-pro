@@ -5,7 +5,7 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import ArticleContent from './components/ArticleContent';
 import ArticleComment from './comment';
-import ArticleSuspendPanel from './components/ArticleSuspendPanel';
+import ArticleSuspendPanelContainer from './ArticleSuspendPanelContainer';
 
 import HotArticleList from './hotList';
 import MoreLikeThisArticle from '@/pages/search/MoreLikeThisArticle'
@@ -16,11 +16,7 @@ import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
   follow: follow.follow,
 }))
 class Article extends PureComponent {
-
-  state={
-    showLoginModal: false,
-  };
-
+  
   componentDidMount() {
     const {
       match: {
@@ -47,19 +43,19 @@ class Article extends PureComponent {
       },
     });
 
-    dispatch({
-      type: 'article/fetchArticleLikeById',
-      payload: {
-        targetId: id,
-      },
-    });
+    // dispatch({
+    //   type: 'article/fetchArticleLikeById',
+    //   payload: {
+    //     targetId: id,
+    //   },
+    // });
 
-    dispatch({
-      type: 'article/fetchArticleStarById',
-      payload: {
-        articleId: id,
-      },
-    });
+    // dispatch({
+    //   type: 'article/fetchArticleStarById',
+    //   payload: {
+    //     articleId: id,
+    //   },
+    // });
 
     dispatch({
       type: 'article/fetchCommentList',
@@ -68,58 +64,58 @@ class Article extends PureComponent {
         sorter: 'updatedAt_desc',
       },
     });
-  }
-
-  onClick = obj => {
-
-    if(AuthorizationUtils.check2login()){
-      return;
-    }
-
-    const {
-      match: {
-        params: { id },
-      },
-      dispatch,
-    } = this.props;
-
-    const { type, selected } = obj;
-    if (type === 'like') {
-      if (!selected) {
-        dispatch({
-          type: 'article/addLike',
-          payload: {
-            type: 'article',
-            targetId: id,
-          },
-        });
-      } else {
-        dispatch({
-          type: 'article/deleteLike',
-          payload: {
-            type: 'article',
-            targetId: id,
-          },
-        });
-      }
-    } else if (type === 'star') {
-      if (!selected) {
-        dispatch({
-          type: 'article/addStar',
-          payload: {
-            article: id,
-          },
-        });
-      } else {
-        dispatch({
-          type: 'article/deleteStar',
-          payload: {
-            articleId: id,
-          },
-        });
-      }
-    }
   };
+
+  // onClick = obj => {
+
+  //   if(AuthorizationUtils.check2login()){
+  //     return;
+  //   }
+
+  //   const {
+  //     match: {
+  //       params: { id },
+  //     },
+  //     dispatch,
+  //   } = this.props;
+
+  //   const { type, selected } = obj;
+  //   if (type === 'like') {
+  //     if (!selected) {
+  //       dispatch({
+  //         type: 'article/addLike',
+  //         payload: {
+  //           type: 'article',
+  //           targetId: id,
+  //         },
+  //       });
+  //     } else {
+  //       dispatch({
+  //         type: 'article/deleteLike',
+  //         payload: {
+  //           type: 'article',
+  //           targetId: id,
+  //         },
+  //       });
+  //     }
+  //   } else if (type === 'star') {
+  //     if (!selected) {
+  //       dispatch({
+  //         type: 'article/addStar',
+  //         payload: {
+  //           article: id,
+  //         },
+  //       });
+  //     } else {
+  //       dispatch({
+  //         type: 'article/deleteStar',
+  //         payload: {
+  //           articleId: id,
+  //         },
+  //       });
+  //     }
+  //   }
+  // };
 
   onFollowClick = follow => {
     const {
@@ -166,8 +162,8 @@ class Article extends PureComponent {
     } = this.props;
     const {
       articleDetail: { data },
-      like,
-      star,
+      // like,
+      // star,
     } = article;
 
     if (!data) {
@@ -183,54 +179,54 @@ class Article extends PureComponent {
         mu = mutual;
       }
     }
-    const { commentCount } = data;
-    const { data: likeData } = like;
-    if (!likeData) return null;
-    const { data: starData } = star;
-    if (!starData) return null;
+    // const { commentCount } = data;
+    // const { data: likeData } = like;
+    // if (!likeData) return null;
+    // const { data: starData } = star;
+    // if (!starData) return null;
 
-    const { likeCount: likeCount_ = 0, like: like_ = undefined } = likeData;
-    const { starCount: startCount_ = 0, star: star_ = undefined } = starData;
+    // const { likeCount: likeCount_ = 0, like: like_ = undefined } = likeData;
+    // const { starCount: startCount_ = 0, star: star_ = undefined } = starData;
 
-    const v = [
-      {
-        type: 'like',
-        title: '喜欢',
-        count: likeCount_,
-        selected: !!like_,
-        onClick: this.onClick,
-      },
-      {
-        type: 'star',
-        title: '收藏',
-        count: startCount_,
-        selected: !!star_,
-        onClick: this.onClick,
-      },
-      {
-        type: 'message',
-        title: '评论',
-        count: commentCount,
-        selected: false,
-        onClick: this.onClick,
-      },
-      {
-        type: 'weibo',
-        title: '微博',
-        count: 0,
-        selected: false,
-        onClick: this.onClick,
-      },
-      {
-        type: 'wechat',
-        title: '微信',
-        count: 0,
-        selected: false,
-        onClick: this.onClick,
-      },
-    ];
+    // const v = [
+    //   {
+    //     type: 'like',
+    //     title: '喜欢',
+    //     count: likeCount_,
+    //     selected: !!like_,
+    //     onClick: this.onClick,
+    //   },
+    //   {
+    //     type: 'star',
+    //     title: '收藏',
+    //     count: startCount_,
+    //     selected: !!star_,
+    //     onClick: this.onClick,
+    //   },
+    //   {
+    //     type: 'message',
+    //     title: '评论',
+    //     count: commentCount,
+    //     selected: false,
+    //     onClick: this.onClick,
+    //   },
+    //   {
+    //     type: 'weibo',
+    //     title: '微博',
+    //     count: 0,
+    //     selected: false,
+    //     onClick: this.onClick,
+    //   },
+    //   {
+    //     type: 'wechat',
+    //     title: '微信',
+    //     count: 0,
+    //     selected: false,
+    //     onClick: this.onClick,
+    //   },
+    // ];
 
-    const { showLoginModal } = this.state;
+    // const { showLoginModal } = this.state;
 
     // const renderLoginModal = ()=>{
     //   if(showLoginModal)
@@ -243,7 +239,7 @@ class Article extends PureComponent {
         <GridContent>
           <Affix offsetTop={240}>
             <div style={{ float: 'left', marginLeft: '-96px' }}>
-              <ArticleSuspendPanel data={v} direction="v" onClick={this.onClick} />
+              <ArticleSuspendPanelContainer id={ id }/>
             </div>
           </Affix>
           <Row gutter={24}>
