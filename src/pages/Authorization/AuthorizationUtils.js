@@ -17,11 +17,11 @@ class AuthorizationUtils {
     if (window.currentUser) {
       const { id } = window.currentUser;
       if (id) {
-        return true;
+        return false;
       }
     }
     router.push(`/user/login?redirect=${window.location.href}`);
-    return false;
+    return true;
   }
 }
 

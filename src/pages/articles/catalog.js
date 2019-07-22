@@ -17,7 +17,7 @@ class Catalog extends React.Component {
     dispatch({
       type: 'article/fetchCatalog',
       payload: {
-        sorter: 'sort_desc',
+        sorter: 'sort_ascend',
       },
     });
   }
