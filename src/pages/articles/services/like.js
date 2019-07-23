@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export async function queryArticleLikeById(payload) {
   const { targetId } = payload;
-  return request(`/server/api/v1/articles/likes/article/${targetId}`);
+  return request(`/server/api/v1/articles/article/${targetId}/likes`);
 }
 
 export async function addLike(payload) {
@@ -14,5 +14,5 @@ export async function addLike(payload) {
 
 export async function deleteLike(payload) {
   const { type, targetId } = payload;
-  return request(`/server/api/v1/articles/likes/delete/${type}/${targetId}`);
+  return request(`/server/api/v1/articles/${type}/${targetId}/likes/delete`);
 }

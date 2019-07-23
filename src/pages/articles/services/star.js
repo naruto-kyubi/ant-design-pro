@@ -3,11 +3,11 @@ import request from '@/utils/request';
 
 export async function queryArticleStarById(payload) {
   const { articleId } = payload;
-  return request(`/server/api/v1/articles/stars/${articleId}`);
+  return request(`/server/api/v1/articles/${articleId}/stars`);
 }
 
 export async function queryStarList(payload) {
-  return request(`/server/api/v1/articles/stars/user/query?${stringify(payload)}`);
+  return request(`/server/api/v1/articles/stars?${stringify(payload)}`);
 }
 
 export async function addStar(payload) {
@@ -19,5 +19,5 @@ export async function addStar(payload) {
 
 export async function deleteStar(payload) {
   const { articleId } = payload;
-  return request(`/server/api/v1/articles/stars/delete/${articleId}`);
+  return request(`/server/api/v1/articles/${articleId}/stars/delete`);
 }
