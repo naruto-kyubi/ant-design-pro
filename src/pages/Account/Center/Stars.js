@@ -3,8 +3,8 @@ import { connect } from 'dva';
 import ArticleList from '@/pages/articles/components/ArticleList';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 
-@connect(({ article, user }) => ({
-  article,
+@connect(({ star, user }) => ({
+  star,
   user,
 }))
 class Stars extends Component {
@@ -28,7 +28,7 @@ class Stars extends Component {
     const userId = id || uid;
 
     dispatch({
-      type: 'article/fetchStarList',
+      type: 'star/fetchStarList',
       payload: {
         userId,
         sorter: 'updatedAt_desc',
@@ -47,7 +47,7 @@ class Stars extends Component {
       // },
       dispatch,
       location,
-      article: {
+      star: {
         starList: { meta },
       },
     } = this.props;
@@ -77,14 +77,14 @@ class Stars extends Component {
     };
 
     dispatch({
-      type: 'article/fetchStarList',
+      type: 'star/fetchStarList',
       payload,
     });
   };
 
   hasMore = () => {
     const {
-      article: {
+      star: {
         starList: { meta },
       },
     } = this.props;
@@ -94,9 +94,9 @@ class Stars extends Component {
   };
 
   render() {
-    const { article } = this.props;
-    if (!article) return null;
-    const { starPool } = article;
+    const { star } = this.props;
+    if (!star) return null;
+    const { starPool } = star;
     if (!starPool) return null;
     const hasMore = this.hasMore();
 
