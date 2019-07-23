@@ -27,11 +27,6 @@ export default {
     catalog: {},
     commentList: {},
     commentPool: [],
-    // starList: {},
-    // starPool: [],
-
-    // star: {},
-    // follow: {},
     tag: {},
   },
 

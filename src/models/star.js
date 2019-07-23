@@ -8,8 +8,6 @@ import {
 export default {
   namespace: 'star',
   state: {
-    // starList: {},
-    // starPool: [],
     stars: {},
     star: {},
   },
@@ -69,20 +67,6 @@ export default {
         ...state,
         stars: { ...action.payload, data: d },
       };
-
-      //   const {
-      //     meta: {
-      //       pagination: { current },
-      //     },
-      //   } = action.payload;
-      //   const starPool =
-      //     current === 1 ? [...action.payload.data] : [...state.starPool, ...action.payload.data];
-
-      //   return {
-      //     ...state,
-      //     starList: action.payload,
-      //     starPool,
-      //   };
     },
   },
 };

@@ -9,24 +9,65 @@ import 'braft-editor/dist/output.css';
 
 import FollowButton from './FollowButton';
 
-@connect(({ user }) => ({
+@connect(({ user, follow }) => ({
   user,
+  follow: follow.follow,
 }))
 class ArticleContent extends PureComponent {
-  onUserClick = () => {
-    const {
-      article: { owner },
-      onUserClick,
-    } = this.props;
-    onUserClick(owner);
-  };
+  componentDidMount() {
+    const { article, dispatch } = this.props;
+    if (!article) return;
+    const { owner } = article;
+    if (!owner) return;
+
+    const { id: userId } = owner;
+
+    dispatch({
+      type: 'follow/queryFollow',
+      payload: {
+        id: userId,
+      },
+    });
+  }
 
   editArticle = () => {
     router.push('/articles/edit');
   };
 
+  onFollowClick = follow => {
+    const {
+      dispatch,
+      article: {
+        owner: { id },
+      },
+    } = this.props;
+    if (follow !== 'none') {
+      dispatch({
+        type: 'follow/deleteFollow',
+        payload: {
+          id,
+        },
+      });
+    } else {
+      dispatch({
+        type: 'follow/addFollow',
+        payload: {
+          followUser: id,
+        },
+      });
+    }
+  };
+
+  onUserClick = () => {
+    const { article } = this.props;
+    const {
+      owner: { id },
+    } = article;
+    router.push(`/account/center/articles?id=${id}`);
+  };
+
   render() {
-    const { article, follow, onFollowClick, user } = this.props;
+    const { article, follow, user } = this.props;
     if (!article) return null;
     const {
       owner: { avatar, nickname, id },
@@ -39,6 +80,18 @@ class ArticleContent extends PureComponent {
     const isOwner = currentUserid === id;
 
     const content = article.contentHtml;
+
+    if (!follow) return null;
+    const { data: followData } = follow;
+
+    let mu = 'none';
+    if (followData) {
+      const { mutual } = followData;
+      if (mutual) {
+        mu = mutual;
+      }
+    }
+
     return (
       <div className={styles.articleContent}>
         <div className={styles.title}>
@@ -57,7 +110,7 @@ class ArticleContent extends PureComponent {
                 <a onClick={this.onUserClick}>{nickname}</a>
               </span>
               <span style={{ float: 'right' }}>
-                <FollowButton follow={follow} onFollowClick={onFollowClick} />
+                <FollowButton follow={mu} onFollowClick={this.onFollowClick} />
               </span>
             </div>
             <div className={styles.time}>

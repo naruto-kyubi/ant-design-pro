@@ -119,7 +119,6 @@ class ArticleComment extends React.Component {
       },
     } = this.props;
 
-    const hasMore = this.hasMore();
     const commentCount = this.getCommentCount();
     return (
       <div>
@@ -135,7 +134,7 @@ class ArticleComment extends React.Component {
           <CommentList
             comments={commentPool}
             loadMore={this.loadMore}
-            hasMore={hasMore}
+            hasMore={this.hasMore()}
             commentCount={commentCount}
             avatar={avatar}
           />
