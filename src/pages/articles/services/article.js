@@ -27,6 +27,11 @@ export async function queryDraftList(payload) {
   return request(`/server/api/v1/articles/draft/query?${stringify(payload)}`);
 }
 
+export async function queryDraftById(payload) {
+  const { id } = payload;
+  return request(`/server/api/v1/articles/draft/${id}`);
+}
+
 export async function queryTag(payload) {
   return request(`/server/api/v1/articles/tags?${stringify(payload)}`);
 }

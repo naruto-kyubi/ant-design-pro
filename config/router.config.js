@@ -350,7 +350,7 @@ export default [
             component: './articles/follows.js',
           },
           {
-            path: '/articles/edit',
+            path: '/articles/edit/:id?',
             component: './articles/edit.js',
           },
           {

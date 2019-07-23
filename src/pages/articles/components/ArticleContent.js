@@ -58,6 +58,16 @@ class ArticleContent extends PureComponent {
     }
   };
 
+  editArticle = () => {
+    const { article } = this.props;
+    router.push(`/articles/edit/${article.id}`);
+    // const { dispatch ,article} = this.props;
+    // dispatch({
+    //   type: 'article/editArticle',
+    //   payload: {id: article.id},
+    // });
+  };
+
   onUserClick = () => {
     const { article } = this.props;
     const {

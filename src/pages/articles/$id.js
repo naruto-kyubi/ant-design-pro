@@ -1,19 +1,17 @@
 import React, { PureComponent } from 'react';
-import { Row, Col, Card, Affix, Modal } from 'antd';
+import { Row, Col, Card, Affix } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
 import ArticleContent from './components/ArticleContent';
 import ArticleComment from './comment';
 import ArticleSuspendPanelContainer from './ArticleSuspendPanelContainer';
 
-import HotArticleList from './hotList';
-import MoreLikeThisArticle from '@/pages/search/MoreLikeThisArticle'
+import MoreLikeThisArticle from '@/pages/search/MoreLikeThisArticle';
 
-@connect(({ article  }) => ({
+@connect(({ article }) => ({
   article,
 }))
 class Article extends PureComponent {
-  
   componentDidMount() {
     const {
       match: {
@@ -27,7 +25,7 @@ class Article extends PureComponent {
         id,
       },
     });
-  };
+  }
 
   render() {
     const {
@@ -49,16 +47,14 @@ class Article extends PureComponent {
         <GridContent>
           <Affix offsetTop={240}>
             <div style={{ float: 'left', marginLeft: '-96px' }}>
-              <ArticleSuspendPanelContainer id={ id }/>
+              <ArticleSuspendPanelContainer id={id} />
             </div>
           </Affix>
           <Row gutter={24}>
             <Col lg={17} md={24}>
               <Card bordered={false}>
                 <div>
-                  <ArticleContent
-                    article={data}
-                  />
+                  <ArticleContent article={data} />
                   <ArticleComment articleId={id} />
                   <MoreLikeThisArticle id={id} />
                 </div>
