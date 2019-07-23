@@ -71,7 +71,6 @@ class Follows extends Component {
     switch (follow) {
       case 'both':
       case 'follow':
-        // 取消关注；
         dispatch({
           type: 'follow/deleteFollows',
           payload: {
@@ -81,7 +80,6 @@ class Follows extends Component {
         break;
       case null:
       case 'none':
-        // 新增关注；
         dispatch({
           type: 'follow/addFollows',
           payload: {
@@ -102,13 +100,11 @@ class Follows extends Component {
     const { data } = follows;
     if (!data) return null;
 
-    const hasMore = this.hasMore();
-
     return (
       <UserList
         data={data}
         loadMore={this.loadMore}
-        hasMore={hasMore}
+        hasMore={this.hasMore()}
         onFollowClick={this.onFollowClick}
       />
     );

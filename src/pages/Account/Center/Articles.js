@@ -15,7 +15,6 @@ class Articles extends Component {
       query: { id },
     } = location;
 
-    // const { dispatch , user: { data :{id}} }  = this.props;
     dispatch({
       type: 'article/fetchArticleList',
       payload: {
@@ -72,9 +71,8 @@ class Articles extends Component {
     if (!article) return null;
     const { articlePool } = article;
     if (!articlePool) return null;
-    const hasMore = this.hasMore();
 
-    return <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={hasMore} />;
+    return <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={this.hasMore()} />;
   }
 }
 

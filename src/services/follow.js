@@ -2,7 +2,7 @@ import request from '@/utils/request';
 import { stringify } from 'qs';
 
 export async function queryFollows(payload) {
-  return request(`/server/api/v1/follows/users?${stringify(payload)}`);
+  return request(`/server/api/v1/user/follows?${stringify(payload)}`);
 }
 
 export async function queryFollow(payload) {
@@ -11,7 +11,7 @@ export async function queryFollow(payload) {
 }
 
 export async function addFollow(payload) {
-  return request('/server/api/v1/follows/add', {
+  return request('/server/api/v1/user/follows/add', {
     method: 'POST',
     data: payload,
   });
@@ -19,11 +19,11 @@ export async function addFollow(payload) {
 
 export async function deleteFollow(payload) {
   const { id } = payload;
-  return request(`/server/api/v1/follows/delete/${id}`);
+  return request(`/server/api/v1/user/follows/delete/${id}`);
 }
 
 export async function queryFans(payload) {
-  return request(`/server/api/v1/follows/fans?${stringify(payload)}`);
+  return request(`/server/api/v1/user/fans?${stringify(payload)}`);
 }
 
 export async function search(payload) {

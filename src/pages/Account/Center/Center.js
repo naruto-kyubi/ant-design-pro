@@ -118,22 +118,6 @@ class Center extends Component {
         payload: {
           id,
         },
-        // callback: ( response )=>{
-        //   const {
-        //     location,
-        //     dispatch,
-        //   } = this.props;
-
-        //   const {
-        //     query: { id },
-        //   } = location;
-        //   dispatch({
-        //     type: 'user/fetchUserById',
-        //     payload: {
-        //       id,
-        //     },
-        //   });
-        // },
       });
     } else {
       dispatch({
@@ -141,22 +125,6 @@ class Center extends Component {
         payload: {
           followUser: id,
         },
-        // callback: ( response )=>{
-        //   const {
-        //     location,
-        //     dispatch,
-        //   } = this.props;
-
-        //   const {
-        //     query: { id },
-        //   } = location;
-        //   dispatch({
-        //     type: 'user/fetchUserById',
-        //     payload: {
-        //       id,
-        //     },
-        //   });
-        // },
       });
     }
   };

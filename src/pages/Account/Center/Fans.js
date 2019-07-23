@@ -43,15 +43,14 @@ class Fans extends Component {
 
     let currentPage = meta ? meta.pagination.current + 1 : 1;
     currentPage = resetPool ? 1 : currentPage;
-    const payload = {
-      sorter: 'updated_at_desc',
-      currentPage,
-      followUserId: id,
-    };
 
     dispatch({
       type: 'follow/fetchFans',
-      payload,
+      payload: {
+        sorter: 'updated_at_desc',
+        currentPage,
+        followUserId: id,
+      },
     });
   };
 
