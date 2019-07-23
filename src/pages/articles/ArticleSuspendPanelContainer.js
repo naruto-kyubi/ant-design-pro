@@ -3,16 +3,17 @@ import { connect } from 'dva';
 import ArticleSuspendPanel from './components/ArticleSuspendPanel';
 import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
 
-@connect(({ article, star }) => ({
+@connect(({ article, star, like }) => ({
   article,
   star: star.star,
+  like: like.like,
 }))
 class ArticleSuspendPanelContainer extends PureComponent {
   componentDidMount() {
     const { id, dispatch } = this.props;
 
     dispatch({
-      type: 'article/fetchArticleLikeById',
+      type: 'like/fetchArticleLikeById',
       payload: {
         targetId: id,
       },
@@ -37,7 +38,7 @@ class ArticleSuspendPanelContainer extends PureComponent {
     if (type === 'like') {
       if (!selected) {
         dispatch({
-          type: 'article/addLike',
+          type: 'like/addLike',
           payload: {
             type: 'article',
             targetId: id,
@@ -45,7 +46,7 @@ class ArticleSuspendPanelContainer extends PureComponent {
         });
       } else {
         dispatch({
-          type: 'article/deleteLike',
+          type: 'like/deleteLike',
           payload: {
             type: 'article',
             targetId: id,
@@ -72,11 +73,9 @@ class ArticleSuspendPanelContainer extends PureComponent {
   };
 
   render() {
-    const { article, star } = this.props;
+    const { article, star, like } = this.props;
     const {
       articleDetail: { data },
-      // like,
-      // star,
     } = article;
 
     if (!data) {
@@ -84,11 +83,8 @@ class ArticleSuspendPanelContainer extends PureComponent {
     }
     const { commentCount } = data;
 
-    const { like } = article;
-
     const { data: likeData } = like;
     if (!likeData) return null;
-    if (!star) return null;
 
     const { data: starData } = star;
     if (!starData) return null;

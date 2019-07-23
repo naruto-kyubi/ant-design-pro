@@ -8,8 +8,9 @@ import {
 export default {
   namespace: 'star',
   state: {
-    starList: {},
-    starPool: [],
+    // starList: {},
+    // starPool: [],
+    stars: {},
     star: {},
   },
 
@@ -25,7 +26,7 @@ export default {
     *fetchStarList({ payload }, { call, put }) {
       const response = yield call(queryStarList, payload);
       yield put({
-        type: 'setStarList',
+        type: 'setStars',
         payload: response,
       });
     },
@@ -52,20 +53,36 @@ export default {
       return { ...state, ...action.payload };
     },
 
-    setStarList(state, action) {
+    setStars(state, action) {
       const {
         meta: {
           pagination: { current },
         },
       } = action.payload;
-      const starPool =
-        current === 1 ? [...action.payload.data] : [...state.starPool, ...action.payload.data];
+
+      const {
+        stars: { data },
+      } = state;
+      const d = current === 1 ? [...action.payload.data] : [...data, ...action.payload.data];
 
       return {
         ...state,
-        starList: action.payload,
-        starPool,
+        stars: { ...action.payload, data: d },
       };
+
+      //   const {
+      //     meta: {
+      //       pagination: { current },
+      //     },
+      //   } = action.payload;
+      //   const starPool =
+      //     current === 1 ? [...action.payload.data] : [...state.starPool, ...action.payload.data];
+
+      //   return {
+      //     ...state,
+      //     starList: action.payload,
+      //     starPool,
+      //   };
     },
   },
 };

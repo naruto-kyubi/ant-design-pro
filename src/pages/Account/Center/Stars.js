@@ -42,21 +42,13 @@ class Stars extends Component {
 
   queryStars = resetPool => {
     const {
-      // match: {
-      //   params: { id },
-      // },
       dispatch,
-      location,
-      star: {
-        starList: { meta },
+      location: {
+        query: { id },
       },
-    } = this.props;
-
-    const {
-      query: { id },
-    } = location;
-
-    const {
+      star: {
+        stars: { meta },
+      },
       user: { currentUser },
     } = this.props;
     let uid;
@@ -85,7 +77,7 @@ class Stars extends Component {
   hasMore = () => {
     const {
       star: {
-        starList: { meta },
+        stars: { meta },
       },
     } = this.props;
     return meta
@@ -94,20 +86,22 @@ class Stars extends Component {
   };
 
   render() {
-    const { star } = this.props;
-    if (!star) return null;
-    const { starPool } = star;
-    if (!starPool) return null;
-    const hasMore = this.hasMore();
+    const {
+      star: {
+        stars: { data },
+      },
+    } = this.props;
 
-    const stars = starPool.map(item => {
+    if (!data) return null;
+
+    const v = data.map(item => {
       const { article: ar } = item;
       return ar;
     });
 
     return (
       <GridContent>
-        <ArticleList data={stars} loadMore={this.loadMore} hasMore={hasMore} />
+        <ArticleList data={v} loadMore={this.loadMore} hasMore={this.hasMore()} />
       </GridContent>
     );
   }
