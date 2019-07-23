@@ -5,7 +5,7 @@ import TagList from './components/TagList';
 @connect(({ tag }) => ({
   tag,
 }))
-class UserTags extends PureComponent {
+class Subscribed extends PureComponent {
   componentDidMount() {
     this.query(true);
   }
@@ -94,4 +94,4 @@ class UserTags extends PureComponent {
   }
 }
 
-export default UserTags;
+export default Subscribed;

@@ -12,8 +12,8 @@ class Tag extends Component {
       case 'all':
         router.push(`${match.url}/all`);
         break;
-      case 'usertags':
-        router.push(`${match.url}/usertags`);
+      case 'subscribed':
+        router.push(`${match.url}/subscribed`);
         break;
 
       default:
@@ -26,7 +26,7 @@ class Tag extends Component {
 
     const operationTabList = [
       {
-        key: 'usertags',
+        key: 'subscribed',
         tab: (
           <span>
             <span style={{ fontSize: 14 }}>已关注标签</span>

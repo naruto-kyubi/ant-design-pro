@@ -23,7 +23,7 @@ class Articles extends PureComponent {
     this.setState({ catalog: e.key }, () => {
       if (e.key === 'tags') {
         // nav to user-tag-page
-        router.push('/tags/usertags');
+        router.push('/tags/subscribed');
       } else {
         this.queryArticles(true);
       }

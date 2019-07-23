@@ -388,8 +388,8 @@ export default [
             component: './tags/All.js',
           },
           {
-            path: '/tags/usertags',
-            component: './tags/UserTags.js',
+            path: '/tags/subscribed',
+            component: './tags/Subscribed.js',
           },
         ],
       },
