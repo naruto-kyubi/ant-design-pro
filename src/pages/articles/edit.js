@@ -23,7 +23,13 @@ class EditArticle extends PureComponent {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {
+      dispatch,
+      match: {
+        params: { id },
+      },
+    } = this.props;
+
     dispatch({
       type: 'article/fetchCatalog',
       payload: {
@@ -37,9 +43,16 @@ class EditArticle extends PureComponent {
       },
     });
 
+    if (id) {
+      dispatch({
+        type: 'article/editArticle',
+        payload: { id },
+      });
+    }
+
     this.getDraftList();
 
-    this.saveJob = window.setInterval(this.saveArticle, 10000);
+    this.saveJob = window.setInterval(() => this.saveArticle('draft'), 10000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -97,18 +110,18 @@ class EditArticle extends PureComponent {
       message.warning('请登录后发表');
       return;
     }
-
-    if (status !== 'waitingForSave') return;
+    if (status !== 'waitingForSave' && state === 'draft') return;
     const values = form.getFieldsValue();
     const payload = {
       id: values.id,
       catalogId: values.catalogId,
       title: values.title,
       tags: values.tags,
+      publishedVersion: values.publishedVersion,
       content: editorState.toRAW(),
       contentHtml: editorState.toHTML(),
       owner: user.currentUser.id,
-      status: state || 'draft',
+      status: state,
     };
     const { dispatch } = this.props;
     this.setState({ status: 'saved' });
@@ -196,6 +209,7 @@ class EditArticle extends PureComponent {
           title: '',
           id: null,
           tags: [],
+          publishedVersion: null,
         };
 
     const { Option } = Select;
@@ -280,6 +294,11 @@ class EditArticle extends PureComponent {
               {getFieldDecorator('id', {
                 initialValue: currentAticle.id,
               })(<Input placeholder="id" value={currentAticle.id} />)}
+            </FormItem>
+            <FormItem style={{ display: 'none' }}>
+              {getFieldDecorator('publishedVersion', {
+                initialValue: currentAticle.publishedVersion,
+              })(<Input placeholder="publishedVersion" value={currentAticle.publishedVersion} />)}
             </FormItem>
             <FormItem label="板块">
               {getFieldDecorator('catalogId', {

@@ -18,6 +18,7 @@ import {
   queryHotList,
   queryFollowArticleList,
   queryDraftList,
+  queryDraftById,
 } from '@/pages/articles/services/article';
 
 import { routerRedux } from 'dva/router';
@@ -131,16 +132,31 @@ export default {
     *saveArticle({ payload }, { call, put }) {
       const response = yield call(saveArticle, payload);
 
-      // const {
-      //   data: { id },
-      // } = response;
-      //    yield put(routerRedux.replace(`/articles/${id}`));
+      const {
+        data: { id, status },
+      } = response;
+
+      if (status === 'publish') {
+        yield put(routerRedux.replace(`/articles/${id}`));
+      }
+
       yield put({
         type: 'setState',
         payload: {
           articleDetail: response,
         },
       });
+    },
+
+    *editArticle({ payload }, { call, put }) {
+      const response = yield call(queryDraftById, payload);
+      yield put({
+        type: 'setState',
+        payload: {
+          articleDetail: response,
+        },
+      });
+      yield put(routerRedux.replace(`/articles/edit`));
     },
 
     // eslint-disable-next-line no-unused-vars
