@@ -6,13 +6,6 @@ import {
   queryCatalog,
   queryCommentList,
   addCommnet,
-  queryArticleLikeById,
-  addLike,
-  deleteLike,
-  queryArticleStarById,
-  queryStarList,
-  addStar,
-  deleteStar,
   queryTag,
   querySearchList,
   queryHotList,
@@ -35,12 +28,6 @@ export default {
     catalog: {},
     commentList: {},
     commentPool: [],
-    like: {},
-    starList: {},
-    starPool: [],
-
-    star: {},
-    // follow: {},
     tag: {},
   },
 
@@ -178,62 +165,6 @@ export default {
       });
     },
 
-    *fetchArticleLikeById({ payload }, { call, put }) {
-      const response = yield call(queryArticleLikeById, payload);
-      yield put({
-        type: 'setState',
-        payload: { like: response },
-      });
-    },
-
-    *addLike({ payload }, { call, put }) {
-      const response = yield call(addLike, payload);
-      yield put({
-        type: 'setState',
-        payload: { like: response },
-      });
-    },
-
-    *deleteLike({ payload }, { call, put }) {
-      const response = yield call(deleteLike, payload);
-      yield put({
-        type: 'setState',
-        payload: { like: response },
-      });
-    },
-
-    *fetchArticleStarById({ payload }, { call, put }) {
-      const response = yield call(queryArticleStarById, payload);
-      yield put({
-        type: 'setState',
-        payload: { star: response },
-      });
-    },
-
-    *fetchStarList({ payload }, { call, put }) {
-      const response = yield call(queryStarList, payload);
-      yield put({
-        type: 'setStarList',
-        payload: response,
-      });
-    },
-
-    *addStar({ payload }, { call, put }) {
-      const response = yield call(addStar, payload);
-      yield put({
-        type: 'setState',
-        payload: { star: response },
-      });
-    },
-
-    *deleteStar({ payload }, { call, put }) {
-      const response = yield call(deleteStar, payload);
-      yield put({
-        type: 'setState',
-        payload: { star: response },
-      });
-    },
-
     *fetchSearchList({ payload }, { call, put }) {
       const response = yield call(querySearchList, payload);
       yield put({
@@ -283,22 +214,6 @@ export default {
       return {
         ...state,
         followArticleList: { ...action.payload, data: d },
-      };
-    },
-
-    setStarList(state, action) {
-      const {
-        meta: {
-          pagination: { current },
-        },
-      } = action.payload;
-      const starPool =
-        current === 1 ? [...action.payload.data] : [...state.starPool, ...action.payload.data];
-
-      return {
-        ...state,
-        starList: action.payload,
-        starPool,
       };
     },
 

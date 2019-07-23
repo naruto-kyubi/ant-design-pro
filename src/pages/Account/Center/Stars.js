@@ -3,8 +3,8 @@ import { connect } from 'dva';
 import ArticleList from '@/pages/articles/components/ArticleList';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 
-@connect(({ article, user }) => ({
-  article,
+@connect(({ star, user }) => ({
+  star,
   user,
 }))
 class Stars extends Component {
@@ -28,7 +28,7 @@ class Stars extends Component {
     const userId = id || uid;
 
     dispatch({
-      type: 'article/fetchStarList',
+      type: 'star/fetchStarList',
       payload: {
         userId,
         sorter: 'updatedAt_desc',
@@ -42,21 +42,13 @@ class Stars extends Component {
 
   queryStars = resetPool => {
     const {
-      // match: {
-      //   params: { id },
-      // },
       dispatch,
-      location,
-      article: {
-        starList: { meta },
+      location: {
+        query: { id },
       },
-    } = this.props;
-
-    const {
-      query: { id },
-    } = location;
-
-    const {
+      star: {
+        stars: { meta },
+      },
       user: { currentUser },
     } = this.props;
     let uid;
@@ -77,15 +69,15 @@ class Stars extends Component {
     };
 
     dispatch({
-      type: 'article/fetchStarList',
+      type: 'star/fetchStarList',
       payload,
     });
   };
 
   hasMore = () => {
     const {
-      article: {
-        starList: { meta },
+      star: {
+        stars: { meta },
       },
     } = this.props;
     return meta
@@ -94,20 +86,22 @@ class Stars extends Component {
   };
 
   render() {
-    const { article } = this.props;
-    if (!article) return null;
-    const { starPool } = article;
-    if (!starPool) return null;
-    const hasMore = this.hasMore();
+    const {
+      star: {
+        stars: { data },
+      },
+    } = this.props;
 
-    const stars = starPool.map(item => {
+    if (!data) return null;
+
+    const v = data.map(item => {
       const { article: ar } = item;
       return ar;
     });
 
     return (
       <GridContent>
-        <ArticleList data={stars} loadMore={this.loadMore} hasMore={hasMore} />
+        <ArticleList data={v} loadMore={this.loadMore} hasMore={this.hasMore()} />
       </GridContent>
     );
   }
