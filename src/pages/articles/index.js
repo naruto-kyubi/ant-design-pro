@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Card, Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
 import Catalog from './catalog';
@@ -87,11 +87,11 @@ class Articles extends PureComponent {
             <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={hasMore} />
           </Col>
           <Col lg={7} md={24}>
-            <Card bordered={false} style={{ marginBottom: 24 }}>
+            {/* <Card bordered={false} style={{ marginBottom: 24 }}>
               <Button type="primary" icon="edit" onClick={this.addArticle}>
                 发表新帖
               </Button>
-            </Card>
+            </Card> */}
             <HotArticleList />
           </Col>
         </Row>

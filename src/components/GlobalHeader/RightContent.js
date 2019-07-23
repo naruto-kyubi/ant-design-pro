@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'dva';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
-import { Tag, Menu, Icon, Avatar, Tooltip, message } from 'antd';
+import { Tag, Menu, Icon, Avatar, message, Button } from 'antd';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import Link from 'umi/link';
@@ -11,7 +12,8 @@ import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
 
-export default class GlobalHeaderRight extends PureComponent {
+@connect()
+class GlobalHeaderRight extends PureComponent {
   getNoticeData() {
     const { notices = [] } = this.props;
     if (notices.length === 0) {
@@ -42,6 +44,14 @@ export default class GlobalHeaderRight extends PureComponent {
     });
     return groupBy(newNotices, 'type');
   }
+
+  addArticle = () => {
+    // router.push('/articles/edit');
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'article/new',
+    });
+  };
 
   getUnreadData = noticeData => {
     const unreadMsg = {};
@@ -107,6 +117,15 @@ export default class GlobalHeaderRight extends PureComponent {
     }
     return (
       <div className={className}>
+        <Button
+          type="primary"
+          shape="round"
+          style={{ backgroundColor: '#13baba', border: '0px' }}
+          icon="edit"
+          onClick={this.addArticle}
+        >
+          发表文章
+        </Button>
         <HeaderSearch
           open="true"
           className={`${styles.action} ${styles.search}`}
@@ -126,7 +145,8 @@ export default class GlobalHeaderRight extends PureComponent {
             this.handSearch(value);
           }}
         />
-        <Tooltip title={formatMessage({ id: 'component.globalHeader.help' })}>
+
+        {/* <Tooltip title={formatMessage({ id: 'component.globalHeader.help' })}>
           <a
             target="_blank"
             href="https://pro.ant.design/docs/getting-started"
@@ -135,7 +155,7 @@ export default class GlobalHeaderRight extends PureComponent {
           >
             <Icon type="question-circle-o" />
           </a>
-        </Tooltip>
+        </Tooltip> */}
         {currentUser.nickname ? (
           <NoticeIcon
             className={styles.action}
@@ -209,3 +229,5 @@ export default class GlobalHeaderRight extends PureComponent {
     );
   }
 }
+
+export default GlobalHeaderRight;

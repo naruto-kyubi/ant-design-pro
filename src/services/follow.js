@@ -7,7 +7,7 @@ export async function queryFollows(payload) {
 
 export async function queryFollow(payload) {
   const { id } = payload;
-  return request(`/server/api/v1/follows/${id}`);
+  return request(`/server/api/v1/user/follow/${id}`);
 }
 
 export async function addFollow(payload) {

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Card, Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
 
@@ -73,11 +73,6 @@ class FollowArticles extends PureComponent {
             <ArticleList data={data} loadMore={this.loadMore} hasMore={hasMore} />
           </Col>
           <Col lg={7} md={24}>
-            <Card bordered={false} style={{ marginBottom: 24 }}>
-              <Button type="primary" icon="edit" onClick={this.addArticle}>
-                发表新帖
-              </Button>
-            </Card>
             <HotArticleList />
           </Col>
         </Row>
