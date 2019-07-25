@@ -221,7 +221,8 @@ class Center extends Component {
                     </p> */}
                     <p>
                       <i className={styles.address} />
-                      {currentUser.geographic.province.label}-{currentUser.geographic.city.label}
+                      {currentUser.geographic &&
+                        `${currentUser.geographic.province.label} - ${currentUser.geographic.city.label}`}
                     </p>
                   </div>
                   <div style={{ width: '100%', textAlign: 'center', marginTop: '10px' }}>
