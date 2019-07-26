@@ -16,7 +16,7 @@ class Articles extends PureComponent {
   };
 
   componentDidMount() {
-    this.queryArticles();
+    this.queryArticles(true);
   }
 
   handleClick = e => {
