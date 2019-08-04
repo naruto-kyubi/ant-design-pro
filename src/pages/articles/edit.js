@@ -3,12 +3,30 @@ import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import { connect } from 'dva';
 import { Card, Button, Form, Input, message, TreeSelect, Upload, Icon, Select } from 'antd';
 import BraftEditor from 'braft-editor';
+import Table from 'braft-extensions/dist/table';
+import Markdown from 'braft-extensions/dist/markdown';
 import { ContentUtils } from 'braft-utils';
 import DraftBox from './components/DraftBox';
 
 import 'braft-editor/dist/index.css';
+import 'braft-extensions/dist/table.css';
 
 import styles from './edit.less';
+
+const tableOptions = {
+  defaultColumns: 3, // 默认列数
+  defaultRows: 3, // 默认行数
+  withDropdown: false, // 插入表格前是否弹出下拉菜单
+  exportAttrString: '', // 指定输出HTML时附加到table标签上的属性字符串
+  includeEditors: ['articleEditor'],
+};
+
+const markdownOptions = {
+  includeEditors: ['articleEditor'],
+};
+
+BraftEditor.use(Table(tableOptions));
+BraftEditor.use(Markdown(markdownOptions));
 
 @connect(({ article, user, loading, drafList }) => ({
   article,
@@ -225,16 +243,16 @@ class EditArticle extends PureComponent {
       disabled: false,
     }));
 
-    const controls = [
-      'bold',
-      'italic',
-      'underline',
+    const excludeControls = [
+      'strike-through',
+      'superscript',
+      'subscript',
       'text-color',
+      'remove-styles',
+      'media',
       'separator',
-      'link',
+      'clear',
       'separator',
-      'code',
-      'blockquote',
     ];
 
     const uploadProps = {
@@ -350,9 +368,11 @@ class EditArticle extends PureComponent {
               })(<Input placeholder="标题，一句话说明您要发表的内容" />)}
             </FormItem>
             <BraftEditor
+              id="articleEditor"
               contentStyle={{ height: 700 }}
               style={{ border: '1px solid #D9D9D9' }}
-              controls={controls}
+              // controls={controls}
+              excludeControls={excludeControls}
               extendControls={extendControls}
               value={editorState}
               onChange={this.handleChange}

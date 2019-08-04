@@ -1,0 +1,13 @@
+table,td,th
+{
+	border:1px solid LightGray;
+	border-collapse:collapse;
+}
+table
+{
+	width:100%;
+}
+th,td
+{
+	height:30px;
+}

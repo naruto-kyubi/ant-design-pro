@@ -6,6 +6,7 @@ import router from 'umi/router';
 import styles from './ArticleContent.less';
 
 import 'braft-editor/dist/output.css';
+import './table.css';
 
 import FollowButton from './FollowButton';
 
@@ -104,6 +105,9 @@ class ArticleContent extends PureComponent {
 
     return (
       <div className={styles.articleContent}>
+        <div>
+          <div className={styles.title}>{title}</div>
+        </div>
         <div className={styles.title}>
           <div className={styles.avatar}>
             <Avatar
@@ -134,9 +138,6 @@ class ArticleContent extends PureComponent {
               ) : null}
             </div>
           </div>
-        </div>
-        <div>
-          <div className={styles.title}>{title}</div>
         </div>
         <div className="braft-output-content" dangerouslySetInnerHTML={{ __html: content }} />
       </div>
