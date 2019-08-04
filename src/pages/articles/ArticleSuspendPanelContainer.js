@@ -95,6 +95,7 @@ class ArticleSuspendPanelContainer extends PureComponent {
     const v = [
       {
         type: 'like',
+        key: 'like',
         title: '喜欢',
         count: likeCount_,
         selected: !!like_,
@@ -102,6 +103,7 @@ class ArticleSuspendPanelContainer extends PureComponent {
       },
       {
         type: 'star',
+        key: 'star',
         title: '收藏',
         count: startCount_,
         selected: !!star_,
@@ -109,6 +111,7 @@ class ArticleSuspendPanelContainer extends PureComponent {
       },
       {
         type: 'message',
+        key: 'message',
         title: '评论',
         count: commentCount,
         selected: false,
@@ -116,6 +119,7 @@ class ArticleSuspendPanelContainer extends PureComponent {
       },
       {
         type: 'weibo',
+        key: 'weibo',
         title: '微博',
         count: 0,
         selected: false,
@@ -123,6 +127,7 @@ class ArticleSuspendPanelContainer extends PureComponent {
       },
       {
         type: 'wechat',
+        key: 'wechat',
         title: '微信',
         count: 0,
         selected: false,
