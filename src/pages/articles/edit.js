@@ -217,7 +217,7 @@ class EditArticle extends PureComponent {
       },
     } = this.props;
 
-    if (!catalog || !tags) return null;
+    if (!catalog || !tags || (data && data.status === 'publish')) return null;
 
     const currentAticle = data
       ? { ...data, tags: data.tags ? data.tags.map(item => item.id) : [] }
