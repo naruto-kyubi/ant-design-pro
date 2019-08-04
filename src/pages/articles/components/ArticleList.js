@@ -79,7 +79,7 @@ class ArticleList extends PureComponent {
                   description={
                     <span>
                       {/* {item.tags && item.tags.map(tag => <Tag color={tag.color}>{tag.name}</Tag>)} */}
-                      {item.tags && item.tags.map(tag => <Tag>{tag.name}</Tag>)}
+                      {item.tags && item.tags.map(tag => <Tag key={tag.id}>{tag.name}</Tag>)}
                     </span>
                   }
                 />
