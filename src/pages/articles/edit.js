@@ -253,6 +253,11 @@ class EditArticle extends PureComponent {
       'separator',
       'clear',
       'separator',
+      'underline',
+      'letter-spacing',
+      'emoji',
+      'hr',
+      'line-height',
     ];
 
     const uploadProps = {
