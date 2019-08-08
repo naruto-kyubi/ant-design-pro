@@ -205,7 +205,7 @@ class Register extends Component {
         <h3>
           <FormattedMessage id="app.register.register" />
         </h3>
-        {register.status === 'fail' && operator && this.renderMessage(register.data.errCode)}
+        {register.status === 'fail' && operator && this.renderMessage(register.error.errCode)}
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
             {/* getFieldDecorator('mail', {

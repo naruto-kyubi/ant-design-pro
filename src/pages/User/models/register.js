@@ -8,18 +8,20 @@ export default {
   state: {
     status: undefined,
     data: undefined,
+    error: undefined,
   },
 
   effects: {
     *submit({ payload }, { call, put }) {
       // const response = yield call(fakeRegister, payload);
       const response = yield call(register, payload);
-      const { status, data } = response;
+      const { status, data, error } = response;
       yield put({
         type: 'registerHandle',
         payload: {
           status,
           data,
+          error,
         },
       });
     },
