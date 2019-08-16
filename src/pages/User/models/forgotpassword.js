@@ -1,4 +1,5 @@
 import { getForgotpasswordCaptcha, resetPassword } from '@/services/api';
+import { routerRedux } from 'dva/router';
 
 export default {
   namespace: 'forgotpassword',
@@ -6,31 +7,37 @@ export default {
   state: {
     status: undefined,
     data: undefined,
+    error: undefined,
   },
 
   effects: {
     *submit({ payload }, { call, put }) {
       const response = yield call(resetPassword, payload);
-      const { status, data } = response;
+      const { status, data, error } = response;
       yield put({
-        type: 'resetPasswordHandle',
+        type: 'resetPassword',
         payload: {
           status,
           data,
+          error,
         },
       });
+      if (status === 'ok') {
+        yield put(routerRedux.replace(`/user/login`, { account: data.mobile }));
+      }
     },
 
     *getForgotpasswordCaptcha({ payload }, { call, put }) {
       const { mobile } = payload;
       const response = yield call(getForgotpasswordCaptcha, mobile);
 
-      const { status, data } = response;
+      const { status, data, error } = response;
       yield put({
         type: 'captchaHandler',
         payload: {
           status,
           data,
+          error,
         },
       });
     },
@@ -44,7 +51,7 @@ export default {
       };
     },
 
-    resetPasswordHandler(state, { payload }) {
+    resetPassword(state, { payload }) {
       return {
         ...state,
         ...payload,

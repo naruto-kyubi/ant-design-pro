@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-// import Link from 'umi/link';
-import router from 'umi/router';
 import { Form, Input, Button, Select, Row, Col, Popover, Progress, Alert } from 'antd';
 import styles from './Register.less';
 
@@ -46,22 +44,7 @@ class Forgotpassword extends Component {
     visible: false,
     help: '',
     prefix: '86',
-    operator: undefined,
   };
-
-  componentDidUpdate() {
-    const { form, forgotpassword } = this.props;
-    const { operator } = this.state;
-    const account = form.getFieldValue('mail');
-    if (forgotpassword.status === 'ok' && operator === 'submit') {
-      router.push({
-        pathname: '/user/login',
-        state: {
-          account,
-        },
-      });
-    }
-  }
 
   componentWillUnmount() {
     clearInterval(this.interval);
@@ -71,7 +54,6 @@ class Forgotpassword extends Component {
     const { form, dispatch } = this.props;
     const mobile = form.getFieldValue('mobile');
 
-    this.setState({ operator: 'getForgotpasswordCaptcha' });
     dispatch({
       type: 'forgotpassword/getForgotpasswordCaptcha',
       payload: {
@@ -108,8 +90,6 @@ class Forgotpassword extends Component {
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
         const { prefix } = this.state;
-        this.setState({ operator: 'submit' });
-
         dispatch({
           type: 'forgotpassword/submit',
           payload: {
@@ -206,7 +186,7 @@ class Forgotpassword extends Component {
         <h3>
           <FormattedMessage id="app.login.forgotpassword" />
         </h3>
-        {forgotpassword.status === 'fail' && this.renderAlert(forgotpassword.data.errCode)}
+        {forgotpassword.status === 'fail' && this.renderAlert(forgotpassword.error.errCode)}
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
             <InputGroup compact>
