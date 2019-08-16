@@ -6,6 +6,7 @@ import Catalog from './catalog';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import HotArticleList from './hotList';
 import ArticleList from './components/ArticleList';
+import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
 
 @connect(({ article }) => ({
   article,
@@ -22,6 +23,9 @@ class Articles extends PureComponent {
   handleClick = e => {
     this.setState({ catalog: e.key }, () => {
       if (e.key === 'tags') {
+        if (AuthorizationUtils.check2login()) {
+          return;
+        }
         // nav to user-tag-page
         router.push('/tags/subscribed');
       } else {

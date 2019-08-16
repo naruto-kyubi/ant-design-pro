@@ -11,6 +11,7 @@ import HeaderSearch from '../HeaderSearch';
 import HeaderDropdown from '../HeaderDropdown';
 import SelectLang from '../SelectLang';
 import styles from './index.less';
+import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
 
 @connect()
 class GlobalHeaderRight extends PureComponent {
@@ -46,6 +47,9 @@ class GlobalHeaderRight extends PureComponent {
   }
 
   addArticle = () => {
+    if (AuthorizationUtils.check2login()) {
+      return;
+    }
     // router.push('/articles/edit');
     const { dispatch } = this.props;
     dispatch({
