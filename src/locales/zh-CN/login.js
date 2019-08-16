@@ -47,6 +47,7 @@ export default {
   'captcha.incorrect.exception': '验证码错误',
   'captcha.timeout.exception': '验证码超时',
   'user.exist.exception': '手机号已被使用',
+  'user.not.exist.exception': '手机号未注册',
   'nickname.exist.exception': '该昵称已被使用',
   'form.nickname.placeholder': '昵称',
   'app.login.forgotpassword': '请输入你注册时填写的手机号',
