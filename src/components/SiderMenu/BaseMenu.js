@@ -7,6 +7,7 @@ import { getMenuMatches } from './SiderMenuUtils';
 import { isUrl } from '@/utils/utils';
 import styles from './index.less';
 import IconFont from '@/components/IconFont';
+import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
 
 const { SubMenu } = Menu;
 
@@ -83,7 +84,7 @@ export default class BaseMenu extends PureComponent {
    * @memberof SiderMenu
    */
   getMenuItemPath = item => {
-    const { name } = item;
+    const { name, code } = item;
     const itemPath = this.conversionPath(item.path);
     const icon = getIcon(item.icon);
     const { target } = item;
@@ -107,7 +108,13 @@ export default class BaseMenu extends PureComponent {
             ? () => {
                 onCollapse(true);
               }
-            : undefined
+            : e => {
+                if (code) {
+                  if (AuthorizationUtils.check2login()) {
+                    e.preventDefault();
+                  }
+                }
+              }
         }
       >
         {icon}
