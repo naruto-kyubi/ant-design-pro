@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link';
-import router from 'umi/router';
 import { Form, Input, Button, Select, Row, Col, Popover, Progress, Alert } from 'antd';
 import styles from './Register.less';
 
@@ -46,32 +45,15 @@ class Register extends Component {
     visible: false,
     help: '',
     prefix: '86',
-    operator: undefined,
   };
-
-  componentDidUpdate() {
-    const { form, register, submitting } = this.props;
-    const { operator } = this.state;
-    const account = form.getFieldValue('mobile');
-    if (!submitting && register.status === 'ok' && operator === 'submit') {
-      router.push({
-        pathname: '/user/register-result',
-        state: {
-          account,
-        },
-      });
-    }
-  }
 
   componentWillUnmount() {
     clearInterval(this.interval);
   }
 
-  onGetCaptcha = () => {
+  getCaptcha = () => {
     const { form, dispatch } = this.props;
     const mobile = form.getFieldValue('mobile');
-
-    this.setState({ operator: 'getRegisterCaptcha' });
     dispatch({
       type: 'register/getRegisterCaptcha',
       payload: {
@@ -115,7 +97,6 @@ class Register extends Component {
             prefix,
           },
         });
-        this.setState({ operator: 'submit' });
       }
     });
   };
@@ -199,13 +180,13 @@ class Register extends Component {
   render() {
     const { form, submitting, register } = this.props;
     const { getFieldDecorator } = form;
-    const { count, prefix, help, visible, operator } = this.state;
+    const { count, prefix, help, visible } = this.state;
     return (
       <div className={styles.main}>
         <h3>
           <FormattedMessage id="app.register.register" />
         </h3>
-        {register.status === 'fail' && operator && this.renderMessage(register.error.errCode)}
+        {register.status === 'fail' && this.renderMessage(register.error.errCode)}
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
             {/* getFieldDecorator('mail', {
@@ -339,7 +320,7 @@ class Register extends Component {
                   size="large"
                   disabled={count}
                   className={styles.getCaptcha}
-                  onClick={this.onGetCaptcha}
+                  onClick={this.getCaptcha}
                 >
                   {count
                     ? `${count} s`
