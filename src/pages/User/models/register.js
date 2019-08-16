@@ -2,6 +2,8 @@ import { register, getRegisterCaptcha } from '@/services/api';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
 
+import { routerRedux } from 'dva/router';
+
 export default {
   namespace: 'register',
 
@@ -24,6 +26,9 @@ export default {
           error,
         },
       });
+      if (status === 'ok') {
+        yield put(routerRedux.replace(`/user/register-result`, { account: data.mobile }));
+      }
     },
 
     *getRegisterCaptcha({ payload }, { call, put }) {
