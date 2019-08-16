@@ -9,6 +9,7 @@ import 'braft-editor/dist/output.css';
 import './table.css';
 
 import FollowButton from './FollowButton';
+import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
 
 @connect(({ user, follow }) => ({
   user,
@@ -36,6 +37,9 @@ class ArticleContent extends PureComponent {
   };
 
   onFollowClick = follow => {
+    if (AuthorizationUtils.check2login()) {
+      return;
+    }
     const {
       dispatch,
       article: {
