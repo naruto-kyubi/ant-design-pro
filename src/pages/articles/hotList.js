@@ -39,6 +39,9 @@ class HotArticleList extends PureComponent {
   render() {
     const { article } = this.props;
     const { hotList } = article;
+    const articleList = hotList.map(item => {
+      return item.article;
+    });
     return (
       <Card bordered={false} style={{ marginBottom: 24 }} title="本周热议">
         <List
@@ -46,7 +49,7 @@ class HotArticleList extends PureComponent {
           className={styles.articleList}
           rowKey="id"
           itemLayout="vertical"
-          dataSource={hotList}
+          dataSource={articleList}
           renderItem={item => (
             <List.Item key={item.id}>
               <ArticleListContent data={this.getTitle(item)} />
