@@ -345,10 +345,10 @@ export default [
             path: '/articles',
             component: './articles/index.js',
           },
-          {
-            path: '/articles/follows',
-            component: './articles/follows.js',
-          },
+          // {
+          //   path: '/articles/follows',
+          //   component: './articles/follows.js',
+          // },
           {
             path: '/articles/edit/:id?',
             component: './articles/edit.js',
@@ -390,6 +390,17 @@ export default [
           {
             path: '/tags/subscribed',
             component: './tags/Subscribed.js',
+          },
+        ],
+      },
+      {
+        path: '/follows',
+        name: 'follows',
+        routes: [
+          // exception
+          {
+            path: '/follows/articles',
+            component: './articles/follows.js',
           },
         ],
       },
