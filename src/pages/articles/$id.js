@@ -7,6 +7,7 @@ import ArticleComment from './comment';
 import ArticleSuspendPanelContainer from './ArticleSuspendPanelContainer';
 
 import MoreLikeThisArticle from '@/pages/search/MoreLikeThisArticle';
+import User2ArticleList from './user2articleContainer';
 
 @connect(({ article }) => ({
   article,
@@ -38,9 +39,12 @@ class Article extends PureComponent {
       articleDetail: { data },
     } = article;
 
+
     if (!data) {
       return null;
     }
+
+    const { owner:{id:userId}} = data;
 
     return (
       <div>
@@ -57,11 +61,13 @@ class Article extends PureComponent {
                   <ArticleContent article={data} />
                   <ArticleComment articleId={id} />
                   <MoreLikeThisArticle id={id} />
+                  
                 </div>
               </Card>
             </Col>
             <Col lg={7} md={24}>
               {/* <MoreLikeThisArticle id={id} /> */}
+              <User2ArticleList userId={userId} />
             </Col>
           </Row>
         </GridContent>
