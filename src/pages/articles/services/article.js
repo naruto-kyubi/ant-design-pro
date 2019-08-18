@@ -14,6 +14,11 @@ export async function queryHotList(payload) {
   return request(`/server/api/v1/articles/hot?${stringify(payload)}`);
 }
 
+export async function querUser2ArticleList(payload) {
+  const { userId } = payload;
+  return request(`/server/api/v1/users/${userId}/articles`);
+}
+
 export async function queryArticleById(payload) {
   const { id } = payload;
   return request(`/server/api/v1/articles/${id}`);

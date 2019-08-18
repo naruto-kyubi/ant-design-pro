@@ -3,19 +3,18 @@ import { Card, List } from 'antd';
 import { connect } from 'dva';
 import ArticleListContent from '@/components/ArticleListContent';
 
-import styles from './MoreLikeThisArticle.less';
+import styles from './components/ArticleList.less';
 
-@connect(({ search }) => ({
-  search,
+@connect(({ article }) => ({
+  article,
 }))
-class MoreLikeThisArticle extends PureComponent {
+class User2ArticleList extends PureComponent {
   componentDidMount() {
-    const { id, dispatch } = this.props;
-
+    const { dispatch, userId } = this.props;
     dispatch({
-      type: 'search/searchlike',
+      type: 'article/fetchUser2ArticleList',
       payload: {
-        id,
+        userId,
       },
     });
   }
@@ -25,7 +24,12 @@ class MoreLikeThisArticle extends PureComponent {
     const { nickname, avatar } = owner;
     return {
       content: (
-        <a href={`/articles/${id}`} target="_blank" rel="noopener noreferrer">
+        <a
+          className={styles.listItemMetaTitle}
+          href={`/articles/${id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {title}
         </a>
       ),
@@ -36,18 +40,17 @@ class MoreLikeThisArticle extends PureComponent {
   };
 
   render() {
-    const {
-      search: { searchlikes },
-    } = this.props;
-    if (!searchlikes || searchlikes.length === 0) return null;
+    const { article } = this.props;
+    const { user2ArticleList } = article;
+    if (!user2ArticleList || user2ArticleList.length === 0) return null;
     return (
-      <Card bordered={false} style={{ marginBottom: 24 }} title="相关推荐">
+      <Card bordered={false} style={{ marginBottom: 24 }} title="作者文章">
         <List
           size="large"
           className={styles.articleList}
           rowKey="id"
           itemLayout="vertical"
-          dataSource={searchlikes}
+          dataSource={user2ArticleList}
           renderItem={item => (
             <List.Item key={item.id}>
               <ArticleListContent data={this.getTitle(item)} />
@@ -59,4 +62,4 @@ class MoreLikeThisArticle extends PureComponent {
   }
 }
 
-export default MoreLikeThisArticle;
+export default User2ArticleList;

@@ -9,6 +9,7 @@ import {
   queryTag,
   querySearchList,
   queryHotList,
+  querUser2ArticleList,
   queryFollowArticleList,
   queryDraftList,
   queryDraftById,
@@ -24,6 +25,7 @@ export default {
     articleDetail: {}, // one article
     draftList: {},
     hotList: [],
+    user2ArticleList: [],
     followArticleList: {},
     catalog: {},
     commentList: {},
@@ -73,6 +75,17 @@ export default {
         type: 'setState',
         payload: {
           hotList: data,
+        },
+      });
+    },
+
+    *fetchUser2ArticleList({ payload }, { call, put }) {
+      const response = yield call(querUser2ArticleList, payload);
+      const { data } = response;
+      yield put({
+        type: 'setState',
+        payload: {
+          user2ArticleList: data,
         },
       });
     },
