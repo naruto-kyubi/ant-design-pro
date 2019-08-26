@@ -39,9 +39,11 @@ class HotArticleList extends PureComponent {
   render() {
     const { article } = this.props;
     const { hotList } = article;
+    if (!hotList || hotList.length < 1) return null;
     const articleList = hotList.map(item => {
       return item.article;
     });
+
     return (
       <Card bordered={false} style={{ marginBottom: 24 }} title="本周热议">
         <List
