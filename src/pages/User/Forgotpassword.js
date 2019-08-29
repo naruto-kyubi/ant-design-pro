@@ -50,26 +50,32 @@ class Forgotpassword extends Component {
     clearInterval(this.interval);
   }
 
-  onGetCaptcha = () => {
+  getCaptcha = () => {
     const { form, dispatch } = this.props;
-    const mobile = form.getFieldValue('mobile');
+    // const mobile = form.getFieldValue('mobile');
 
-    dispatch({
-      type: 'forgotpassword/getForgotpasswordCaptcha',
-      payload: {
-        mobile,
-      },
-    });
+    form.validateFields(['mobile'], {}, (err, values) => {
+      if (!err) {
+        const { mobile } = values;
+        dispatch({
+          type: 'forgotpassword/getForgotpasswordCaptcha',
+          payload: {
+            mobile,
+          },
+        });
 
-    let count = 59;
-    this.setState({ count });
-    this.interval = setInterval(() => {
-      count -= 1;
-      this.setState({ count });
-      if (count === 0) {
-        clearInterval(this.interval);
+        let count = 59;
+        this.setState({ count });
+        this.interval = setInterval(() => {
+          count -= 1;
+          this.setState({ count });
+          if (count === 0) {
+            clearInterval(this.interval);
+          }
+        }, 1000);
+        // message.warning(formatMessage({ id: 'app.login.verification-code-warning' }));
       }
-    }, 1000);
+    });
   };
 
   getPasswordStatus = () => {
@@ -241,7 +247,7 @@ class Forgotpassword extends Component {
                   size="large"
                   disabled={count}
                   className={styles.getCaptcha}
-                  onClick={this.onGetCaptcha}
+                  onClick={this.getCaptcha}
                 >
                   {count
                     ? `${count} s`
