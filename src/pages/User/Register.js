@@ -53,23 +53,30 @@ class Register extends Component {
 
   getCaptcha = () => {
     const { form, dispatch } = this.props;
-    const mobile = form.getFieldValue('mobile');
-    dispatch({
-      type: 'register/getRegisterCaptcha',
-      payload: {
-        mobile,
-      },
-    });
+    // const mobile = form.getFieldValue('mobile');
 
-    let count = 59;
-    this.setState({ count });
-    this.interval = setInterval(() => {
-      count -= 1;
-      this.setState({ count });
-      if (count === 0) {
-        clearInterval(this.interval);
+    form.validateFields(['mobile'], {}, (err, values) => {
+      if (!err) {
+        const { mobile } = values;
+        dispatch({
+          type: 'register/getRegisterCaptcha',
+          payload: {
+            mobile,
+          },
+        });
+
+        let count = 59;
+        this.setState({ count });
+        this.interval = setInterval(() => {
+          count -= 1;
+          this.setState({ count });
+          if (count === 0) {
+            clearInterval(this.interval);
+          }
+        }, 1000);
+        // message.warning(formatMessage({ id: 'app.login.verification-code-warning' }));
       }
-    }, 1000);
+    });
   };
 
   getPasswordStatus = () => {
