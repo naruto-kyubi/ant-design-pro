@@ -36,12 +36,13 @@ export default {
       const { mobile } = payload;
       const response = yield call(getRegisterCaptcha, mobile);
 
-      const { status, data } = response;
+      const { status, data, error } = response;
       yield put({
         type: 'captchaHandler',
         payload: {
           status,
           data,
+          error,
         },
       });
     },
