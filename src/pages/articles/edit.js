@@ -247,7 +247,7 @@ class EditArticle extends PureComponent {
       'strike-through',
       'superscript',
       'subscript',
-      'text-color',
+      // 'text-color',
       'remove-styles',
       'media',
       'separator',
