@@ -35,6 +35,7 @@ class ArticleSuspendPanelContainer extends PureComponent {
     const { id, dispatch } = this.props;
 
     const { type, selected } = obj;
+
     if (type === 'like') {
       if (!selected) {
         dispatch({
@@ -69,6 +70,8 @@ class ArticleSuspendPanelContainer extends PureComponent {
           },
         });
       }
+    } else if (type === 'message') {
+      document.querySelector('#Reply').scrollIntoViewIfNeeded();
     }
   };
 

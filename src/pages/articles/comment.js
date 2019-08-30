@@ -121,7 +121,7 @@ class ArticleComment extends React.Component {
 
     const commentCount = this.getCommentCount();
     return (
-      <div>
+      <div id="Reply">
         <Reply
           avatar={avatar}
           submitting={submitting}
