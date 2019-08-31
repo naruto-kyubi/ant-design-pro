@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
-import { Form, Input, Upload, Select, Button, message } from 'antd';
+import { Form, Input, Upload, Select, Button, message, Alert } from 'antd';
 import { connect } from 'dva';
 import styles from './BaseView.less';
 import GeographicView from './GeographicView';
-import PhoneView from './PhoneView';
+// import PhoneView from './PhoneView';
 // import { getTimeDistance } from '@/utils/utils';
 
 const FormItem = Form.Item;
@@ -37,27 +37,27 @@ const AvatarView = ({ avatar, onChange }) => (
   </Fragment>
 );
 
-const validatorGeographic = (rule, value, callback) => {
-  const { province, city } = value;
-  if (!province.key) {
-    callback('Please input your province!');
-  }
-  if (!city.key) {
-    callback('Please input your city!');
-  }
-  callback();
-};
+// const validatorGeographic = (rule, value, callback) => {
+//   const { province, city } = value;
+//   if (!province.key) {
+//     callback('Please input your province!');
+//   }
+//   if (!city.key) {
+//     callback('Please input your city!');
+//   }
+//   callback();
+// };
 
-const validatorPhone = (rule, value, callback) => {
-  const values = value.split('-');
-  if (!values[0]) {
-    callback('Please input your area code!');
-  }
-  if (!values[1]) {
-    callback('Please input your phone number!');
-  }
-  callback();
-};
+// const validatorPhone = (rule, value, callback) => {
+//   const values = value.split('-');
+//   if (!values[0]) {
+//     callback('Please input your area code!');
+//   }
+//   if (!values[1]) {
+//     callback('Please input your phone number!');
+//   }
+//   callback();
+// };
 
 @connect(({ user }) => ({
   currentUser: user.currentUser,
@@ -90,6 +90,15 @@ class BaseView extends Component {
     this.view = ref;
   };
 
+  renderMessage = content => (
+    <Alert
+      style={{ marginBottom: 24 }}
+      message={formatMessage({ id: content })}
+      type="error"
+      showIcon
+    />
+  );
+
   handleSubmit = () => {
     const { form, currentUser, dispatch } = this.props;
     form.validateFields((err, fieldsValue) => {
@@ -102,12 +111,15 @@ class BaseView extends Component {
             ...fieldsValue,
           },
         },
-        callback: status => {
+        callback: (status, error) => {
           if (status && status === 'ok')
             dispatch({
               type: 'user/fetchCurrent',
             });
-          message.success(`Update Information success！`);
+          else {
+            message.error(formatMessage({ id: error.errCode }));
+            //  this.renderMessage(error.errCode);
+          }
         },
       });
     });
@@ -144,7 +156,7 @@ class BaseView extends Component {
               {getFieldDecorator('email', {
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: formatMessage({ id: 'app.settings.basic.email-message' }, {}),
                   },
                 ],
@@ -164,7 +176,7 @@ class BaseView extends Component {
               {getFieldDecorator('profile', {
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: formatMessage({ id: 'app.settings.basic.profile-message' }, {}),
                   },
                 ],
@@ -179,7 +191,7 @@ class BaseView extends Component {
               {getFieldDecorator('country', {
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: formatMessage({ id: 'app.settings.basic.country-message' }, {}),
                   },
                 ],
@@ -193,12 +205,12 @@ class BaseView extends Component {
               {getFieldDecorator('geographic', {
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: formatMessage({ id: 'app.settings.basic.geographic-message' }, {}),
                   },
-                  {
-                    validator: validatorGeographic,
-                  },
+                  // {
+                  //   validator: validatorGeographic,
+                  // },
                 ],
               })(<GeographicView />)}
             </FormItem>
@@ -206,23 +218,23 @@ class BaseView extends Component {
               {getFieldDecorator('address', {
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: formatMessage({ id: 'app.settings.basic.address-message' }, {}),
                   },
                 ],
               })(<Input />)}
             </FormItem>
-            <FormItem label={formatMessage({ id: 'app.settings.basic.phone' })}>
+            {/* <FormItem label={formatMessage({ id: 'app.settings.basic.phone' })}>
               {getFieldDecorator('mobile', {
                 rules: [
                   {
-                    required: true,
+                    required: false,
                     message: formatMessage({ id: 'app.settings.basic.phone-message' }, {}),
                   },
                   { validator: validatorPhone },
                 ],
               })(<PhoneView />)}
-            </FormItem>
+            </FormItem> */}
             <Button type="primary" onClick={this.handleSubmit}>
               <FormattedMessage
                 id="app.settings.basic.update"

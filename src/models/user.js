@@ -101,19 +101,16 @@ export default {
 
     *update({ payload, callback }, { call, put }) {
       const response = yield call(updateUser, payload);
-      const {
-        status,
-        // data,
-      } = response;
+      const { status, error } = response;
 
       yield put({
         type: 'saveHandle',
         payload: {
           status,
-          // data,
+          error,
         },
       });
-      if (callback) callback(status);
+      if (callback) callback(status, error);
     },
 
     *bind({ payload }, { call, put, select }) {
