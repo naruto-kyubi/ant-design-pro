@@ -16,7 +16,7 @@ class User2ArticleList extends PureComponent {
       payload: {
         userId,
         currentPage: 1,
-        // pageSize: 10,
+        sorter: 'updatedAt_desc',
       },
     });
   }
