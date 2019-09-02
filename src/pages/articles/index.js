@@ -38,7 +38,7 @@ class Articles extends PureComponent {
     this.queryArticles();
   };
 
-  queryArticles = resetPool => {
+  queryArticles = resetList => {
     const {
       dispatch,
       article: {
@@ -47,7 +47,7 @@ class Articles extends PureComponent {
     } = this.props;
     const { catalog } = this.state;
     let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = resetPool ? 1 : currentPage;
+    currentPage = resetList ? 1 : currentPage;
     let payload = { sorter: 'updatedAt_desc', currentPage, status_equal: 'publish' };
     if (catalog !== 'recommand') {
       payload = { ...payload, catalogId_equal: catalog };
@@ -78,8 +78,10 @@ class Articles extends PureComponent {
   };
 
   render() {
-    const { article } = this.props;
-    const { articlePool } = article;
+    const {
+      article: { articleList },
+    } = this.props;
+    if (!articleList) return null;
     const hasMore = this.hasMore();
     return (
       <GridContent>
@@ -88,7 +90,7 @@ class Articles extends PureComponent {
         </div>
         <Row gutter={24}>
           <Col lg={17} md={24}>
-            <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={hasMore} />
+            <ArticleList data={articleList.data} loadMore={this.loadMore} hasMore={hasMore} />
           </Col>
           <Col lg={7} md={24}>
             {/* <Card bordered={false} style={{ marginBottom: 24 }}>

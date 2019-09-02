@@ -20,9 +20,8 @@ import { routerRedux } from 'dva/router';
 export default {
   namespace: 'article',
   state: {
-    articleList: {}, // one page articles
-    articlePool: [], // all articles from server
-    articleDetail: {}, // one article
+    articleList: {},
+    articleDetail: {},
     draftList: {},
     hotList: [],
     user2ArticleList: [],
@@ -202,13 +201,14 @@ export default {
           pagination: { current },
         },
       } = action.payload;
-      const articlePool =
-        current === 1 ? [...action.payload.data] : [...state.articlePool, ...action.payload.data];
+      const articles =
+        current === 1
+          ? [...action.payload.data]
+          : [...state.articleList.data, ...action.payload.data];
 
       return {
         ...state,
-        articleList: action.payload,
-        articlePool,
+        articleList: { ...action.payload, data: articles },
       };
     },
 
