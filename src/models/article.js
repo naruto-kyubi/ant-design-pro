@@ -129,16 +129,18 @@ export default {
       });
     },
 
-    *saveArticle({ payload }, { call, put }) {
+    *saveArticle({ payload, callback }, { call, put }) {
       const response = yield call(saveArticle, payload);
 
       const {
-        data: { id, status },
+        data: { id, status, error },
       } = response;
 
       if (status === 'publish') {
         yield put(routerRedux.replace(`/articles/${id}`));
       }
+
+      if (callback) callback(status, error);
 
       yield put({
         type: 'setState',

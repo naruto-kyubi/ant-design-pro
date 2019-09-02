@@ -88,9 +88,15 @@ class EditArticle extends PureComponent {
           editorState: BraftEditor.createEditorState(data.content),
         });
       } else {
-        // fist draft save success
+        //  draft save success for the first time
         this.getDraftList();
       }
+    }
+    if (!data) {
+      // new article
+      this.setState({
+        editorState: BraftEditor.createEditorState(null),
+      });
     }
   }
 
@@ -142,11 +148,17 @@ class EditArticle extends PureComponent {
       status: state,
     };
     const { dispatch } = this.props;
-    this.setState({ status: 'saved' });
 
     dispatch({
       type: 'article/saveArticle',
       payload,
+      callback: (_status, error) => {
+        if (_status === 'ok') {
+          this.setState({ status: 'saved' });
+        } else {
+          message(error.errMsg);
+        }
+      },
     });
   };
 
@@ -257,7 +269,9 @@ class EditArticle extends PureComponent {
       'letter-spacing',
       'emoji',
       'hr',
-      'line-height',
+      'list-ul',
+      'undo',
+      'redo',
     ];
 
     const uploadProps = {
