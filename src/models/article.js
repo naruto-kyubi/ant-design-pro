@@ -81,12 +81,10 @@ export default {
 
     *fetchUser2ArticleList({ payload }, { call, put }) {
       const response = yield call(querUser2ArticleList, payload);
-      const { data } = response;
+      // const { data } = response;
       yield put({
-        type: 'setState',
-        payload: {
-          user2ArticleList: data,
-        },
+        type: 'setUser2ArticleList',
+        payload: response,
       });
     },
 
@@ -209,6 +207,24 @@ export default {
         ...state,
         articleList: action.payload,
         articlePool,
+      };
+    },
+
+    setUser2ArticleList(state, action) {
+      const {
+        meta: {
+          pagination: { current },
+        },
+      } = action.payload;
+
+      const {
+        user2ArticleList: { data },
+      } = state;
+      const d = current === 1 ? [...action.payload.data] : [...data, ...action.payload.data];
+
+      return {
+        ...state,
+        user2ArticleList: { ...action.payload, data: d },
       };
     },
 

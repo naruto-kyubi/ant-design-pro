@@ -15,6 +15,8 @@ class User2ArticleList extends PureComponent {
       type: 'article/fetchUser2ArticleList',
       payload: {
         userId,
+        currentPage: 1,
+        // pageSize: 10,
       },
     });
   }
@@ -43,6 +45,7 @@ class User2ArticleList extends PureComponent {
     const { article } = this.props;
     const { user2ArticleList } = article;
     if (!user2ArticleList || user2ArticleList.length === 0) return null;
+    const { data } = user2ArticleList;
     return (
       <Card bordered={false} style={{ marginBottom: 24 }} title="作者文章">
         <List
@@ -50,7 +53,7 @@ class User2ArticleList extends PureComponent {
           className={styles.articleList}
           rowKey="id"
           itemLayout="vertical"
-          dataSource={user2ArticleList}
+          dataSource={data}
           renderItem={item => (
             <List.Item key={item.id}>
               <ArticleListContent data={this.getTitle(item)} />

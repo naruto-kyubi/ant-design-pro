@@ -16,9 +16,9 @@ class Articles extends Component {
     } = location;
 
     dispatch({
-      type: 'article/fetchArticleList',
+      type: 'article/fetchUser2ArticleList',
       payload: {
-        'owner.id': id,
+        userId: id,
         sorter: 'updatedAt_desc',
       },
     });
@@ -33,7 +33,7 @@ class Articles extends Component {
       dispatch,
       location,
       article: {
-        articleList: { meta },
+        user2ArticleList: { meta },
       },
     } = this.props;
 
@@ -46,11 +46,11 @@ class Articles extends Component {
     const payload = {
       sorter: 'updatedAt_desc',
       currentPage,
-      'owner.id': id,
+      userId: id,
     };
 
     dispatch({
-      type: 'article/fetchArticleList',
+      type: 'article/fetchUser2ArticleList',
       payload,
     });
   };
@@ -58,7 +58,7 @@ class Articles extends Component {
   hasMore = () => {
     const {
       article: {
-        articleList: { meta },
+        user2ArticleList: { meta },
       },
     } = this.props;
     return meta
@@ -67,12 +67,17 @@ class Articles extends Component {
   };
 
   render() {
-    const { article } = this.props;
-    if (!article) return null;
-    const { articlePool } = article;
-    if (!articlePool) return null;
+    // const { article } = this.props;
+    // if (!article) return null;
+    // const { articlePool } = article;
+    // if (!articlePool) return null;
 
-    return <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={this.hasMore()} />;
+    const { article } = this.props;
+    const { user2ArticleList } = article;
+    if (!user2ArticleList || user2ArticleList.length === 0) return null;
+    const { data } = user2ArticleList;
+
+    return <ArticleList data={data} loadMore={this.loadMore} hasMore={this.hasMore()} />;
   }
 }
 

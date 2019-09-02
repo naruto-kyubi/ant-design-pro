@@ -15,8 +15,8 @@ export async function queryHotList(payload) {
 }
 
 export async function querUser2ArticleList(payload) {
-  const { userId } = payload;
-  return request(`/server/api/v1/users/${userId}/articles`);
+  const { userId, ...args } = payload;
+  return request(`/server/api/v1/users/${userId}/articles?${stringify(args)}`);
 }
 
 export async function queryArticleById(payload) {
