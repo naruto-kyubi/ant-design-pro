@@ -28,7 +28,6 @@ export default {
     followArticleList: {},
     catalog: {},
     commentList: {},
-    commentPool: [],
     tag: {},
   },
 
@@ -254,13 +253,14 @@ export default {
           pagination: { current },
         },
       } = action.payload;
-      const commentPool =
-        current === 1 ? [...action.payload.data] : [...state.commentPool, ...action.payload.data];
+      const comments =
+        current === 1
+          ? [...action.payload.data]
+          : [...state.commentList.data, ...action.payload.data];
 
       return {
         ...state,
-        commentList: action.payload,
-        commentPool,
+        commentList: { ...action.payload, data: comments },
       };
     },
 
@@ -268,22 +268,21 @@ export default {
       const {
         data: { articleId },
       } = action.payload;
-      if (articleId)
-        return {
-          ...state,
-          commentPool: [action.payload.data, ...state.commentPool],
-        };
-
-      const commentParent = action.payload.data.replyId;
-      const newCommentPool = state.commentPool.map(item => {
-        if (item.id === commentParent) {
-          item.children.push(action.payload.data);
-        }
-        return item;
-      });
+      let comments;
+      if (articleId) {
+        comments = [action.payload.data, ...state.commentList.data];
+      } else {
+        const commentParent = action.payload.data.replyId;
+        comments = state.commentList.data.map(item => {
+          if (item.id === commentParent) {
+            item.children.push(action.payload.data);
+          }
+          return item;
+        });
+      }
       return {
         ...state,
-        commentPool: newCommentPool,
+        commentList: { ...state.commentList, data: comments },
       };
     },
 

@@ -69,7 +69,7 @@ class ArticleComment extends React.Component {
     });
   };
 
-  queryComments = resetPool => {
+  queryComments = resetList => {
     const {
       dispatch,
       article: {
@@ -78,7 +78,7 @@ class ArticleComment extends React.Component {
       articleId,
     } = this.props;
     let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = resetPool ? 1 : currentPage;
+    currentPage = resetList ? 1 : currentPage;
     const payload = { sorter: 'updatedAt_desc', currentPage, articleId };
     dispatch({
       type: 'article/fetchCommentList',
@@ -113,7 +113,7 @@ class ArticleComment extends React.Component {
   render() {
     const { submitting, content } = this.state;
     const {
-      article: { commentPool },
+      article: { commentList },
       user: {
         currentUser: { avatar },
       },
@@ -130,9 +130,9 @@ class ArticleComment extends React.Component {
           value={content}
         />
 
-        {commentPool.length > 0 && (
+        {commentCount > 0 && (
           <CommentList
-            comments={commentPool}
+            comments={commentList.data}
             loadMore={this.loadMore}
             hasMore={this.hasMore()}
             commentCount={commentCount}
