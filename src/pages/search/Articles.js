@@ -95,7 +95,11 @@ class ArticleSearch extends PureComponent {
 
   render() {
     const { article } = this.props;
-    const { articlePool } = article;
+    const { articleList } = article;
+    if (!articleList) return null;
+
+    const { data } = articleList;
+
     const hasMore = this.hasMore();
 
     return (
@@ -109,7 +113,7 @@ class ArticleSearch extends PureComponent {
       //   </div>
       //   <Row gutter={24}>
       //     <Col lg={24} md={24}>
-      <ArticleList data={articlePool} loadMore={this.loadMore} hasMore={hasMore} />
+      <ArticleList data={data} loadMore={this.loadMore} hasMore={hasMore} />
       //     </Col>
       //   </Row>
       // </GridContent>
