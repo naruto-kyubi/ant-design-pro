@@ -139,9 +139,11 @@ export default {
 
         // 递归函数，遍历菜单数据，并且支持多语言。
         const localeMenuData = data => {
-          const menuData = [...data].sort((obj1, obj2) => {
-            return obj1.seq - obj2.seq;
-          });
+          const menuData = [...data]
+            .sort((obj1, obj2) => {
+              return obj1.seq - obj2.seq;
+            })
+            .filter(obj => !(obj.type === 'COMPONENT'));
           const newData = menuData.map(item => {
             let menuItem = { ...item };
 
