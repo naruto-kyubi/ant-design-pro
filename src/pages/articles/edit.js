@@ -70,7 +70,7 @@ class EditArticle extends PureComponent {
     this.getDraftList();
 
     this.saveJob = window.setInterval(() => this.saveArticle('draft'), 10000);
-    this.status = 'unsaved'; // unsaved, waitingForSave, saved, loading
+    this.status = 'unsaved'; // unsaved, waitingForSave, saved/newSaved, loading
   }
 
   componentWillReceiveProps(nextProps) {
@@ -88,13 +88,15 @@ class EditArticle extends PureComponent {
         editorState: BraftEditor.createEditorState(null),
       });
     } else if (id !== data.id) {
-      if (data.createdAt === data.updatedAt) {
+      if (this.status === 'newSaved') {
         this.getDraftList();
+        this.status = 'saved';
+      } else {
+        const editorState = BraftEditor.createEditorState(data.content);
+        this.setState({
+          editorState,
+        });
       }
-      const editorState = BraftEditor.createEditorState(data.content);
-      this.setState({
-        editorState,
-      });
     }
   }
 
@@ -151,16 +153,17 @@ class EditArticle extends PureComponent {
       type: 'article/saveArticle',
       payload,
     });
-
-    this.status = 'saved';
+    if (values.id) this.status = 'saved';
+    else this.status = 'newSaved';
   };
 
   handleChange = editorState => {
+    console.log(`-------->${this.status}`);
     this.setState({ editorState });
     if (editorState.toHTML().length < 10) return;
-    // this.setState({ status: 'waitingForSave' });
     if (this.status === 'loading') this.status = 'unsaved';
-    else this.status = 'waitingForSave';
+    else if (this.status === 'unsaved' || this.status === 'saved') this.status = 'waitingForSave';
+    console.log(`-------->${this.status}`);
   };
 
   onFileChange = info => {
