@@ -136,14 +136,14 @@ export default {
         yield put(routerRedux.replace(`/articles/${id}`));
       }
 
-      if (callback) callback(status, error);
-
       yield put({
         type: 'setState',
         payload: {
           articleDetail: response,
         },
       });
+
+      if (callback) callback(status, error);
     },
 
     *editArticle({ payload }, { call, put }) {
