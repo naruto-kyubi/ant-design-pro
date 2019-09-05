@@ -25,11 +25,11 @@ export async function queryArticleById(payload) {
 }
 
 export async function queryCatalog(payload) {
-  return request(`/server/api/v1/catalogs/query?${stringify(payload)}`);
+  return request(`/server/api/v1/catalogs?${stringify(payload)}`);
 }
 
 export async function queryDraftList(payload) {
-  return request(`/server/api/v1/articles/draft/query?${stringify(payload)}`);
+  return request(`/server/api/v1/articles/draft?${stringify(payload)}`);
 }
 
 export async function queryDraftById(payload) {
@@ -53,7 +53,7 @@ export async function queryCommentList(payload) {
 }
 
 export async function addCommnet(payload) {
-  return request('/server/api/v1/articles/comment/add', {
+  return request('/server/api/v1/articles/comments', {
     method: 'POST',
     data: payload,
   });
