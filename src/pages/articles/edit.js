@@ -37,7 +37,6 @@ BraftEditor.use(Markdown(markdownOptions));
 class EditArticle extends PureComponent {
   state = {
     editorState: BraftEditor.createEditorState(null),
-    status: 'unsaved', // unsaved, waitingForSave, saved
   };
 
   componentDidMount() {
@@ -71,6 +70,7 @@ class EditArticle extends PureComponent {
     this.getDraftList();
 
     this.saveJob = window.setInterval(() => this.saveArticle('draft'), 10000);
+    this.status = 'unsaved'; // unsaved, waitingForSave, saved, loading
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,19 +81,19 @@ class EditArticle extends PureComponent {
         articleDetail: { data },
       },
     } = nextProps;
-    if (data && id !== data.id) {
+
+    if (!data) {
+      // new article
+      this.setState({
+        editorState: BraftEditor.createEditorState(null),
+      });
+    } else if (id !== data.id) {
       if (data.createdAt === data.updatedAt) {
         this.getDraftList();
       }
       const editorState = BraftEditor.createEditorState(data.content);
       this.setState({
         editorState,
-      });
-    }
-    if (!data) {
-      // new article
-      this.setState({
-        editorState: BraftEditor.createEditorState(null),
       });
     }
   }
@@ -125,14 +125,14 @@ class EditArticle extends PureComponent {
   };
 
   saveArticle = state => {
-    const { editorState, status } = this.state;
+    const { editorState } = this.state;
     const { user, form } = this.props;
 
     if (!user.currentUser.id) {
       message.warning('请登录后发表');
       return;
     }
-    if (status !== 'waitingForSave' && state === 'draft') return;
+    if (this.status !== 'waitingForSave' && state === 'draft') return;
     const values = form.getFieldsValue();
     const payload = {
       id: values.id,
@@ -150,20 +150,17 @@ class EditArticle extends PureComponent {
     dispatch({
       type: 'article/saveArticle',
       payload,
-      callback: (_status, error) => {
-        if (_status === 'ok') {
-          this.setState({ status: 'saved' });
-        } else {
-          message(error.errMsg);
-        }
-      },
     });
+
+    this.status = 'saved';
   };
 
   handleChange = editorState => {
     this.setState({ editorState });
     if (editorState.toHTML().length < 10) return;
-    this.setState({ status: 'waitingForSave' });
+    // this.setState({ status: 'waitingForSave' });
+    if (this.status === 'loading') this.status = 'unsaved';
+    else this.status = 'waitingForSave';
   };
 
   onFileChange = info => {
@@ -188,16 +185,17 @@ class EditArticle extends PureComponent {
   };
 
   getSaveTips = () => {
-    const { status } = this.state;
     const { saving } = this.props;
-    if (status === 'unsaved') {
+    if (this.status === 'unsaved') {
       return '文章将会自动保存至';
     }
     return saving ? '正在保存文章至' : '文章已于 刚刚 保存到';
   };
 
   getDraft = id => {
-    const { dispatch } = this.props;
+    const { dispatch, form } = this.props;
+    form.resetFields();
+    this.status = 'loading';
     dispatch({
       type: 'article/fetchArticleById',
       payload: {
