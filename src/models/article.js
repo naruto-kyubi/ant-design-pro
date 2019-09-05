@@ -113,16 +113,16 @@ export default {
     *fetchArticleById({ payload, callback }, { call, put }) {
       const response = yield call(queryArticleById, payload);
 
-      if (callback) {
-        callback(response);
-      }
-
       yield put({
         type: 'setState',
         payload: {
           articleDetail: response,
         },
       });
+
+      if (callback) {
+        callback(response);
+      }
     },
 
     *saveArticle({ payload, callback }, { call, put }) {
