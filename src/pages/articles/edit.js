@@ -158,12 +158,10 @@ class EditArticle extends PureComponent {
   };
 
   handleChange = editorState => {
-    console.log(`-------->${this.status}`);
     this.setState({ editorState });
     if (editorState.toHTML().length < 10) return;
     if (this.status === 'loading') this.status = 'unsaved';
     else if (this.status === 'unsaved' || this.status === 'saved') this.status = 'waitingForSave';
-    console.log(`-------->${this.status}`);
   };
 
   onFileChange = info => {
