@@ -82,15 +82,13 @@ class EditArticle extends PureComponent {
       },
     } = nextProps;
     if (data && id !== data.id) {
-      // change draft article
-      if (data.createdAt !== data.updatedAt) {
-        this.setState({
-          editorState: BraftEditor.createEditorState(data.content),
-        });
-      } else {
-        //  draft save success for the first time
+      if (data.createdAt === data.updatedAt) {
         this.getDraftList();
       }
+      const editorState = BraftEditor.createEditorState(data.content);
+      this.setState({
+        editorState,
+      });
     }
     if (!data) {
       // new article
