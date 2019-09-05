@@ -3,7 +3,7 @@ import { stringify } from 'qs';
 import request from '@/utils/request';
 
 export async function queryArticleList(payload) {
-  return request(`/server/api/v1/articles/query?${stringify(payload)}`);
+  return request(`/server/api/v1/articles?${stringify(payload)}`);
 }
 
 export async function queryFollowArticleList(payload) {
@@ -42,7 +42,7 @@ export async function queryTag(payload) {
 }
 
 export async function saveArticle(payload) {
-  return request('/server/api/v1/articles/save', {
+  return request('/server/api/v1/articles', {
     method: 'POST',
     data: payload,
   });
