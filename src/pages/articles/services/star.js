@@ -11,7 +11,7 @@ export async function queryStarList(payload) {
 }
 
 export async function addStar(payload) {
-  return request('/server/api/v1/articles/stars/add', {
+  return request('/server/api/v1/articles/stars', {
     method: 'POST',
     data: payload,
   });
@@ -19,5 +19,7 @@ export async function addStar(payload) {
 
 export async function deleteStar(payload) {
   const { articleId } = payload;
-  return request(`/server/api/v1/articles/${articleId}/stars/delete`);
+  return request(`/server/api/v1/articles/${articleId}/stars`, {
+    method: 'DELETE',
+  });
 }

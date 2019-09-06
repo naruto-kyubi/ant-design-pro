@@ -11,7 +11,7 @@ export async function queryFollow(payload) {
 }
 
 export async function addFollow(payload) {
-  return request('/server/api/v1/user/follows/add', {
+  return request('/server/api/v1/user/follows', {
     method: 'POST',
     data: payload,
   });
@@ -19,7 +19,9 @@ export async function addFollow(payload) {
 
 export async function deleteFollow(payload) {
   const { id } = payload;
-  return request(`/server/api/v1/user/follows/delete/${id}`);
+  return request(`/server/api/v1/user/follows/${id}`, {
+    method: 'DELETE',
+  });
 }
 
 export async function queryFans(payload) {
