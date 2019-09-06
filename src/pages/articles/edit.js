@@ -87,6 +87,9 @@ class EditArticle extends PureComponent {
       this.setState({
         editorState: BraftEditor.createEditorState(null),
       });
+      if (id) {
+        form.resetFields();
+      }
     } else if (id !== data.id) {
       if (this.status === 'newSaved') {
         this.getDraftList();
