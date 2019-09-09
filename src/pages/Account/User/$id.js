@@ -71,11 +71,11 @@ export default class User extends Component {
     } = this.props;
 
     // const { catalog } = this.state;
-    let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = resetPool ? 1 : currentPage;
+    let current = meta ? meta.pagination.current + 1 : 1;
+    current = resetPool ? 1 : current;
     let payload = {
       sorter: 'updatedAt_desc',
-      currentPage,
+      current,
       'owner.id': id,
     };
 
