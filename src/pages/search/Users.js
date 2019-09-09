@@ -40,13 +40,13 @@ class Users extends Component {
       query: { keyword },
     } = location;
 
-    let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = resetPool ? 1 : currentPage;
+    let current = meta ? meta.pagination.current + 1 : 1;
+    current = resetPool ? 1 : current;
 
     dispatch({
       type: 'follow/search',
       payload: {
-        currentPage,
+        current,
         keyword,
       },
     });

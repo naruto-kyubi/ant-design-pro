@@ -41,14 +41,14 @@ class Follows extends Component {
       query: { id },
     } = location;
 
-    let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = resetPool ? 1 : currentPage;
+    let current = meta ? meta.pagination.current + 1 : 1;
+    current = resetPool ? 1 : current;
 
     dispatch({
       type: 'follow/fetchFollows',
       payload: {
         sorter: 'updated_at_desc',
-        currentPage,
+        current,
         userId: id,
       },
     });

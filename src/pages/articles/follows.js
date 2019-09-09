@@ -32,14 +32,14 @@ class FollowArticles extends PureComponent {
         followArticleList: { meta },
       },
     } = this.props;
-    let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = resetPool ? 1 : currentPage;
-    // let payload = { sorter: 'updatedAt_desc', currentPage };
+    let current = meta ? meta.pagination.current + 1 : 1;
+    current = resetPool ? 1 : current;
+    // let payload = { sorter: 'updatedAt_desc', current };
     dispatch({
       type: 'article/fetchFollowArticleList',
       payload: {
         sorter: 'updatedAt_desc',
-        currentPage,
+        current,
       },
     });
   };

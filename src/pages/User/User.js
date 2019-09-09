@@ -204,7 +204,7 @@ class User extends PureComponent {
     }, {});
 
     const params = {
-      currentPage: pagination.current,
+      current: pagination.current,
       pageSize: pagination.pageSize,
       ...formValues,
       ...filters,

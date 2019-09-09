@@ -77,9 +77,9 @@ class ArticleComment extends React.Component {
       },
       articleId,
     } = this.props;
-    let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = resetList ? 1 : currentPage;
-    const payload = { sorter: 'updatedAt_desc', currentPage, articleId };
+    let current = meta ? meta.pagination.current + 1 : 1;
+    current = resetList ? 1 : current;
+    const payload = { sorter: 'updatedAt_desc', current, articleId };
     dispatch({
       type: 'article/fetchCommentList',
       payload,

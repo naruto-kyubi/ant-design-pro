@@ -22,10 +22,10 @@ class Subscribed extends PureComponent {
       },
     } = this.props;
 
-    let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = resetPool ? 1 : currentPage;
+    let current = meta ? meta.pagination.current + 1 : 1;
+    current = resetPool ? 1 : current;
     const payload = {
-      currentPage,
+      current,
     };
 
     dispatch({

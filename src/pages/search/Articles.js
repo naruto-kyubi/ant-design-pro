@@ -66,12 +66,12 @@ class ArticleSearch extends PureComponent {
     }
     // const { keyword } = this.state;
     // const { catalog } = this.state;
-    let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = resetPool ? 1 : currentPage;
+    let current = meta ? meta.pagination.current + 1 : 1;
+    current = resetPool ? 1 : current;
     const payload = {
       keyword: kw,
       sorter: 'updatedAt_desc',
-      currentPage,
+      current,
     };
     // if (catalog !== 'recommand') {
     //   payload = { ...payload, catalogId_equal: catalog };

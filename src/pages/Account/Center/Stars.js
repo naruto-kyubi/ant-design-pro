@@ -60,11 +60,11 @@ class Stars extends Component {
 
     const userId = id || uid;
 
-    let currentPage = meta ? meta.pagination.current + 1 : 1;
-    currentPage = resetPool ? 1 : currentPage;
+    let current = meta ? meta.pagination.current + 1 : 1;
+    current = resetPool ? 1 : current;
     const payload = {
       sorter: 'updatedAt_desc',
-      currentPage,
+      current,
       userId,
     };
 
