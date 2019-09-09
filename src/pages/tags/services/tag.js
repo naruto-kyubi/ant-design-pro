@@ -10,7 +10,7 @@ export async function queryUserTags(payload) {
 }
 
 export async function addTag(payload) {
-  return request('/server/api/v1/users/tag/subscribe', {
+  return request('/server/api/v1/users/tags/subscribe', {
     method: 'POST',
     data: payload,
   });
