@@ -12,7 +12,7 @@ const { Option } = Select;
 
 const uploadProps = {
   name: 'file',
-  action: '/server/api/v1/user/avatar',
+  action: '/server/api/v1/users/avatar',
   headers: {
     authorization: 'authorization-text',
   },

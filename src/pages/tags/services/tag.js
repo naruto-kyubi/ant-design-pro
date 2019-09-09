@@ -6,11 +6,11 @@ export async function queryAllTags(payload) {
 }
 
 export async function queryUserTags(payload) {
-  return request(`/server/api/v1/user/tags/subscribed?${stringify(payload)}`);
+  return request(`/server/api/v1/users/tags/subscribed?${stringify(payload)}`);
 }
 
 export async function addTag(payload) {
-  return request('/server/api/v1/user/tag/subscribe', {
+  return request('/server/api/v1/users/tag/subscribe', {
     method: 'POST',
     data: payload,
   });
@@ -18,5 +18,5 @@ export async function addTag(payload) {
 
 export async function deleteTag(payload) {
   const { tagId } = payload;
-  return request(`/server/api/v1/user/tag/${tagId}/unsubscribe`);
+  return request(`/server/api/v1/users/tag/${tagId}/unsubscribe`);
 }

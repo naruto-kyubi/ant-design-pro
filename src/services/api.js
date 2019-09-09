@@ -118,7 +118,7 @@ export async function fakeRegister(params) {
 }
 
 export async function register(params) {
-  return request('/server/api/v1/user/register', {
+  return request('/server/api/v1/users/register', {
     method: 'POST',
     data: params,
   });
@@ -133,11 +133,11 @@ export async function getFakeCaptcha(mobile) {
 }
 
 export async function getRegisterCaptcha(mobile) {
-  return request(`/server/api/v1/user/registerCaptcha?mobile=${mobile}`);
+  return request(`/server/api/v1/users/registerCaptcha?mobile=${mobile}`);
 }
 
 export async function getForgotpasswordCaptcha(mobile) {
-  return request(`/server/api/v1/user/forgotPasswordCaptcha?mobile=${mobile}`);
+  return request(`/server/api/v1/users/forgotPasswordCaptcha?mobile=${mobile}`);
 }
 
 export async function getLogonCaptcha(mobile) {
@@ -145,14 +145,14 @@ export async function getLogonCaptcha(mobile) {
 }
 
 export async function resetPassword(params) {
-  return request('/server/api/v1/user/resetPassword', {
+  return request('/server/api/v1/users/resetPassword', {
     method: 'POST',
     data: params,
   });
 }
 
 export async function addUser(params) {
-  return request('/server/api/v1/user/create', {
+  return request('/server/api/v1/user', {
     method: 'POST',
     data: {
       ...params,
@@ -169,7 +169,7 @@ export async function removeUser(params) {
   //   },
   // });
   const { key } = params;
-  return request(`/server/api/v1/user/delete/${key}`, {
+  return request(`/server/api/v1/users/${key}`, {
     method: 'DELETE',
   });
 }
@@ -184,7 +184,7 @@ export async function updateUser(params = {}) {
   // });
 
   const { id } = params.body;
-  return request(`/server/api/v1/user/update/${id}`, {
+  return request(`/server/api/v1/users/${id}`, {
     method: 'PUT',
     data: {
       ...params.body,
@@ -193,7 +193,7 @@ export async function updateUser(params = {}) {
   });
 }
 export async function queryUser(params) {
-  return request(`/server/api/v1/user/query?${stringify(params)}`);
+  return request(`/server/api/v1/user?${stringify(params)}`);
 }
 
 /**
@@ -205,15 +205,15 @@ export async function queryMenus() {
 }
 
 export async function bind(params) {
-  return request(`/server/api/v1/user/bind?${stringify(params)}`);
+  return request(`/server/api/v1/users/bind?${stringify(params)}`);
 }
 
 export async function unbind(params) {
-  return request(`/server/api/v1/user/unbind?${stringify(params)}`);
+  return request(`/server/api/v1/users/unbind?${stringify(params)}`);
 }
 
 export async function queryBinds() {
-  return request(`/server/api/v1/user/queryBinds`);
+  return request(`/server/api/v1/users/queryBinds`);
 }
 
 export async function logout() {
