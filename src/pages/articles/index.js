@@ -48,9 +48,12 @@ class Articles extends PureComponent {
     const { catalog } = this.state;
     let currentPage = meta ? meta.pagination.current + 1 : 1;
     currentPage = resetList ? 1 : currentPage;
-    let payload = { sorter: 'updatedAt_desc', currentPage, status: 'publish' };
+    let payload = {
+      'pagination.sorter': 'updatedAt_desc',
+      'pagination.currentPage': currentPage,
+    };
     if (catalog !== 'recommand') {
-      payload = { ...payload, catalogId: catalog };
+      payload = { ...payload, catalogId: catalog, status: 'publish' };
     }
     dispatch({
       type: 'article/fetchArticleList',
