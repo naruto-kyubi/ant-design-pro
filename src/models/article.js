@@ -14,7 +14,7 @@ import {
   queryDraftList,
   queryDraftById,
 } from '@/pages/articles/services/article';
-
+import { setPageQueryState } from '@/utils/pageUtils';
 import { routerRedux } from 'dva/router';
 
 export default {
@@ -35,8 +35,9 @@ export default {
     *fetchArticleList({ payload }, { call, put }) {
       const response = yield call(queryArticleList, payload);
       yield put({
-        type: 'setArticleList',
+        type: 'setPageQueryListState',
         payload: response,
+        param: 'articleList',
       });
     },
 
@@ -51,8 +52,9 @@ export default {
     *fetchFollowArticleList({ payload }, { call, put }) {
       const response = yield call(queryFollowArticleList, payload);
       yield put({
-        type: 'setFollowArticleList',
+        type: 'setPageQueryListState',
         payload: response,
+        param: 'followArticleList',
       });
     },
 
@@ -79,18 +81,20 @@ export default {
 
     *fetchUser2ArticleList({ payload }, { call, put }) {
       const response = yield call(querUser2ArticleList, payload);
-      // const { data } = response;
+
       yield put({
-        type: 'setUser2ArticleList',
+        type: 'setPageQueryListState',
         payload: response,
+        param: 'user2ArticleList',
       });
     },
 
     *fetchCommentList({ payload }, { call, put }) {
       const response = yield call(queryCommentList, payload);
       yield put({
-        type: 'setCommentList',
+        type: 'setPageQueryListState',
         payload: response,
+        param: 'commentList',
       });
     },
 
@@ -190,79 +194,84 @@ export default {
       return { ...state, ...action.payload };
     },
 
-    setState2(state, action) {
-      return { ...state, ...action.payload };
+    setPageQueryListState(state, action) {
+      const { param } = action;
+      return setPageQueryState(state, action, param);
     },
 
-    setArticleList(state, action) {
-      const {
-        meta: {
-          pagination: { current },
-        },
-      } = action.payload;
-      const articles =
-        current === 1
-          ? [...action.payload.data]
-          : [...state.articleList.data, ...action.payload.data];
+    // setArticleList(state, action) {
+    //   // const {
+    //   //   meta: {
+    //   //     pagination: { current },
+    //   //   },
+    //   // } = action.payload;
+    //   // const articles =
+    //   //   current === 1
+    //   //     ? [...action.payload.data]
+    //   //     : [...state.articleList.data, ...action.payload.data];
 
-      return {
-        ...state,
-        articleList: { ...action.payload, data: articles },
-      };
-    },
+    //   // return {
+    //   //   ...state,
+    //   //   articleList: { ...action.payload, data: articles },
+    //   // };
+    //   return setPageQueryState(state,action,"articleList");
+    // },
 
-    setUser2ArticleList(state, action) {
-      const {
-        meta: {
-          pagination: { current },
-        },
-      } = action.payload;
+    // setUser2ArticleList(state, action) {
+    //   // const {
+    //   //   meta: {
+    //   //     pagination: { current },
+    //   //   },
+    //   // } = action.payload;
 
-      const {
-        user2ArticleList: { data },
-      } = state;
-      const d = current === 1 ? [...action.payload.data] : [...data, ...action.payload.data];
+    //   // const {
+    //   //   user2ArticleList: { data },
+    //   // } = state;
+    //   // const d = current === 1 ? [...action.payload.data] : [...data, ...action.payload.data];
 
-      return {
-        ...state,
-        user2ArticleList: { ...action.payload, data: d },
-      };
-    },
+    //   // return {
+    //   //   ...state,
+    //   //   user2ArticleList: { ...action.payload, data: d },
+    //   // };
+    //   return setPageQueryState(state,action,"user2ArticleList");
+    // },
 
-    setFollowArticleList(state, action) {
-      const {
-        meta: {
-          pagination: { current },
-        },
-      } = action.payload;
+    // setFollowArticleList(state, action) {
+    //   // const {
+    //   //   meta: {
+    //   //     pagination: { current },
+    //   //   },
+    //   // } = action.payload;
 
-      const {
-        followArticleList: { data },
-      } = state;
-      const d = current === 1 ? [...action.payload.data] : [...data, ...action.payload.data];
+    //   // const {
+    //   //   followArticleList: { data },
+    //   // } = state;
+    //   // const d = current === 1 ? [...action.payload.data] : [...data, ...action.payload.data];
 
-      return {
-        ...state,
-        followArticleList: { ...action.payload, data: d },
-      };
-    },
+    //   // return {
+    //   //   ...state,
+    //   //   followArticleList: { ...action.payload, data: d },
+    //   // };
+    //   return setPageQueryState(state,action,"followArticleList");
+    // },
 
-    setCommentList(state, action) {
-      const {
-        meta: {
-          pagination: { current },
-        },
-      } = action.payload;
-      const comments =
-        current === 1
-          ? [...action.payload.data]
-          : [...state.commentList.data, ...action.payload.data];
+    // setCommentList(state, action) {
+    //   // const {
+    //   //   meta: {
+    //   //     pagination: { current },
+    //   //   },
+    //   // } = action.payload;
+    //   // const comments =
+    //   //   current === 1
+    //   //     ? [...action.payload.data]
+    //   //     : [...state.commentList.data, ...action.payload.data];
 
-      return {
-        ...state,
-        commentList: { ...action.payload, data: comments },
-      };
-    },
+    //   // return {
+    //   //   ...state,
+    //   //   commentList: { ...action.payload, data: comments },
+    //   // };
+    //   return setPageQueryState(state,action,"commentList");
+    // },
 
     setComment(state, action) {
       const {
