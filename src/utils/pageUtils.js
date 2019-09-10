@@ -1,4 +1,4 @@
-export default function setPageQueryState(state, action, param) {
+export function setPageQueryState(state, action, param) {
   const {
     meta: {
       pagination: { current },
@@ -8,3 +8,5 @@ export default function setPageQueryState(state, action, param) {
     current === 1 ? [...action.payload.data] : [...state[param].data, ...action.payload.data];
   return { ...state, [param]: { ...action.payload, data: articles } };
 }
+
+export function test() {}
