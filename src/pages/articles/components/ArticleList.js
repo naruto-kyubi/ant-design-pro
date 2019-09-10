@@ -71,7 +71,15 @@ class ArticleList extends PureComponent {
                     >
                       {
                         <div
-                          dangerouslySetInnerHTML={{ __html: item.title ? item.title : '无标题' }}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              /* eslint-disable */
+                              item.title
+                                ? item.recommend > 0
+                                  ? item.title + '[top]'
+                                  : item.title
+                                : '无标题',
+                          }}
                         />
                       }
                     </a>
