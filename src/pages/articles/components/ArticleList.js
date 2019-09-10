@@ -76,8 +76,10 @@ class ArticleList extends PureComponent {
                               /* eslint-disable */
                               item.title
                                 ? item.recommend > 0
-                                  ? item.title + '[top]'
+                                  ? item.title + '【置顶】'
                                   : item.title
+                                : item.recommend > 0
+                                ? '无标题【置顶】'
                                 : '无标题',
                           }}
                         />
