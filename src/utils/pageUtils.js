@@ -9,4 +9,14 @@ export function setPageQueryState(state, action, param) {
   return { ...state, [param]: { ...action.payload, data: list } };
 }
 
-export function test() {}
+export function hasMorePage(list) {
+  const { meta } = list;
+  return meta ? meta.pagination.current * meta.pagination.pageSize < meta.pagination.total : false;
+}
+
+export function getNextPage(list, isFirst) {
+  const { meta } = list;
+  let current = meta ? meta.pagination.current + 1 : 1;
+  current = isFirst ? 1 : current;
+  return current;
+}

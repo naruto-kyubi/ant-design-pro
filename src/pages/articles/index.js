@@ -7,6 +7,7 @@ import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import HotArticleList from './hotList';
 import ArticleList from './components/ArticleList';
 import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
+import { hasMorePage, getNextPage } from '@/utils/pageUtils';
 
 @connect(({ article }) => ({
   article,
@@ -41,15 +42,15 @@ class Articles extends PureComponent {
   queryArticles = isFirstPage => {
     const {
       dispatch,
-      article: {
-        articleList: { meta },
-      },
+      article: { articleList },
     } = this.props;
     const { catalog } = this.state;
-    let current = meta ? meta.pagination.current + 1 : 1;
-    current = isFirstPage ? 1 : current;
+
+    // let current = getNextPage(articleList);
+    // current = isFirstPage ? 1 : current;
+
     let payload = {
-      'pagination.current': current,
+      'pagination.current': getNextPage(articleList, isFirstPage),
     };
     if (catalog !== 'recommand') {
       payload = { ...payload, catalogId: catalog };
@@ -58,17 +59,6 @@ class Articles extends PureComponent {
       type: 'article/fetchArticleList',
       payload,
     });
-  };
-
-  hasMore = () => {
-    const {
-      article: {
-        articleList: { meta },
-      },
-    } = this.props;
-    return meta
-      ? meta.pagination.current * meta.pagination.pageSize < meta.pagination.total
-      : false;
   };
 
   addArticle = () => {
@@ -84,7 +74,8 @@ class Articles extends PureComponent {
       article: { articleList },
     } = this.props;
     if (!articleList) return null;
-    const hasMore = this.hasMore();
+    // const hasMore = this.hasMore();
+
     return (
       <GridContent>
         <div>
@@ -92,7 +83,11 @@ class Articles extends PureComponent {
         </div>
         <Row gutter={24}>
           <Col lg={17} md={24}>
-            <ArticleList data={articleList.data} loadMore={this.loadMore} hasMore={hasMore} />
+            <ArticleList
+              data={articleList.data}
+              loadMore={this.loadMore}
+              hasMore={hasMorePage(articleList)}
+            />
           </Col>
           <Col lg={7} md={24}>
             {/* <Card bordered={false} style={{ marginBottom: 24 }}>
