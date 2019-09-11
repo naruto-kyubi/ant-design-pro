@@ -37,7 +37,7 @@ export default {
       yield put({
         type: 'setPageQueryListState',
         payload: response,
-        param: 'articleList',
+        meta: { property: 'articleList' },
       });
     },
 
@@ -54,7 +54,7 @@ export default {
       yield put({
         type: 'setPageQueryListState',
         payload: response,
-        param: 'followArticleList',
+        meta: { property: 'followArticleList' },
       });
     },
 
@@ -85,7 +85,7 @@ export default {
       yield put({
         type: 'setPageQueryListState',
         payload: response,
-        param: 'user2ArticleList',
+        meta: { property: 'user2ArticleList' },
       });
     },
 
@@ -94,7 +94,7 @@ export default {
       yield put({
         type: 'setPageQueryListState',
         payload: response,
-        param: 'commentList',
+        meta: { property: 'commentList' },
       });
     },
 
@@ -195,8 +195,8 @@ export default {
     },
 
     setPageQueryListState(state, action) {
-      const { param } = action;
-      return setPageQueryState(state, action, param);
+      const { property } = action.meta;
+      return setPageQueryState(state, action, property);
     },
 
     setComment(state, action) {

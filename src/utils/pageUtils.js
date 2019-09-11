@@ -20,3 +20,22 @@ export function getNextPage(list, isFirst) {
   current = isFirst ? 1 : current;
   return current;
 }
+
+export function pagination(current, pageSize, sorter) {
+  let payload = { 'pagination.current': current };
+
+  if (pageSize) {
+    payload = { ...payload, 'pagination.pageSize': pageSize };
+  }
+
+  if (sorter) {
+    payload = { ...payload, 'pagination.sorter': sorter };
+  }
+  return payload;
+}
+
+export function getPaginationPayload(list, isFirst, pageSize, sorter, params) {
+  const current = getNextPage(list, isFirst);
+  const page = pagination(current, pageSize, sorter);
+  return { ...page, ...params };
+}

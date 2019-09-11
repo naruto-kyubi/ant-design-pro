@@ -7,7 +7,7 @@ import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import HotArticleList from './hotList';
 import ArticleList from './components/ArticleList';
 import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
-import { hasMorePage, getNextPage } from '@/utils/pageUtils';
+import { hasMorePage, getPaginationPayload } from '@/utils/pageUtils';
 
 @connect(({ article }) => ({
   article,
@@ -49,12 +49,20 @@ class Articles extends PureComponent {
     // let current = getNextPage(articleList);
     // current = isFirstPage ? 1 : current;
 
-    let payload = {
-      'pagination.current': getNextPage(articleList, isFirstPage),
-    };
-    if (catalog !== 'recommand') {
-      payload = { ...payload, catalogId: catalog };
-    }
+    // let payload = {
+    //   'pagination.current': getNextPage(articleList, isFirstPage),
+    // };
+    // if (catalog !== 'recommand') {
+    //   payload = { ...payload, catalogId: catalog };
+    // }
+
+    const payload = getPaginationPayload(
+      articleList,
+      isFirstPage,
+      null,
+      null,
+      catalog !== 'recommand' ? { catalogId: catalog } : {}
+    );
     dispatch({
       type: 'article/fetchArticleList',
       payload,
