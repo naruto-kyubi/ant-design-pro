@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 
 import UserList from '../components/UserList';
+import { hasMorePage, getPaginationPayload } from '@/utils/pageUtils';
 
 @connect(({ user, follow }) => ({
   user,
@@ -19,7 +20,6 @@ class Fans extends Component {
       type: 'follow/fetchFans',
       payload: {
         followUserId: id,
-        sorter: 'updated_at_desc',
       },
     });
   }
@@ -28,41 +28,26 @@ class Fans extends Component {
     this.queryFans();
   };
 
-  queryFans = resetPool => {
+  queryFans = isFirstPage => {
     const {
       dispatch,
       location,
-      follow: {
-        follows: { meta },
-      },
+      follow: { follows },
     } = this.props;
 
     const {
       query: { id },
     } = location;
 
-    let current = meta ? meta.pagination.current + 1 : 1;
-    current = resetPool ? 1 : current;
+    // let current = meta ? meta.pagination.current + 1 : 1;
+    // current = isFirstPage ? 1 : current;
+
+    const payload = getPaginationPayload(follows, isFirstPage, null, null, { followUserId: id });
 
     dispatch({
       type: 'follow/fetchFans',
-      payload: {
-        sorter: 'updated_at_desc',
-        current,
-        followUserId: id,
-      },
+      payload,
     });
-  };
-
-  hasMore = () => {
-    const {
-      follow: {
-        fans: { meta },
-      },
-    } = this.props;
-    return meta
-      ? meta.pagination.current * meta.pagination.pageSize < meta.pagination.total
-      : false;
   };
 
   onFollowClick = (follow, item) => {
@@ -100,13 +85,11 @@ class Fans extends Component {
     const { data } = fans;
     if (!data) return null;
 
-    const hasMore = this.hasMore();
-
     return (
       <UserList
         data={data}
         loadMore={this.loadMore}
-        hasMore={hasMore}
+        hasMore={hasMorePage(fans)}
         onFollowClick={this.onFollowClick}
       />
     );
