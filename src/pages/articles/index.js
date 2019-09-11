@@ -38,7 +38,7 @@ class Articles extends PureComponent {
     this.queryArticles();
   };
 
-  queryArticles = isFiristPage => {
+  queryArticles = isFirstPage => {
     const {
       dispatch,
       article: {
@@ -47,7 +47,7 @@ class Articles extends PureComponent {
     } = this.props;
     const { catalog } = this.state;
     let current = meta ? meta.pagination.current + 1 : 1;
-    current = isFiristPage ? 1 : current;
+    current = isFirstPage ? 1 : current;
     let payload = {
       'pagination.current': current,
     };
