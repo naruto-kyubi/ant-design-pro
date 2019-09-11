@@ -38,7 +38,7 @@ class Articles extends PureComponent {
     this.queryArticles();
   };
 
-  queryArticles = resetList => {
+  queryArticles = isFiristPage => {
     const {
       dispatch,
       article: {
@@ -47,13 +47,12 @@ class Articles extends PureComponent {
     } = this.props;
     const { catalog } = this.state;
     let current = meta ? meta.pagination.current + 1 : 1;
-    current = resetList ? 1 : current;
+    current = isFiristPage ? 1 : current;
     let payload = {
-      'pagination.sorter': 'updatedAt_desc',
       'pagination.current': current,
     };
     if (catalog !== 'recommand') {
-      payload = { ...payload, catalogId: catalog, status: 'publish' };
+      payload = { ...payload, catalogId: catalog };
     }
     dispatch({
       type: 'article/fetchArticleList',
