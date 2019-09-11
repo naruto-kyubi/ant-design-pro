@@ -4,9 +4,9 @@ export function setPageQueryState(state, action, param) {
       pagination: { current },
     },
   } = action.payload;
-  const articles =
+  const list =
     current === 1 ? [...action.payload.data] : [...state[param].data, ...action.payload.data];
-  return { ...state, [param]: { ...action.payload, data: articles } };
+  return { ...state, [param]: { ...action.payload, data: list } };
 }
 
 export function test() {}
