@@ -18,5 +18,7 @@ export async function addTag(payload) {
 
 export async function deleteTag(payload) {
   const { tagId } = payload;
-  return request(`/server/api/v1/users/tag/${tagId}/unsubscribe`);
+  return request(`/server/api/v1/users/tags/${tagId}/unsubscribe`, {
+    method: 'DELETE',
+  });
 }
