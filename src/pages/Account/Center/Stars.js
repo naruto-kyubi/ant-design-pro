@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import ArticleList from '@/pages/articles/components/ArticleList';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
+import { hasMorePage, getPaginationPayload } from '@/utils/pageUtils';
 
 @connect(({ star, user }) => ({
   star,
@@ -31,7 +32,7 @@ class Stars extends Component {
       type: 'star/fetchStarList',
       payload: {
         userId,
-        sorter: 'updatedAt_desc',
+        // sorter: 'updatedAt_desc',
       },
     });
   }
@@ -40,15 +41,13 @@ class Stars extends Component {
     this.queryStars();
   };
 
-  queryStars = resetPool => {
+  queryStars = isFirstPage => {
     const {
       dispatch,
       location: {
         query: { id },
       },
-      star: {
-        stars: { meta },
-      },
+      star: { starList },
       user: { currentUser },
     } = this.props;
     let uid;
@@ -57,16 +56,9 @@ class Stars extends Component {
       const { id: cid } = currentUser;
       uid = cid;
     }
-
     const userId = id || uid;
 
-    let current = meta ? meta.pagination.current + 1 : 1;
-    current = resetPool ? 1 : current;
-    const payload = {
-      sorter: 'updatedAt_desc',
-      current,
-      userId,
-    };
+    const payload = getPaginationPayload(starList, isFirstPage, null, null, { userId });
 
     dispatch({
       type: 'star/fetchStarList',
@@ -74,24 +66,13 @@ class Stars extends Component {
     });
   };
 
-  hasMore = () => {
-    const {
-      star: {
-        stars: { meta },
-      },
-    } = this.props;
-    return meta
-      ? meta.pagination.current * meta.pagination.pageSize < meta.pagination.total
-      : false;
-  };
-
   render() {
     const {
-      star: {
-        stars: { data },
-      },
+      star: { starList },
     } = this.props;
 
+    if (!starList) return null;
+    const { data } = starList;
     if (!data) return null;
 
     const v = data.map(item => {
@@ -101,7 +82,7 @@ class Stars extends Component {
 
     return (
       <GridContent>
-        <ArticleList data={v} loadMore={this.loadMore} hasMore={this.hasMore()} />
+        <ArticleList data={v} loadMore={this.loadMore} hasMore={hasMorePage(starList)} />
       </GridContent>
     );
   }

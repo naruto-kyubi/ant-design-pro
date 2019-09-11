@@ -4,11 +4,12 @@ import {
   addStar,
   deleteStar,
 } from '@/pages/articles/services/star';
+import { setPageQueryState } from '@/utils/pageUtils';
 
 export default {
   namespace: 'star',
   state: {
-    stars: {},
+    starList: {},
     star: {},
   },
 
@@ -24,8 +25,9 @@ export default {
     *fetchStarList({ payload }, { call, put }) {
       const response = yield call(queryStarList, payload);
       yield put({
-        type: 'setStars',
+        type: 'setPageQueryListState',
         payload: response,
+        meta: { property: 'starList' },
       });
     },
 
@@ -51,22 +53,9 @@ export default {
       return { ...state, ...action.payload };
     },
 
-    setStars(state, action) {
-      const {
-        meta: {
-          pagination: { current },
-        },
-      } = action.payload;
-
-      const {
-        stars: { data },
-      } = state;
-      const d = current === 1 ? [...action.payload.data] : [...data, ...action.payload.data];
-
-      return {
-        ...state,
-        stars: { ...action.payload, data: d },
-      };
+    setPageQueryListState(state, action) {
+      const { property } = action.meta;
+      return setPageQueryState(state, action, property);
     },
   },
 };

@@ -14,7 +14,6 @@ export default {
   state: {
     fans: {},
     follows: {},
-
     follow: {},
   },
 
@@ -174,24 +173,6 @@ export default {
         follows: { ...state.follows, data: f },
       };
     },
-
-    // setFetchFans(state, action) {
-    //   const {
-    //     meta: {
-    //       pagination: { current },
-    //     },
-    //   } = action.payload;
-
-    //   const {
-    //     fans: { data },
-    //   } = state;
-    //   const d = current === 1 ? [...action.payload.data] : [...data, ...action.payload.data];
-
-    //   return {
-    //     ...state,
-    //     fans: { ...action.payload, data: d },
-    //   };
-    // },
 
     setAddFans(state, action) {
       const { data } = action.payload;
