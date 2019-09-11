@@ -21,10 +21,6 @@ export default {
   effects: {
     *fetchFollows({ payload }, { call, put }) {
       const response = yield call(queryFollows, payload);
-      // yield put({
-      //   type: 'setFetchFollows',
-      //   payload: response,
-      // });
       yield put({
         type: 'setPageQueryListState',
         payload: response,
@@ -119,10 +115,6 @@ export default {
 
     *search({ payload }, { call, put }) {
       const response = yield call(search, payload);
-      // yield put({
-      //   type: 'setFetchFollows',
-      //   payload: response,
-      // });
       yield put({
         type: 'setPageQueryListState',
         payload: response,
@@ -143,24 +135,6 @@ export default {
       const { property } = action.meta;
       return setPageQueryState(state, action, property);
     },
-
-    // setFetchFollows(state, action) {
-    //   const {
-    //     meta: {
-    //       pagination: { current },
-    //     },
-    //   } = action.payload;
-
-    //   const {
-    //     follows: { data },
-    //   } = state;
-    //   const d = current === 1 ? [...action.payload.data] : [...data, ...action.payload.data];
-
-    //   return {
-    //     ...state,
-    //     follows: { ...action.payload, data: d },
-    //   };
-    // },
 
     setAddFollows(state, action) {
       // currentuser new add follow；
