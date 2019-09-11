@@ -12,8 +12,8 @@ export default {
   namespace: 'follow',
 
   state: {
-    fans: {},
-    follows: {},
+    fanList: {},
+    followList: {},
     follow: {},
   },
 
@@ -23,7 +23,7 @@ export default {
       yield put({
         type: 'setPageQueryListState',
         payload: response,
-        meta: { property: 'follows' },
+        meta: { property: 'followList' },
       });
     },
 
@@ -56,7 +56,7 @@ export default {
       yield put({
         type: 'setPageQueryListState',
         payload: response,
-        meta: { property: 'fans' },
+        meta: { property: 'fanList' },
       });
     },
 
@@ -118,7 +118,7 @@ export default {
       yield put({
         type: 'setPageQueryListState',
         payload: response,
-        meta: { property: 'follows' },
+        meta: { property: 'followList' },
       });
     },
   },
@@ -144,7 +144,7 @@ export default {
         mutual,
       } = data;
 
-      const f = state.follows.data.map(item => {
+      const f = state.followList.data.map(item => {
         let it = item;
         if (it.id === id) {
           it = { ...it, mutual };
@@ -154,13 +154,13 @@ export default {
 
       return {
         ...state,
-        follows: { ...state.follows, data: f },
+        followList: { ...state.followList, data: f },
       };
     },
 
     setDeleteFollows(state, action) {
       const { id } = action.payload;
-      const f = state.follows.data.map(item => {
+      const f = state.followList.data.map(item => {
         let it = item;
         if (it.id === id) {
           it = { ...it, mutual: 'none' };
@@ -170,7 +170,7 @@ export default {
 
       return {
         ...state,
-        follows: { ...state.follows, data: f },
+        followList: { ...state.followList, data: f },
       };
     },
 
@@ -181,7 +181,7 @@ export default {
         mutual,
       } = data;
 
-      const f = state.fans.data.map(item => {
+      const f = state.fanList.data.map(item => {
         let it = item;
         if (it.id === id) {
           it = { ...it, mutual };
@@ -191,13 +191,13 @@ export default {
 
       return {
         ...state,
-        fans: { ...state.follows, data: f },
+        fanList: { ...state.fanList, data: f },
       };
     },
 
     setDeleteFans(state, action) {
       const { id } = action.payload;
-      const f = state.fans.data.map(item => {
+      const f = state.fanList.data.map(item => {
         let it = item;
         if (it.id === id) {
           it = { ...it, mutual: 'none' };
@@ -207,7 +207,7 @@ export default {
 
       return {
         ...state,
-        fans: { ...state.follows, data: f },
+        fanList: { ...state.fanList, data: f },
       };
     },
   },

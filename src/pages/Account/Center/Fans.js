@@ -32,14 +32,14 @@ class Fans extends Component {
     const {
       dispatch,
       location,
-      follow: { follows },
+      follow: { fanList },
     } = this.props;
 
     const {
       query: { id },
     } = location;
 
-    const payload = getPaginationPayload(follows, isFirstPage, null, null, { followUserId: id });
+    const payload = getPaginationPayload(fanList, isFirstPage, null, null, { followUserId: id });
 
     dispatch({
       type: 'follow/fetchFans',
@@ -76,17 +76,17 @@ class Fans extends Component {
   render() {
     const { follow } = this.props;
     if (!follow) return null;
-    const { fans } = follow;
-    if (!fans) return null;
+    const { fanList } = follow;
+    if (!fanList) return null;
 
-    const { data } = fans;
+    const { data } = fanList;
     if (!data) return null;
 
     return (
       <UserList
         data={data}
         loadMore={this.loadMore}
-        hasMore={hasMorePage(fans)}
+        hasMore={hasMorePage(fanList)}
         onFollowClick={this.onFollowClick}
       />
     );
