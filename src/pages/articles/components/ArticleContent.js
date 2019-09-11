@@ -6,7 +6,7 @@ import router from 'umi/router';
 import styles from './ArticleContent.less';
 
 import 'braft-editor/dist/output.css';
-import './table.css';
+import './contentHtml.css';
 
 import FollowButton from './FollowButton';
 import AuthorizationUtils from '@/pages/Authorization/AuthorizationUtils';
