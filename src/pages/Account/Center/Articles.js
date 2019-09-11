@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-// import ArticleListContent from '@/components/ArticleListContent';
 import ArticleList from '@/pages/articles/components/ArticleList';
+import { hasMorePage, getPaginationPayload } from '@/utils/pageUtils';
 
 @connect(({ article, user }) => ({
   article,
@@ -19,7 +19,6 @@ class Articles extends Component {
       type: 'article/fetchUser2ArticleList',
       payload: {
         userId: id,
-        sorter: 'updatedAt_desc',
       },
     });
   }
@@ -28,26 +27,18 @@ class Articles extends Component {
     this.queryArticles();
   };
 
-  queryArticles = resetPool => {
+  queryArticles = isFirstPage => {
     const {
       dispatch,
       location,
-      article: {
-        user2ArticleList: { meta },
-      },
+      article: { user2ArticleList },
     } = this.props;
 
     const {
       query: { id },
     } = location;
 
-    let current = meta ? meta.pagination.current + 1 : 1;
-    current = resetPool ? 1 : current;
-    const payload = {
-      sorter: 'updatedAt_desc',
-      current,
-      userId: id,
-    };
+    const payload = getPaginationPayload(user2ArticleList, isFirstPage, null, null, { userId: id });
 
     dispatch({
       type: 'article/fetchUser2ArticleList',
@@ -55,29 +46,15 @@ class Articles extends Component {
     });
   };
 
-  hasMore = () => {
-    const {
-      article: {
-        user2ArticleList: { meta },
-      },
-    } = this.props;
-    return meta
-      ? meta.pagination.current * meta.pagination.pageSize < meta.pagination.total
-      : false;
-  };
-
   render() {
-    // const { article } = this.props;
-    // if (!article) return null;
-    // const { articlePool } = article;
-    // if (!articlePool) return null;
-
     const { article } = this.props;
     const { user2ArticleList } = article;
     if (!user2ArticleList || user2ArticleList.length === 0) return null;
     const { data } = user2ArticleList;
 
-    return <ArticleList data={data} loadMore={this.loadMore} hasMore={this.hasMore()} />;
+    return (
+      <ArticleList data={data} loadMore={this.loadMore} hasMore={hasMorePage(user2ArticleList)} />
+    );
   }
 }
 
