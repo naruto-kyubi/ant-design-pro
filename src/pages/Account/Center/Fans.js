@@ -39,9 +39,6 @@ class Fans extends Component {
       query: { id },
     } = location;
 
-    // let current = meta ? meta.pagination.current + 1 : 1;
-    // current = isFirstPage ? 1 : current;
-
     const payload = getPaginationPayload(follows, isFirstPage, null, null, { followUserId: id });
 
     dispatch({
