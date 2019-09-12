@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import BraftEditor from 'braft-editor';
 import CommentList from './components/CommentList';
 import Reply from './components/Reply';
+import { hasMorePage, getPaginationPayload } from '@/utils/pageUtils';
 
 import 'braft-editor/dist/index.css';
 
@@ -69,32 +70,21 @@ class ArticleComment extends React.Component {
     });
   };
 
-  queryComments = resetList => {
+  queryComments = isFirstPage => {
     const {
       dispatch,
-      article: {
-        commentList: { meta },
-      },
+      article: { commentList },
       articleId,
     } = this.props;
-    let current = meta ? meta.pagination.current + 1 : 1;
-    current = resetList ? 1 : current;
-    const payload = { sorter: 'updatedAt_desc', current, articleId };
+
+    const payload = getPaginationPayload(commentList, isFirstPage, null, 'updatedAt_desc', {
+      articleId,
+    });
+
     dispatch({
       type: 'article/fetchCommentList',
       payload,
     });
-  };
-
-  hasMore = () => {
-    const {
-      article: {
-        commentList: { meta },
-      },
-    } = this.props;
-    return meta
-      ? meta.pagination.current * meta.pagination.pageSize < meta.pagination.total
-      : false;
   };
 
   loadMore = () => {
@@ -134,7 +124,7 @@ class ArticleComment extends React.Component {
           <CommentList
             comments={commentList.data}
             loadMore={this.loadMore}
-            hasMore={this.hasMore()}
+            hasMore={hasMorePage(commentList)}
             commentCount={commentCount}
             avatar={avatar}
           />
