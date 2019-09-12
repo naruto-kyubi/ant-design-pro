@@ -204,8 +204,13 @@ export default {
         data: { articleId },
       } = action.payload;
       let comments;
+      let newMeta;
+      const { data, meta } = state.commentList;
       if (articleId) {
-        comments = [action.payload.data, ...state.commentList.data];
+        const { pagination } = meta;
+        const newTotal = pagination.total + 1;
+        newMeta = { ...meta, pagination: { ...pagination, total: newTotal } };
+        comments = [action.payload.data, ...data];
       } else {
         const commentParent = action.payload.data.replyId;
         comments = state.commentList.data.map(item => {
@@ -217,7 +222,7 @@ export default {
       }
       return {
         ...state,
-        commentList: { ...state.commentList, data: comments },
+        commentList: { ...state.commentList, data: comments, meta: newMeta || meta },
       };
     },
 

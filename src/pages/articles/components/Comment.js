@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Comment as AntComment, Tooltip, Icon } from 'antd';
+import { Comment as AntComment, Tooltip, Icon, Avatar } from 'antd';
 import BraftEditor from 'braft-editor';
 import Reply from './Reply';
 import { formatDate } from '@/utils/utils';
@@ -46,22 +46,20 @@ class Comment extends PureComponent {
     const { isReplying, editorState, submitting } = this.state;
 
     const actions = [
-      <span>
+      <span onClick={this.like}>
         <Tooltip title="Like">
           <Icon
             type="like"
             // theme={action === 'liked' ? 'filled' : 'outlined'}
-            onClick={this.like}
           />
         </Tooltip>
         <span style={{ paddingLeft: 8, cursor: 'auto' }}>{20}</span>
       </span>,
-      <span>
+      <span onClick={this.replyto}>
         <Tooltip title="Reply to">
           <Icon
             type="message"
             // theme={action === 'disliked' ? 'filled' : 'outlined'}
-            onClick={this.replyto}
           />
         </Tooltip>
         <span style={{ paddingLeft: 8, cursor: 'auto' }}>回复</span>
@@ -74,7 +72,7 @@ class Comment extends PureComponent {
       content: <div dangerouslySetInnerHTML={{ __html: contentHtml }} />,
       datetime: formatDate(updatedAt),
       author: nickname,
-      avatar: author,
+      avatar: <Avatar src={author} icon="user" />,
       actions,
     };
 

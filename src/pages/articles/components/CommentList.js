@@ -34,15 +34,26 @@ class CommentList extends PureComponent {
     });
   };
 
+  handleLike = () => {
+    return null;
+  };
+
   rendCommentItem = item => {
     const { avatar } = this.props;
     return (
-      <Comment comment={item} parent={item} avatar={avatar} handleComment={this.handleComment}>
+      <Comment
+        comment={item}
+        parent={item}
+        avatar={avatar}
+        handleLike={this.handleLike}
+        handleComment={this.handleComment}
+      >
         {item.children.map(child => (
           <Comment
             comment={child}
             parent={item}
             avatar={avatar}
+            handleLike={this.handleLike}
             handleComment={this.handleComment}
           />
         ))}
