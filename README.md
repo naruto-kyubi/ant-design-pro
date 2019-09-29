@@ -20,15 +20,15 @@ An out-of-box UI solution for enterprise applications as a React boilerplate.
 
 </div>
 
-- Preview: http://preview.pro.ant.design
-- Home Page: http://pro.ant.design
+- Preview: http://221917tf79.imwork.net/
+- Home Page: http://221917tf79.imwork.net/
 - Documentation: http://pro.ant.design/docs/getting-started
 - ChangeLog: http://pro.ant.design/docs/changelog
 - FAQ: http://pro.ant.design/docs/faq
 - Mirror Site in China: http://ant-design-pro.gitee.io
 
-## 2.0 Released Now! 🎉🎉🎉
-[Announcing Ant Design Pro 2.0.0](https://medium.com/ant-design/beautiful-and-powerful-ant-design-pro-2-0-release-51358da5af95)
+## 0.9 Released Now! 🎉🎉🎉
+[Announcing Ant Community Pro 0.9.0]
 
 ## Translation Recruitment :loudspeaker:
 
@@ -86,7 +86,7 @@ We need your help: https://github.com/ant-design/ant-design-pro/issues/120
 ### Use bash
 
 ```bash
-$ git clone https://github.com/ant-design/ant-design-pro.git --depth=1
+$ git clone https://github.com/naruto-kyubi/ant-design-pro.git --depth=1
 $ cd ant-design-pro
 $ npm install
 $ npm start         # visit http://localhost:8000
