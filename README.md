@@ -1,7 +1,7 @@
 English | [简体中文](./README.zh-CN.md) | [Русский](./README.ru-RU.md)  | [Türkçe](./README.tr-TR.md)  | [日本語](./README.ja-JP.md)
 
 <h1 align="center">Ant Community</h1>
-<p style="text-indent:2em;">
+<p style="text-indent:2em;font-size:16px">
 Ant Community 是一个为个人、企业用户构建用户社区服务的应用开发平台，为用户提供文章的编辑、发布、审核、收藏、点赞、评论、分享，用户注册、认证、关注、全文检索、智能推荐等功能。提供Web浏览器、android、iOS多端应用；前端基于React、Ant design pro技术，后端服务技术springboot2.1.7、jpa、ealsticsearch，数据存储使用msyql数据库、elasticsearch索引数据。
 </p>
 1、首页-显示文章列表，本周热议
