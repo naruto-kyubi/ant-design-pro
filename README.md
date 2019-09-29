@@ -1,8 +1,10 @@
 English | [简体中文](./README.zh-CN.md) | [Русский](./README.ru-RU.md)  | [Türkçe](./README.tr-TR.md)  | [日本語](./README.ja-JP.md)
 
-<h1 align="center">Ant Design Pro</h1>
+<h1 align="center">Ant Community</h1>
 
 <img src="https://github.com/naruto-kyubi/ant-design-pro/blob/master/src/assets/ant-home.jpg"></img>
+<img src="https://github.com/naruto-kyubi/ant-design-pro/blob/master/src/assets/ant-detail.jpg"></img>
+<img src="https://github.com/naruto-kyubi/ant-design-pro/blob/master/src/assets/ant-personal.jpg"></img>
 <div align="center">
 
 An out-of-box UI solution for enterprise applications as a React boilerplate.
