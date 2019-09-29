@@ -2,6 +2,7 @@ English | [简体中文](./README.zh-CN.md) | [Русский](./README.ru-RU.md
 
 <h1 align="center">Ant Design Pro</h1>
 
+<img src="https://github.com/naruto-kyubi/ant-design-pro/blob/master/src/assets/ant-home.jpg"></img>
 <div align="center">
 
 An out-of-box UI solution for enterprise applications as a React boilerplate.
