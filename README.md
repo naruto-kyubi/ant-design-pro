@@ -1,9 +1,11 @@
 English | [简体中文](./README.zh-CN.md) | [Русский](./README.ru-RU.md)  | [Türkçe](./README.tr-TR.md)  | [日本語](./README.ja-JP.md)
 
 <h1 align="center">Ant Community</h1>
-
+1、首页-显示文章列表，本周热议
 <img src="https://github.com/naruto-kyubi/ant-design-pro/blob/master/img/ant-home.jpg"></img>
+2、文章详情，文章搜藏、点赞、评论、分享、相关推荐等
 <img src="https://github.com/naruto-kyubi/ant-design-pro/blob/master/img/ant-detail.jpg"></img>
+3、个人中心，文章、收藏、关注、粉丝等。
 <img src="https://github.com/naruto-kyubi/ant-design-pro/blob/master/img/ant-personal.jpg"></img>
 <div align="center">
 
