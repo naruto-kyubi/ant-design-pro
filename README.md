@@ -16,7 +16,8 @@ English | [简体中文](./README.zh-CN.md)
 Ant Community 社区由多个开源项目组成，通过编译、构建、配置，才能够正常运行，组成项目如下：
 - 前端工程：https://github.com/naruto-kyubi/ant-design-pro
 - 后端服务：https://github.com/naruto-kyubi/ant-community
-怎么构建、配置工程，参见各自开源项目的说明文档。
+
+<p>怎么构建、配置工程，参见各自开源项目的说明文档。</p>
 
 - Preview: http://221917tf79.imwork.net/
 - Home Page: http://221917tf79.imwork.net/
