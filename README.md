@@ -14,8 +14,10 @@ English | [简体中文](./README.zh-CN.md)
 </div> -->
 
 Ant Community 社区由多个开源项目组成，通过编译、构建、配置，才能够正常运行，组成项目如下：
-- 前端工程：https://github.com/naruto-kyubi/ant-design-pro
+- 网页前端：https://github.com/naruto-kyubi/ant-design-pro
 - 后端服务：https://github.com/naruto-kyubi/ant-community
+- android端：待补充
+- iOS端：待补充
 
 <p>怎么构建、配置工程，参见各自开源项目的说明文档。</p>
 
