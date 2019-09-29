@@ -1,5 +1,4 @@
-English | [简体中文](./README.zh-CN.md) | [Русский](./README.ru-RU.md)  | [Türkçe](./README.tr-TR.md)  | [日本語](./README.ja-JP.md)
-
+English | [简体中文](./README.zh-CN.md) 
 <h1 align="center">Ant Community</h1>
 <p style="text-indent:2em;font-size:16px">
     Ant Community 是一个为个人、企业用户构建用户社区服务的应用开发平台，为用户提供文章的编辑、发布、审核、收藏、点赞、评论、分享，用户注册、认证、关注、全文检索、智能推荐等功能。提供Web浏览器、android、iOS多端应用；
@@ -76,6 +75,10 @@ We need your help: https://github.com/ant-design/ant-design-pro/issues/120
 ```
 
 ## Usage
+
+### server
+项目包含服务端和前端（当前工程），为了项目能正常运行，首先要clone https://github.com/naruto-kyubi/ant-community.git 工程，配置并运行该工程，详情可参见工程说明。
+
 
 ### Use bash
 
