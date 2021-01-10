@@ -360,6 +360,18 @@ export default [
         ],
       },
       {
+        path: '/investment',
+        name: 'investment',
+        routes: [
+          // exception
+          {
+            path: '/investment/mainAccounts',
+            component: './investment/mainAccounts.js',
+          },
+      
+        ],
+      },
+      {
         path: '/search',
         name: 'search',
         component: './search/Search',
