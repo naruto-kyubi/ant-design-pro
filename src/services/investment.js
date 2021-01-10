@@ -1,8 +1,8 @@
 import request from '@/utils/request';
 
-export async function queryMainAccounts(payload) {
+export async function querySubAccounts(payload) {
   const { owner,parent,type} = payload;
-  return request(`/server/api/v1/mainAccounts?owner=${owner}&parent=${parent}&type=${type}`);
+  return request(`/server/api/v1/subAccounts?owner=${owner}&parent=${parent}&type=${type}`);
 }
 
 export async function logon(payload) {

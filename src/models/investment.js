@@ -1,4 +1,4 @@
-import { queryMainAccounts,logon,queryBalance,queryAccountTypes } from '@/services/investment';
+import { querySubAccounts,logon,queryBalance,queryAccountTypes } from '@/services/investment';
 
 
 
@@ -12,8 +12,8 @@ export default {
 
   effects: {
 
-    *queryMainAccounts({ payload }, { call, put }) {
-      const response = yield call(queryMainAccounts, payload);
+    *querySubAccounts({ payload }, { call, put }) {
+      const response = yield call(querySubAccounts, payload);
       const {
         status,
         data,

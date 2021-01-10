@@ -32,6 +32,32 @@ const FormItem = Form.Item;
 const statusMap = ['error', 'success'];
 const status = ['失败','成功'];
 
+const CreateForm = Form.create()(props => {
+  const { modalVisible, form, handleAdd, handleModalVisible } = props;
+  const okHandle = () => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      form.resetFields();
+      handleAdd(fieldsValue);
+    });
+  };
+  return (
+    <Modal
+      destroyOnClose
+      title="新建账户"
+      visible={modalVisible}
+      onOk={okHandle}
+      onCancel={() => handleModalVisible()}
+    >
+      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="账户">
+        {form.getFieldDecorator('desc', {
+          rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
+        })(<Input placeholder="请输入" />)}
+      </FormItem>
+    </Modal>
+  );
+});
+
 @connect(({ investment, loading ,user}) => ({
   mainAccount:investment.mainAccounts,
   accountTypes:investment.accountTypes,
@@ -117,7 +143,7 @@ class MainAccountList extends PureComponent {
       type: 'investment/queryAccountTypes',
     });
     dispatch({
-      type: 'investment/queryMainAccounts',
+      type: 'investment/querySubAccounts',
       payload: {
         owner: currentUser.id,
         parent:'',
@@ -180,13 +206,19 @@ class MainAccountList extends PureComponent {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       dispatch({
-        type: 'investment/queryMainAccounts',
+        type: 'investment/querySubAccounts',
         payload: {
           owner: currentUser.id,
           parent:fieldsValue.parent||'',
           type:fieldsValue.type||'',
         },
       });
+    });
+  };
+
+  handleModalVisible = flag => {
+    this.setState({
+      modalVisible: !!flag,
     });
   };
 
@@ -243,7 +275,11 @@ class MainAccountList extends PureComponent {
       </Menu>
     );
 
-    const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
+    const parentMethods = {
+      handleAdd: this.handleAdd,
+      handleModalVisible: this.handleModalVisible,
+    };
+    const { selectedRows, modalVisible, updateModalVisible } = this.state;
 
     if (!mainAccount||!accountTypes) return null; 
   
@@ -276,6 +312,7 @@ class MainAccountList extends PureComponent {
             />
           </div>
         </Card>
+        <CreateForm {...parentMethods} modalVisible={modalVisible} />
       </PageHeaderWrapper>
     );
   }
