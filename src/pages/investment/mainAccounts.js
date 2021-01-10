@@ -237,7 +237,7 @@ class MainAccountList extends PureComponent {
           <Col md={8} sm={24}>
             <FormItem label="主账户">
               {getFieldDecorator('parent')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
+                <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
                   {mainAccount.map(element =>(<Option key={element.id}>{element.nameCn}</Option>))}
                 </Select>
               )}
@@ -246,7 +246,7 @@ class MainAccountList extends PureComponent {
           <Col md={8} sm={24}>
             <FormItem label="账户类型">
               {getFieldDecorator('type')(
-                <Select placeholder="请选择" style={{ width: '100%' }}>
+                <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
                   {accountTypes.map(element =>(<Option key={element.id}>{element.nameCn}</Option>))}
                 </Select>
               )}
