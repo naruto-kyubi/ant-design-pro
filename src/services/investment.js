@@ -24,3 +24,9 @@ export async function queryAccountTypes() {
   return request(`/server/api/v1/queryAccountTypes`);
 }
 
+export async function addAccount(payload) {
+  return request('/server/api/v1/addAccount', {
+    method: 'POST',
+    data: payload,
+  });
+}

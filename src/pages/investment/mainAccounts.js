@@ -30,7 +30,7 @@ const statusMap = ['error', 'success'];
 const status = ['失败','成功'];
 
 const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleModalVisible } = props;
+  const { modalVisible, form, handleAdd, handleModalVisible,mainAccount,accountTypes } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -38,6 +38,8 @@ const CreateForm = Form.create()(props => {
       handleAdd(fieldsValue);
     });
   };
+
+  if (!mainAccount) return null; 
   return (
     <Modal
       destroyOnClose
@@ -45,12 +47,60 @@ const CreateForm = Form.create()(props => {
       visible={modalVisible}
       onOk={okHandle}
       onCancel={() => handleModalVisible()}
+      width={800}
     >
-      <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="账户">
-        {form.getFieldDecorator('desc', {
-          rules: [{ required: true, message: '请输入至少五个字符的规则描述！', min: 5 }],
-        })(<Input placeholder="请输入" />)}
-      </FormItem>
+      <Row gutter={{ md: 0, lg: 0, xl: 0 }}>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="主账户">
+            {form.getFieldDecorator('parent')(
+              <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
+                {mainAccount.map(element =>( <Option key={element.id}>{element.nameCn}</Option>))}
+              </Select>
+                  )}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户类型">
+            {form.getFieldDecorator('type')(
+              <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
+                {accountTypes.map(element =>(<Option key={element.id}>{element.nameCn}</Option>))}
+              </Select>
+              )}
+          </FormItem>
+        </Col>
+      </Row>
+      <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录账号">    
+            {form.getFieldDecorator('loginId', {
+                  rules: [{ required: false, message: '请输入账号', min: 3 }],
+             })(<Input placeholder="默认使用主账户手机号" />)}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="APP所在设备">
+            {form.getFieldDecorator('appLocation', {
+                  rules: [{ required: false, message: 'APP所在设备', min: 2 }],
+             })(<Input placeholder="默认使用主账户手机" />)}
+          </FormItem>
+        </Col>
+      </Row>
+      <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录密码">
+            {form.getFieldDecorator('loginPwd', {
+                  rules: [{ required: false, message: '默认使用主账户登录密码', min: 2 }],
+             })(<Input placeholder="默认使用主账户登录密码" />)}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="交易密码">
+            {form.getFieldDecorator('tradePwd', {
+                  rules: [{ required: false, message: '默认使用主账户交易密码', min: 2 }],
+             })(<Input placeholder="默认使用主账户登录密码" />)}
+          </FormItem>
+        </Col>
+      </Row>
     </Modal>
   );
 });
@@ -70,7 +120,6 @@ class MainAccountList extends PureComponent {
     updateModalVisible: false,
     selectedRows: [],
     formValues: {},
-    stepFormValues: {},
   };
 
   columns = [
@@ -226,6 +275,18 @@ class MainAccountList extends PureComponent {
     });
   };
 
+  handleAdd = fields => {
+    const { dispatch } = this.props;
+     dispatch({
+       type: 'investment/addAccount',
+       payload: {
+         ...fields,
+       },
+     });
+    message.success('添加成功');
+    this.handleModalVisible();
+  };
+
   renderSimpleForm = (accountTypes,mainAccount) => {
     const {
       form: { getFieldDecorator },
@@ -321,7 +382,7 @@ class MainAccountList extends PureComponent {
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible} />
+        <CreateForm {...parentMethods} modalVisible={modalVisible} mainAccount={mainAccount} accountTypes={accountTypes} />
       </PageHeaderWrapper>
     );
   }
