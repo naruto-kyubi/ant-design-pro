@@ -29,15 +29,6 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import styles from './TableList.less';
 
 const FormItem = Form.Item;
-const { Step } = Steps;
-const { TextArea } = Input;
-const { Option } = Select;
-const RadioGroup = Radio.Group;
-const getValue = obj =>
-  Object.keys(obj)
-    .map(key => obj[key])
-    .join(',');
-//const statusMap = ['default', 'processing', 'success', 'error'];
 const statusMap = ['error', 'success'];
 const status = ['失败','成功'];
 
@@ -129,6 +120,8 @@ class MainAccountList extends PureComponent {
       type: 'investment/queryMainAccounts',
       payload: {
         owner: currentUser.id,
+        parent:'',
+        type:'',
       },
     });
   }
@@ -179,6 +172,24 @@ class MainAccountList extends PureComponent {
     }
   };
 
+  handleSearch = e => {
+    e.preventDefault();
+
+    const { dispatch, form,currentUser} = this.props;
+
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      dispatch({
+        type: 'investment/queryMainAccounts',
+        payload: {
+          owner: currentUser.id,
+          parent:fieldsValue.parent||'',
+          type:fieldsValue.type||'',
+        },
+      });
+    });
+  };
+
   renderSimpleForm = accountTypes => {
     const {
       form: { getFieldDecorator },
@@ -194,9 +205,9 @@ class MainAccountList extends PureComponent {
           </Col>
           <Col md={8} sm={24}>
             <FormItem label="账户类型">
-              {getFieldDecorator('accountType')(
+              {getFieldDecorator('type')(
                 <Select placeholder="请选择" style={{ width: '100%' }}>
-                  {accountTypes.map(element =>(<Option key={element.id}>{element.id}</Option>))}
+                  {accountTypes.map(element =>(<Option key={element.id}>{element.nameCn}</Option>))}
                 </Select>
               )}
             </FormItem>
