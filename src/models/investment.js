@@ -1,4 +1,4 @@
-import { querySubAccounts,logon,queryBalance,queryAccountTypes } from '@/services/investment';
+import { querySubAccounts,queryMainAccounts,logon,queryBalance,queryAccountTypes } from '@/services/investment';
 
 
 
@@ -7,6 +7,7 @@ export default {
 
   state: {
     mainAccounts: [],
+    subAccounts:[],
     accountTypes:[],
   },
 
@@ -14,6 +15,22 @@ export default {
 
     *querySubAccounts({ payload }, { call, put }) {
       const response = yield call(querySubAccounts, payload);
+      const {
+        status,
+        data,
+      } = response;
+
+      yield put({
+        type: 'saveSubAccounts',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
+
+    *queryMainAccounts({ payload }, { call, put }) {
+      const response = yield call(queryMainAccounts, payload);
       const {
         status,
         data,
@@ -69,6 +86,12 @@ export default {
       return {
         ...state,
         mainAccounts:action.payload.data,
+      };
+    },
+    saveSubAccounts(state, action) {
+      return {
+        ...state,
+        subAccounts:action.payload.data,
       };
     },
 

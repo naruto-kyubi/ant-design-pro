@@ -19,9 +19,6 @@ import {
   message,
   Badge,
   Divider,
-  Steps,
-  Radio,
-  List,
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -60,6 +57,7 @@ const CreateForm = Form.create()(props => {
 
 @connect(({ investment, loading ,user}) => ({
   mainAccount:investment.mainAccounts,
+  subAccount:investment.subAccounts,
   accountTypes:investment.accountTypes,
   currentUser:user.currentUser,
   loading: loading.models.investment,
@@ -141,6 +139,9 @@ class MainAccountList extends PureComponent {
     const { dispatch,currentUser } = this.props;
     dispatch({
       type: 'investment/queryAccountTypes',
+    });
+    dispatch({
+      type: 'investment/queryMainAccounts',
     });
     dispatch({
       type: 'investment/querySubAccounts',
@@ -260,11 +261,12 @@ class MainAccountList extends PureComponent {
 
     const {
       mainAccount,
+      subAccount,
       accountTypes,
     } = this.props;
 
     const data = {
-      list:mainAccount,
+      list:subAccount,
     //  pagination:investment.meta.pagination,
     }
 
