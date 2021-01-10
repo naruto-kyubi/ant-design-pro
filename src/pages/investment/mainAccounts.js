@@ -142,6 +142,9 @@ class MainAccountList extends PureComponent {
     });
     dispatch({
       type: 'investment/queryMainAccounts',
+      payload: {
+        owner: currentUser.id,
+      },
     });
     dispatch({
       type: 'investment/querySubAccounts',
@@ -223,7 +226,7 @@ class MainAccountList extends PureComponent {
     });
   };
 
-  renderSimpleForm = accountTypes => {
+  renderSimpleForm = (accountTypes,mainAccount) => {
     const {
       form: { getFieldDecorator },
     } = this.props;
@@ -233,7 +236,11 @@ class MainAccountList extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="主账户">
-              {getFieldDecorator('parent')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('parent')(
+                <Select placeholder="请选择" style={{ width: '100%' }}>
+                  {mainAccount.map(element =>(<Option key={element.id}>{element.nameCn}</Option>))}
+                </Select>
+              )}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
@@ -290,7 +297,7 @@ class MainAccountList extends PureComponent {
       <PageHeaderWrapper title="子账户管理">
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderSimpleForm(accountTypes)}</div>
+            <div className={styles.tableListForm}>{this.renderSimpleForm(accountTypes,mainAccount)}</div>
             <div className={styles.tableListOperator}>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                 新建
