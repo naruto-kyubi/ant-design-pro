@@ -43,15 +43,16 @@ const status = ['失败','成功'];
 
 @connect(({ investment, loading ,user}) => ({
   mainAccount:investment.mainAccounts,
+  accountTypes:investment.accountTypes,
   currentUser:user.currentUser,
   loading: loading.models.investment,
 }))
 
+@Form.create()
 class MainAccountList extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
-    expandForm: false,
     selectedRows: [],
     formValues: {},
     stepFormValues: {},
@@ -122,6 +123,9 @@ class MainAccountList extends PureComponent {
   componentDidMount() {
     const { dispatch,currentUser } = this.props;
     dispatch({
+      type: 'investment/queryAccountTypes',
+    });
+    dispatch({
       type: 'investment/queryMainAccounts',
       payload: {
         owner: currentUser.id,
@@ -149,10 +153,71 @@ class MainAccountList extends PureComponent {
     });
   };
 
+  handleSelectRows = rows => {
+    this.setState({
+      selectedRows: rows,
+    });
+  };
+
+  handleMenuClick = e => {
+    const { selectedRows } = this.state;
+
+    if (selectedRows.length === 0) return;
+    switch (e.key) {
+      case 'logon':
+        selectedRows.forEach((row)=>{
+          this.logon(row.id);
+        });  
+        break;
+      case 'queryBalance':
+        selectedRows.forEach((row)=>{
+          this.queryBalance(row.id);
+        });  
+        break;
+      default:
+        break;
+    }
+  };
+
+  renderSimpleForm = accountTypes => {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+   // console.log(accountTypes);
+    return (
+      <Form onSubmit={this.handleSearch} layout="inline">
+        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+          <Col md={8} sm={24}>
+            <FormItem label="主账户">
+              {getFieldDecorator('parent')(<Input placeholder="请输入" />)}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <FormItem label="账户类型">
+              {getFieldDecorator('accountType')(
+                <Select placeholder="请选择" style={{ width: '100%' }}>
+                  {accountTypes.map(element =>(<Option key={element.id}>{element.id}</Option>))}
+                </Select>
+              )}
+            </FormItem>
+          </Col>
+          <Col md={8} sm={24}>
+            <span className={styles.submitButtons}>
+              <Button type="primary" htmlType="submit">
+                查询
+              </Button>
+            </span>
+          </Col>
+        </Row>
+      </Form>
+    );
+  }
+
   render() {
 
     const {
       mainAccount,
+      accountTypes,
     } = this.props;
 
     const data = {
@@ -160,19 +225,42 @@ class MainAccountList extends PureComponent {
     //  pagination:investment.meta.pagination,
     }
 
+    const menu = (
+      <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
+        <Menu.Item key="logon">登录</Menu.Item>
+        <Menu.Item key="queryBalance">查询余额</Menu.Item>
+      </Menu>
+    );
+
     const { selectedRows, modalVisible, updateModalVisible, stepFormValues } = this.state;
 
-    if (!mainAccount) return null;
+    if (!mainAccount||!accountTypes) return null; 
   
 
     return (
       <PageHeaderWrapper title="子账户管理">
         <Card bordered={false}>
           <div className={styles.tableList}>
+            <div className={styles.tableListForm}>{this.renderSimpleForm(accountTypes)}</div>
+            <div className={styles.tableListOperator}>
+              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
+                新建
+              </Button>
+              {selectedRows.length > 0 && (
+                <span>
+                  <Dropdown overlay={menu}>
+                    <Button>
+                      批量操作 <Icon type="down" />
+                    </Button>
+                  </Dropdown>
+                </span>
+              )}
+            </div>
             <StandardTable
               data={data}
               selectedRows={selectedRows}
               columns={this.columns}
+              onSelectRow={this.handleSelectRows}
             />
           </div>
         </Card>

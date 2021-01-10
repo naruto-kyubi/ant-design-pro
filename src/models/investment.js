@@ -1,4 +1,4 @@
-import { queryMainAccounts,logon,queryBalance } from '@/services/investment';
+import { queryMainAccounts,logon,queryBalance,queryAccountTypes } from '@/services/investment';
 
 
 
@@ -7,6 +7,7 @@ export default {
 
   state: {
     mainAccounts: [],
+    accountTypes:[],
   },
 
   effects: {
@@ -43,7 +44,23 @@ export default {
         data,
       } = response;
       console.log(data)
-    }
+    },
+
+    *queryAccountTypes({ payload }, { call, put }) {
+      const response = yield call(queryAccountTypes, payload);
+      const {
+        status,
+        data,
+      } = response;
+
+      yield put({
+        type: 'saveAccountTypes',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
 
   },
 
@@ -52,6 +69,13 @@ export default {
       return {
         ...state,
         mainAccounts:action.payload.data,
+      };
+    },
+
+    saveAccountTypes(state, action) {
+      return {
+        ...state,
+        accountTypes:action.payload.data,
       };
     },
   },
