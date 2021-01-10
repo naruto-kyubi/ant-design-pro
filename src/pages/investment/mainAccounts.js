@@ -105,6 +105,100 @@ const CreateForm = Form.create()(props => {
   );
 });
 
+const UpdateForm = Form.create()(props => {
+  const { updateModalVisible, form, handleUpdate, handleUpdateModalVisible,mainAccount,accountTypes,record } = props;
+  const okHandle = () => {
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      form.resetFields();
+      handleUpdate(fieldsValue);
+    });
+  };
+
+  console.log(record.appLocation);
+
+  if (!updateModalVisible) return null; 
+  return (
+    <Modal
+      destroyOnClose
+      title="更新账户"
+      visible={updateModalVisible}
+      onOk={okHandle}
+      onCancel={() => handleUpdateModalVisible()}
+      width={800}
+    >
+      <Row gutter={{ md: 0, lg: 0, xl: 0 }}>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="主账户">
+            {form.getFieldDecorator('parent',{initialValue:record.parent})(
+              <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
+                {mainAccount.map(element =>( <Option key={element.id}>{element.nameCn}</Option>))}
+              </Select>
+                  )}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户类型">
+            {form.getFieldDecorator('type',{initialValue:record.type})(
+              <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
+                {accountTypes.map(element =>(<Option key={element.id}>{element.nameCn}</Option>))}
+              </Select>
+              )}
+          </FormItem>
+        </Col>
+      </Row>
+      <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录账号">    
+            {form.getFieldDecorator('loginId', {initialValue:record.loginId,
+                  rules: [{ required: false, message: '请输入账号', min: 3 }],
+             })(<Input placeholder="默认使用主账户手机号" />)}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="APP所在设备">
+            {form.getFieldDecorator('appLocation', {initialValue:record.appLocation,
+                  rules: [{ required: false, message: 'APP所在设备', min: 2 }],
+             })(<Input placeholder="默认使用主账户手机" />)}
+          </FormItem>
+        </Col>
+      </Row>
+      <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录密码">
+            {form.getFieldDecorator('loginPwd', {initialValue:record.loginPwd,
+                  rules: [{ required: false, message: '默认使用主账户登录密码', min: 2 }],
+             })(<Input placeholder="默认使用主账户登录密码" />)}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="交易密码">
+            {form.getFieldDecorator('tradePwd', {initialValue:record.tradePwd,
+                  rules: [{ required: false, message: '默认使用主账户交易密码', min: 2 }],
+             })(<Input placeholder="默认使用主账户登录密码" />)}
+          </FormItem>
+        </Col>
+      </Row>
+      <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="账号">
+            {form.getFieldDecorator('accountNo', {initialValue:record.accountNo,
+                  rules: [{ required: false, message: '', min: 2 }],
+             })(<Input placeholder="" />)}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户余额">
+            {form.getFieldDecorator('balance', {initialValue:record.balance,
+                  rules: [{ required: false, message: '', min: 2 }],
+             })(<Input placeholder="" />)}
+          </FormItem>
+        </Col>
+      </Row>
+    </Modal>
+  );
+});
+
 @connect(({ investment, loading ,user}) => ({
   mainAccount:investment.mainAccounts,
   subAccount:investment.subAccounts,
@@ -119,7 +213,7 @@ class MainAccountList extends PureComponent {
     modalVisible: false,
     updateModalVisible: false,
     selectedRows: [],
-    formValues: {},
+    updateFormValues: {},
   };
 
   columns = [
@@ -174,11 +268,13 @@ class MainAccountList extends PureComponent {
     {
       title: '操作',
       dataIndex: 'id',
-      render: (id) => (
+      render: (id, record) => (
         <Fragment>
           <a onClick={() => this.logon(id)}>登录</a>
           <Divider type="vertical" />
           <a onClick={() => this.queryBalance(id)}>查询余额</a>
+          <Divider type="vertical" />
+          <a onClick={() => this.handleUpdateModalVisible(true, record)}>更新</a>
         </Fragment>
       ),
     },
@@ -275,6 +371,13 @@ class MainAccountList extends PureComponent {
     });
   };
 
+  handleUpdateModalVisible = (flag, record) => {
+    this.setState({
+      updateModalVisible: !!flag,
+      updateFormValues:record || {},
+    });
+  };
+
   handleAdd = fields => {
     const { dispatch } = this.props;
      dispatch({
@@ -348,8 +451,9 @@ class MainAccountList extends PureComponent {
     const parentMethods = {
       handleAdd: this.handleAdd,
       handleModalVisible: this.handleModalVisible,
+      handleUpdateModalVisible:this.handleUpdateModalVisible,
     };
-    const { selectedRows, modalVisible, updateModalVisible } = this.state;
+    const { selectedRows, modalVisible, updateModalVisible,updateFormValues } = this.state;
 
     if (!mainAccount||!accountTypes) return null; 
   
@@ -383,6 +487,13 @@ class MainAccountList extends PureComponent {
           </div>
         </Card>
         <CreateForm {...parentMethods} modalVisible={modalVisible} mainAccount={mainAccount} accountTypes={accountTypes} />
+        <UpdateForm
+          {...parentMethods}
+          updateModalVisible={updateModalVisible} 
+          mainAccount={mainAccount} 
+          accountTypes={accountTypes}
+          record={updateFormValues}
+        />
       </PageHeaderWrapper>
     );
   }
