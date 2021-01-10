@@ -272,6 +272,7 @@ class MainAccountList extends PureComponent {
               selectedRows={selectedRows}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
+              pagination={{ pageSize: 300,hideOnSinglePage:true }}
             />
           </div>
         </Card>
