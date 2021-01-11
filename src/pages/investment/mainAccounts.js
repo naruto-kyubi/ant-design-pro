@@ -1,20 +1,18 @@
 import React, { PureComponent, Fragment } from 'react';
 import { connect } from 'dva';
 import moment from 'moment';
-import router from 'umi/router';
 import {
   Row,
   Col,
   Card,
   Form,
   Input,
+  InputNumber,
   Select,
   Icon,
   Button,
   Dropdown,
   Menu,
-  InputNumber,
-  DatePicker,
   Modal,
   message,
   Badge,
@@ -115,8 +113,6 @@ const UpdateForm = Form.create()(props => {
     });
   };
 
-  console.log(record.appLocation);
-
   if (!updateModalVisible) return null; 
   return (
     <Modal
@@ -158,7 +154,7 @@ const UpdateForm = Form.create()(props => {
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="APP所在设备">
             {form.getFieldDecorator('appLocation', {initialValue:record.appLocation,
-                  rules: [{ required: false, message: 'APP所在设备', min: 2 }],
+                  rules: [{ required: false, message: '请输入APP所在设备', min: 2 }],
              })(<Input placeholder="默认使用主账户手机" />)}
           </FormItem>
         </Col>
@@ -167,14 +163,14 @@ const UpdateForm = Form.create()(props => {
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录密码">
             {form.getFieldDecorator('loginPwd', {initialValue:record.loginPwd,
-                  rules: [{ required: false, message: '默认使用主账户登录密码', min: 2 }],
+                  rules: [{ required: false, message: '请输入登录密码', min: 2 }],
              })(<Input placeholder="默认使用主账户登录密码" />)}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="交易密码">
             {form.getFieldDecorator('tradePwd', {initialValue:record.tradePwd,
-                  rules: [{ required: false, message: '默认使用主账户交易密码', min: 2 }],
+                  rules: [{ required: false, message: '请输入交易密码', min: 2 }],
              })(<Input placeholder="默认使用主账户登录密码" />)}
           </FormItem>
         </Col>
@@ -183,15 +179,15 @@ const UpdateForm = Form.create()(props => {
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="账号">
             {form.getFieldDecorator('accountNo', {initialValue:record.accountNo,
-                  rules: [{ required: false, message: '', min: 2 }],
+                  rules: [{ required: false, message: '请输入账号', min: 2 }],
              })(<Input placeholder="" />)}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户余额">
             {form.getFieldDecorator('balance', {initialValue:record.balance,
-                  rules: [{ required: false, message: '', min: 2 }],
-             })(<Input placeholder="" />)}
+                  rules: [{ required: false, message: '请输入账户余额' }],
+             })(<InputNumber placeholder="" />)}
           </FormItem>
         </Col>
       </Row>
@@ -390,11 +386,26 @@ class MainAccountList extends PureComponent {
     this.handleModalVisible();
   };
 
+  handleUpdate = fields => {
+    const { dispatch } = this.props;
+    const {updateFormValues} = this.state;
+    
+     dispatch({
+       type: 'investment/updateAccount',
+       payload: {
+         ...fields,
+         id:updateFormValues.id,
+       },
+     });
+    message.success('更新成功');
+    this.handleUpdateModalVisible();
+  };
+
   renderSimpleForm = (accountTypes,mainAccount) => {
     const {
       form: { getFieldDecorator },
     } = this.props;
-   // console.log(accountTypes);
+   
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
@@ -438,7 +449,6 @@ class MainAccountList extends PureComponent {
 
     const data = {
       list:subAccount,
-    //  pagination:investment.meta.pagination,
     }
 
     const menu = (
@@ -450,6 +460,7 @@ class MainAccountList extends PureComponent {
 
     const parentMethods = {
       handleAdd: this.handleAdd,
+      handleUpdate:this.handleUpdate,
       handleModalVisible: this.handleModalVisible,
       handleUpdateModalVisible:this.handleUpdateModalVisible,
     };

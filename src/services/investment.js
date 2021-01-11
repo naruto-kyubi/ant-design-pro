@@ -30,3 +30,10 @@ export async function addAccount(payload) {
     data: payload,
   });
 }
+
+export async function updateAccount(payload) {
+  return request('/server/api/v1/updateAccount', {
+    method: 'POST',
+    data: payload,
+  });
+}

@@ -1,4 +1,4 @@
-import { querySubAccounts,queryMainAccounts,logon,queryBalance,queryAccountTypes,addAccount} from '@/services/investment';
+import { querySubAccounts,queryMainAccounts,logon,queryBalance,queryAccountTypes,addAccount,updateAccount} from '@/services/investment';
 
 
 
@@ -63,6 +63,16 @@ export default {
       console.log(payload)
     },
 
+    *updateAccount({ payload }, { call, put }){
+      const response = yield call(updateAccount, payload);
+      const {
+        status,
+        data,
+      } = response;
+      console.log(payload)
+    },
+
+  
     *queryBalance({ payload }, { call, put }){
       const response = yield call(queryBalance, payload);
       const {
