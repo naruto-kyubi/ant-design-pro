@@ -359,6 +359,10 @@ class MainAccountList extends PureComponent {
         },
       });
     });
+
+    this.setState({
+      selectedRows: [],
+    });
   };
 
   handleModalVisible = flag => {
