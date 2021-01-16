@@ -1,12 +1,12 @@
 import request from '@/utils/request';
 
 export async function querySubAccounts(payload) {
-  const { owner,parent,type} = payload;
+  const { owner, parent, type } = payload;
   return request(`/server/api/v1/subAccounts?owner=${owner}&parent=${parent}&type=${type}`);
 }
 
 export async function queryMainAccounts(payload) {
-  const { owner} = payload;
+  const { owner } = payload;
   return request(`/server/api/v1/mainAccounts?owner=${owner}`);
 }
 
@@ -22,6 +22,17 @@ export async function queryBalance(payload) {
 
 export async function queryAccountTypes() {
   return request(`/server/api/v1/queryAccountTypes`);
+}
+
+export async function queryIPOSubscriptions(payload) {
+  const { stockCode, nameCn, type } = payload;
+  return request(
+    `/server/api/v1/ipoSubscriptions?stockCode=${stockCode}&nameCn=${nameCn}&type=${type}`
+  );
+}
+
+export async function queryStocks() {
+  return request(`/server/api/v1/stocks`);
 }
 
 export async function addAccount(payload) {

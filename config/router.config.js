@@ -368,7 +368,10 @@ export default [
             path: '/investment/mainAccounts',
             component: './investment/mainAccounts.js',
           },
-      
+          {
+            path: '/investment/ipoSubscriptions',
+            component: './investment/ipoSubscriptions.js',
+          },
         ],
       },
       {
