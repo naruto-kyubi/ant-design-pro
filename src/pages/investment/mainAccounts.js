@@ -25,10 +25,10 @@ import styles from './TableList.less';
 
 const FormItem = Form.Item;
 const statusMap = ['error', 'success'];
-const status = ['失败','成功'];
+const status = ['失败', '成功'];
 
 const CreateForm = Form.create()(props => {
-  const { modalVisible, form, handleAdd, handleModalVisible,mainAccount,accountTypes } = props;
+  const { modalVisible, form, handleAdd, handleModalVisible, mainAccount, accountTypes } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -37,7 +37,7 @@ const CreateForm = Form.create()(props => {
     });
   };
 
-  if (!mainAccount) return null; 
+  if (!mainAccount) return null;
   return (
     <Modal
       destroyOnClose
@@ -51,35 +51,39 @@ const CreateForm = Form.create()(props => {
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="主账户">
             {form.getFieldDecorator('parent')(
-              <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
-                {mainAccount.map(element =>( <Option key={element.id}>{element.nameCn}</Option>))}
+              <Select placeholder="请选择" allowClear="true" style={{ width: '100%' }}>
+                {mainAccount.map(element => (
+                  <Select.Option key={element.id}>{element.nameCn}</Select.Option>
+                ))}
               </Select>
-                  )}
+            )}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户类型">
             {form.getFieldDecorator('type')(
-              <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
-                {accountTypes.map(element =>(<Option key={element.id}>{element.nameCn}</Option>))}
+              <Select placeholder="请选择" allowClear="true" style={{ width: '100%' }}>
+                {accountTypes.map(element => (
+                  <Select.Option key={element.id}>{element.nameCn}</Select.Option>
+                ))}
               </Select>
-              )}
+            )}
           </FormItem>
         </Col>
       </Row>
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
-          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录账号">    
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录账号">
             {form.getFieldDecorator('loginId', {
-                  rules: [{ required: false, message: '请输入账号', min: 3 }],
-             })(<Input placeholder="默认使用主账户手机号" />)}
+              rules: [{ required: false, message: '请输入账号', min: 3 }],
+            })(<Input placeholder="默认使用主账户手机号" />)}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="APP所在设备">
             {form.getFieldDecorator('appLocation', {
-                  rules: [{ required: false, message: 'APP所在设备', min: 2 }],
-             })(<Input placeholder="默认使用主账户手机" />)}
+              rules: [{ required: false, message: 'APP所在设备', min: 2 }],
+            })(<Input placeholder="默认使用主账户手机" />)}
           </FormItem>
         </Col>
       </Row>
@@ -87,15 +91,15 @@ const CreateForm = Form.create()(props => {
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录密码">
             {form.getFieldDecorator('loginPwd', {
-                  rules: [{ required: false, message: '默认使用主账户登录密码', min: 2 }],
-             })(<Input placeholder="默认使用主账户登录密码" />)}
+              rules: [{ required: false, message: '默认使用主账户登录密码', min: 2 }],
+            })(<Input placeholder="默认使用主账户登录密码" />)}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="交易密码">
             {form.getFieldDecorator('tradePwd', {
-                  rules: [{ required: false, message: '默认使用主账户交易密码', min: 2 }],
-             })(<Input placeholder="默认使用主账户登录密码" />)}
+              rules: [{ required: false, message: '默认使用主账户交易密码', min: 2 }],
+            })(<Input placeholder="默认使用主账户登录密码" />)}
           </FormItem>
         </Col>
       </Row>
@@ -104,7 +108,15 @@ const CreateForm = Form.create()(props => {
 });
 
 const UpdateForm = Form.create()(props => {
-  const { updateModalVisible, form, handleUpdate, handleUpdateModalVisible,mainAccount,accountTypes,record } = props;
+  const {
+    updateModalVisible,
+    form,
+    handleUpdate,
+    handleUpdateModalVisible,
+    mainAccount,
+    accountTypes,
+    record,
+  } = props;
   const okHandle = () => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -113,7 +125,7 @@ const UpdateForm = Form.create()(props => {
     });
   };
 
-  if (!updateModalVisible) return null; 
+  if (!updateModalVisible) return null;
   return (
     <Modal
       destroyOnClose
@@ -126,68 +138,78 @@ const UpdateForm = Form.create()(props => {
       <Row gutter={{ md: 0, lg: 0, xl: 0 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="主账户">
-            {form.getFieldDecorator('parent',{initialValue:record.parent})(
-              <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
-                {mainAccount.map(element =>( <Option key={element.id}>{element.nameCn}</Option>))}
+            {form.getFieldDecorator('parent', { initialValue: record.parent })(
+              <Select placeholder="请选择" allowClear="true" style={{ width: '100%' }}>
+                {mainAccount.map(element => (
+                  <Select.Option key={element.id}>{element.nameCn}</Select.Option>
+                ))}
               </Select>
-                  )}
+            )}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户类型">
-            {form.getFieldDecorator('type',{initialValue:record.type})(
-              <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
-                {accountTypes.map(element =>(<Option key={element.id}>{element.nameCn}</Option>))}
+            {form.getFieldDecorator('type', { initialValue: record.type })(
+              <Select placeholder="请选择" allowClear="true" style={{ width: '100%' }}>
+                {accountTypes.map(element => (
+                  <Select.Option key={element.id}>{element.nameCn}</Select.Option>
+                ))}
               </Select>
-              )}
+            )}
           </FormItem>
         </Col>
       </Row>
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
-          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录账号">    
-            {form.getFieldDecorator('loginId', {initialValue:record.loginId,
-                  rules: [{ required: false, message: '请输入账号', min: 3 }],
-             })(<Input placeholder="默认使用主账户手机号" />)}
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录账号">
+            {form.getFieldDecorator('loginId', {
+              initialValue: record.loginId,
+              rules: [{ required: false, message: '请输入账号', min: 3 }],
+            })(<Input placeholder="默认使用主账户手机号" />)}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="APP所在设备">
-            {form.getFieldDecorator('appLocation', {initialValue:record.appLocation,
-                  rules: [{ required: false, message: '请输入APP所在设备', min: 2 }],
-             })(<Input placeholder="默认使用主账户手机" />)}
+            {form.getFieldDecorator('appLocation', {
+              initialValue: record.appLocation,
+              rules: [{ required: false, message: '请输入APP所在设备', min: 2 }],
+            })(<Input placeholder="默认使用主账户手机" />)}
           </FormItem>
         </Col>
       </Row>
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="登录密码">
-            {form.getFieldDecorator('loginPwd', {initialValue:record.loginPwd,
-                  rules: [{ required: false, message: '请输入登录密码', min: 2 }],
-             })(<Input placeholder="默认使用主账户登录密码" />)}
+            {form.getFieldDecorator('loginPwd', {
+              initialValue: record.loginPwd,
+              rules: [{ required: false, message: '请输入登录密码', min: 2 }],
+            })(<Input placeholder="默认使用主账户登录密码" />)}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="交易密码">
-            {form.getFieldDecorator('tradePwd', {initialValue:record.tradePwd,
-                  rules: [{ required: false, message: '请输入交易密码', min: 2 }],
-             })(<Input placeholder="默认使用主账户登录密码" />)}
+            {form.getFieldDecorator('tradePwd', {
+              initialValue: record.tradePwd,
+              rules: [{ required: false, message: '请输入交易密码', min: 2 }],
+            })(<Input placeholder="默认使用主账户登录密码" />)}
           </FormItem>
         </Col>
       </Row>
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="账号">
-            {form.getFieldDecorator('accountNo', {initialValue:record.accountNo,
-                  rules: [{ required: false, message: '请输入账号', min: 2 }],
-             })(<Input placeholder="" />)}
+            {form.getFieldDecorator('accountNo', {
+              initialValue: record.accountNo,
+              rules: [{ required: false, message: '请输入账号', min: 2 }],
+            })(<Input placeholder="" />)}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户余额">
-            {form.getFieldDecorator('balance', {initialValue:record.balance,
-                  rules: [{ required: false, message: '请输入账户余额' }],
-             })(<InputNumber placeholder="" />)}
+            {form.getFieldDecorator('balance', {
+              initialValue: record.balance,
+              rules: [{ required: false, message: '请输入账户余额' }],
+            })(<InputNumber placeholder="" />)}
           </FormItem>
         </Col>
       </Row>
@@ -195,14 +217,13 @@ const UpdateForm = Form.create()(props => {
   );
 });
 
-@connect(({ investment, loading ,user}) => ({
-  mainAccount:investment.mainAccounts,
-  subAccount:investment.subAccounts,
-  accountTypes:investment.accountTypes,
-  currentUser:user.currentUser,
+@connect(({ investment, loading, user }) => ({
+  mainAccount: investment.mainAccounts,
+  subAccount: investment.subAccounts,
+  accountTypes: investment.accountTypes,
+  currentUser: user.currentUser,
   loading: loading.models.investment,
 }))
-
 @Form.create()
 class MainAccountList extends PureComponent {
   state = {
@@ -213,6 +234,12 @@ class MainAccountList extends PureComponent {
   };
 
   columns = [
+    {
+      title: '',
+      render: (text, record, index) => {
+        return <span style={{ align: 'center' }}>{index + 1}</span>;
+      },
+    },
     {
       title: '账户名称',
       dataIndex: 'nameCn',
@@ -226,7 +253,7 @@ class MainAccountList extends PureComponent {
       title: '账户余额',
       dataIndex: 'balance',
       sorter: true,
-     // render: val => `${val} 万`,
+      // render: val => `${val} 万`,
       // mark to display a total number
       needTotal: true,
     },
@@ -277,7 +304,7 @@ class MainAccountList extends PureComponent {
   ];
 
   componentDidMount() {
-    const { dispatch,currentUser } = this.props;
+    const { dispatch, currentUser } = this.props;
     dispatch({
       type: 'investment/queryAccountTypes',
     });
@@ -291,13 +318,13 @@ class MainAccountList extends PureComponent {
       type: 'investment/querySubAccounts',
       payload: {
         owner: currentUser.id,
-        parent:'',
-        type:'',
+        parent: '',
+        type: '',
       },
     });
   }
 
-  logon = (id) => {
+  logon = id => {
     const { dispatch } = this.props;
     dispatch({
       type: 'investment/logon',
@@ -307,7 +334,7 @@ class MainAccountList extends PureComponent {
     });
   };
 
-  queryBalance = (id) => {
+  queryBalance = id => {
     const { dispatch } = this.props;
     dispatch({
       type: 'investment/queryBalance',
@@ -329,14 +356,14 @@ class MainAccountList extends PureComponent {
     if (selectedRows.length === 0) return;
     switch (e.key) {
       case 'logon':
-        selectedRows.forEach((row)=>{
+        selectedRows.forEach(row => {
           this.logon(row.id);
-        });  
+        });
         break;
       case 'queryBalance':
-        selectedRows.forEach((row)=>{
+        selectedRows.forEach(row => {
           this.queryBalance(row.id);
-        });  
+        });
         break;
       default:
         break;
@@ -346,7 +373,7 @@ class MainAccountList extends PureComponent {
   handleSearch = e => {
     e.preventDefault();
 
-    const { dispatch, form,currentUser} = this.props;
+    const { dispatch, form, currentUser } = this.props;
 
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -354,8 +381,8 @@ class MainAccountList extends PureComponent {
         type: 'investment/querySubAccounts',
         payload: {
           owner: currentUser.id,
-          parent:fieldsValue.parent||'',
-          type:fieldsValue.type||'',
+          parent: fieldsValue.parent || '',
+          type: fieldsValue.type || '',
         },
       });
     });
@@ -374,50 +401,52 @@ class MainAccountList extends PureComponent {
   handleUpdateModalVisible = (flag, record) => {
     this.setState({
       updateModalVisible: !!flag,
-      updateFormValues:record || {},
+      updateFormValues: record || {},
     });
   };
 
   handleAdd = fields => {
     const { dispatch } = this.props;
-     dispatch({
-       type: 'investment/addAccount',
-       payload: {
-         ...fields,
-       },
-     });
+    dispatch({
+      type: 'investment/addAccount',
+      payload: {
+        ...fields,
+      },
+    });
     message.success('添加成功');
     this.handleModalVisible();
   };
 
   handleUpdate = fields => {
     const { dispatch } = this.props;
-    const {updateFormValues} = this.state;
-    
-     dispatch({
-       type: 'investment/updateAccount',
-       payload: {
-         ...fields,
-         id:updateFormValues.id,
-       },
-     });
+    const { updateFormValues } = this.state;
+
+    dispatch({
+      type: 'investment/updateAccount',
+      payload: {
+        ...fields,
+        id: updateFormValues.id,
+      },
+    });
     message.success('更新成功');
     this.handleUpdateModalVisible();
   };
 
-  renderSimpleForm = (accountTypes,mainAccount) => {
+  renderSimpleForm = (accountTypes, mainAccount) => {
     const {
       form: { getFieldDecorator },
     } = this.props;
-   
+
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="主账户">
               {getFieldDecorator('parent')(
-                <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
-                  {mainAccount.map(element =>(<Option key={element.id}>{element.nameCn}</Option>))}
+                <Select placeholder="请选择" allowClear="true" style={{ width: '100%' }}>
+                  {mainAccount.map(element => (
+                    <Select.Option key={element.id}>{element.nameCn}</Select.Option>
+                  ))}
                 </Select>
               )}
             </FormItem>
@@ -425,8 +454,10 @@ class MainAccountList extends PureComponent {
           <Col md={8} sm={24}>
             <FormItem label="账户类型">
               {getFieldDecorator('type')(
-                <Select placeholder="请选择" allowClear='true' style={{ width: '100%' }}>
-                  {accountTypes.map(element =>(<Option key={element.id}>{element.nameCn}</Option>))}
+                <Select placeholder="请选择" allowClear="true" style={{ width: '100%' }}>
+                  {accountTypes.map(element => (
+                    <Select.Option key={element.id}>{element.nameCn}</Select.Option>
+                  ))}
                 </Select>
               )}
             </FormItem>
@@ -441,19 +472,14 @@ class MainAccountList extends PureComponent {
         </Row>
       </Form>
     );
-  }
+  };
 
   render() {
-
-    const {
-      mainAccount,
-      subAccount,
-      accountTypes,
-    } = this.props;
+    const { mainAccount, subAccount, accountTypes } = this.props;
 
     const data = {
-      list:subAccount,
-    }
+      list: subAccount,
+    };
 
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
@@ -464,20 +490,21 @@ class MainAccountList extends PureComponent {
 
     const parentMethods = {
       handleAdd: this.handleAdd,
-      handleUpdate:this.handleUpdate,
+      handleUpdate: this.handleUpdate,
       handleModalVisible: this.handleModalVisible,
-      handleUpdateModalVisible:this.handleUpdateModalVisible,
+      handleUpdateModalVisible: this.handleUpdateModalVisible,
     };
-    const { selectedRows, modalVisible, updateModalVisible,updateFormValues } = this.state;
+    const { selectedRows, modalVisible, updateModalVisible, updateFormValues } = this.state;
 
-    if (!mainAccount||!accountTypes) return null; 
-  
+    if (!mainAccount || !accountTypes) return null;
 
     return (
       <PageHeaderWrapper title="子账户管理">
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderSimpleForm(accountTypes,mainAccount)}</div>
+            <div className={styles.tableListForm}>
+              {this.renderSimpleForm(accountTypes, mainAccount)}
+            </div>
             <div className={styles.tableListOperator}>
               <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
                 新建
@@ -497,22 +524,26 @@ class MainAccountList extends PureComponent {
               selectedRows={selectedRows}
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
-              pagination={{ pageSize: 300,hideOnSinglePage:true }}
+              pagination={{ pageSize: 300, hideOnSinglePage: true }}
             />
           </div>
         </Card>
-        <CreateForm {...parentMethods} modalVisible={modalVisible} mainAccount={mainAccount} accountTypes={accountTypes} />
+        <CreateForm
+          {...parentMethods}
+          modalVisible={modalVisible}
+          mainAccount={mainAccount}
+          accountTypes={accountTypes}
+        />
         <UpdateForm
           {...parentMethods}
-          updateModalVisible={updateModalVisible} 
-          mainAccount={mainAccount} 
+          updateModalVisible={updateModalVisible}
+          mainAccount={mainAccount}
           accountTypes={accountTypes}
           record={updateFormValues}
         />
       </PageHeaderWrapper>
     );
   }
-
 }
 
 export default MainAccountList;
