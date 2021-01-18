@@ -252,9 +252,10 @@ class MainAccountList extends PureComponent {
     {
       title: '账户余额',
       dataIndex: 'balance',
-      sorter: true,
+      // sorter: true,
       // render: val => `${val} 万`,
       // mark to display a total number
+      sorter: (a, b) => a.balance - b.balance,
       needTotal: true,
     },
     {
