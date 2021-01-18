@@ -252,8 +252,9 @@ class MainAccountList extends PureComponent {
     {
       title: '账户余额',
       dataIndex: 'balance',
+      align: 'right',
       // sorter: true,
-      // render: val => `${val} 万`,
+      render: val => `${this.formatMoney(val)} `,
       // mark to display a total number
       sorter: (a, b) => a.balance - b.balance,
       needTotal: true,
@@ -324,6 +325,43 @@ class MainAccountList extends PureComponent {
       },
     });
   }
+
+  formatMoney = (n, p, s, t, d) => {
+    let number = n;
+    let places = p;
+    let symbol = s;
+    let thousand = t;
+    let decimal = d;
+
+    number = number || 0;
+    // 保留的小位数 可以写成 formatMoney(542986,3) 后面的是保留的小位数，否则默 认保留两位
+    places = Math.abs(places);
+    places = !Number.isNaN(places) ? places : 2;
+    // symbol表示前面表示的标志是￥ 可以写成 formatMoney(542986,2,"$")
+    symbol = symbol !== undefined ? symbol : '￥';
+    // thousand表示每几位用,隔开,是货币标识
+    thousand = thousand || ',';
+    // decimal表示小数点
+    decimal = decimal || '.';
+    // negative表示如果钱是负数有就显示“-”如果不是负数 就不显示负号
+    // i表示处理过的纯数字
+    const negative = number < 0 ? '-' : '';
+    const i = `${parseInt((number = Math.abs(+number || 0).toFixed(places)), 10)}`;
+    let j = i.length;
+    j = j > 3 ? j % 3 : 0;
+    return (
+      symbol +
+      negative +
+      (j ? i.substr(0, j) + thousand : '') +
+      i.substr(j).replace(/(\d{3})(?=\d)/g, '$1' + thousand) + //eslint-disable-line
+      (places
+        ? decimal +
+          Math.abs(number - i)
+            .toFixed(places)
+            .slice(2)
+        : '')
+    );
+  };
 
   logon = id => {
     const { dispatch } = this.props;
