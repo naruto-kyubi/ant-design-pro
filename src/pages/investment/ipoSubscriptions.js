@@ -177,12 +177,13 @@ class IPOSubscriptions extends React.Component {
         sortOrder: sortedInfo.columnKey === 'nameCn' && sortedInfo.order,
         ellipsis: true,
       },
-      { title: '账户资金', dataIndex: 'balance', key: 'balance' },
-      { title: '申购数量', dataIndex: 'numberOfShares', key: 'numberOfShares' },
+      { title: '账户资金', dataIndex: 'balance', key: 'balance', align: 'right' },
+      { title: '申购数量', dataIndex: 'numberOfShares', key: 'numberOfShares', align: 'right' },
       {
         title: '中签数量',
         dataIndex: 'numberOfSigned',
         key: 'numberOfSigned',
+        align: 'right',
         filters: numberOfSigneds,
         filteredValue: filteredInfo.numberOfSigned || null,
         onFilter: (value, record) => record.numberOfSigned == value, //eslint-disable-line
