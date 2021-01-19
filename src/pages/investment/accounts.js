@@ -246,6 +246,10 @@ class AccountList extends PureComponent {
       render: text => <a onClick={() => this.previewItem(text)}>{text}</a>,
     },
     {
+      title: '账户号',
+      dataIndex: 'accountNo',
+    },
+    {
       title: '账户类型',
       dataIndex: 'type',
     },
@@ -517,6 +521,7 @@ class AccountList extends PureComponent {
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
               pagination={{ pageSize: 300, hideOnSinglePage: true }}
+              bordered
             />
           </div>
         </Card>
