@@ -226,7 +226,7 @@ const UpdateForm = Form.create()(props => {
   loading: loading.models.investment,
 }))
 @Form.create()
-class MainAccountList extends PureComponent {
+class AccountList extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
@@ -277,14 +277,6 @@ class MainAccountList extends PureComponent {
         {
           text: status[1],
           value: 1,
-        },
-        {
-          text: status[2],
-          value: 2,
-        },
-        {
-          text: status[3],
-          value: 3,
         },
       ],
       render(val) {
@@ -549,4 +541,4 @@ class MainAccountList extends PureComponent {
   }
 }
 
-export default MainAccountList;
+export default AccountList;
