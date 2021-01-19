@@ -22,6 +22,7 @@ import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 import styles from './TableList.less';
+import { formatMoney } from '@/utils/utils';
 
 const FormItem = Form.Item;
 const statusMap = ['error', 'success'];
@@ -256,9 +257,11 @@ class AccountList extends PureComponent {
     {
       title: '账户余额',
       dataIndex: 'balance',
-      sorter: true,
-      // render: val => `${val} 万`,
+      align: 'right',
+      // sorter: true,
+      render: val => `${formatMoney(val)} `,
       // mark to display a total number
+      sorter: (a, b) => a.balance - b.balance,
       needTotal: true,
     },
     {

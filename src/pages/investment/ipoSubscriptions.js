@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Button, Card, Form, Select, Row, Col } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { connect } from 'dva';
+import { formatMoney } from '@/utils/utils';
 import styles from './TableList.less';
 
 const FormItem = Form.Item;
@@ -177,12 +178,21 @@ class IPOSubscriptions extends React.Component {
         sortOrder: sortedInfo.columnKey === 'nameCn' && sortedInfo.order,
         ellipsis: true,
       },
-      { title: '账户资金', dataIndex: 'balance', key: 'balance' },
-      { title: '申购数量', dataIndex: 'numberOfShares', key: 'numberOfShares' },
+      {
+        title: '账户资金',
+        dataIndex: 'balance',
+        key: 'balance',
+        align: 'right',
+        render: val => `${formatMoney(val)} `,
+        sorter: (a, b) => a.balance - b.balance,
+        sortOrder: sortedInfo.columnKey === 'balance' && sortedInfo.order,
+      },
+      { title: '申购数量', dataIndex: 'numberOfShares', key: 'numberOfShares', align: 'right' },
       {
         title: '中签数量',
         dataIndex: 'numberOfSigned',
         key: 'numberOfSigned',
+        align: 'right',
         filters: numberOfSigneds,
         filteredValue: filteredInfo.numberOfSigned || null,
         onFilter: (value, record) => record.numberOfSigned == value, //eslint-disable-line
