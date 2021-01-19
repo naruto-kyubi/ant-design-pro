@@ -365,8 +365,8 @@ export default [
         routes: [
           // exception
           {
-            path: '/investment/mainAccounts',
-            component: './investment/mainAccounts.js',
+            path: '/investment/accounts',
+            component: './investment/accounts.js',
           },
           {
             path: '/investment/ipoSubscriptions',
