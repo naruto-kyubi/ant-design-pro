@@ -8,6 +8,7 @@ import {
   queryStocks,
   addAccount,
   updateAccount,
+  ipo,
 } from '@/services/investment';
 
 export default {
@@ -113,6 +114,19 @@ export default {
           data,
         },
       });
+    },
+
+    *ipo({ payload }, { call }) {
+      const response = yield call(ipo, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      // yield put({
+      //   type: 'saveStocks',
+      //   payload: {
+      //     status,
+      //     data,
+      //   },
+      // });
     },
   },
 
