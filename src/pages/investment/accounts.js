@@ -30,6 +30,9 @@ const FormItem = Form.Item;
 const statusMap = ['error', 'success'];
 const status = ['失败', '成功'];
 
+const transStatusMap = ['default','processing','success','error']
+const transStatus = ['计划','执行中','成功','失败']
+
 const CreateForm = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleModalVisible, mainAccount, accountTypes } = props;
   const okHandle = () => {
@@ -558,13 +561,11 @@ class AccountList extends PureComponent {
       },
       {
         title: '状态',
+        dataIndex: 'status',
         key: 'status',
-        render: () => (
-          <span>
-            <Badge status="success" />
-            Finished
-          </span>
-        ),
+        render(val) {
+          return <Badge status={transStatusMap[val]} text={transStatus[val]} />;
+        },
       },
 
       {
@@ -572,9 +573,9 @@ class AccountList extends PureComponent {
         dataIndex: 'id',
         render: (id, transRecord) => (
           <Fragment>
-            <a onClick={() => this.queryBalance(id)}>执行</a>
+            <a>执行</a>
             <Divider type="vertical" />
-            <a onClick={() => this.handleUpdateModalVisible(true, transRecord)}>关闭</a>
+            <a>关闭</a>
           </Fragment>
         ),
       },
