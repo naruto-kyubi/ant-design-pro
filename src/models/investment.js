@@ -8,6 +8,7 @@ import {
   queryStocks,
   addAccount,
   updateAccount,
+  addTrans,
 } from '@/services/investment';
 
 export default {
@@ -61,6 +62,14 @@ export default {
       // const {  data } = response;
       // console.log(payload);
     },
+
+    *addTrans({ payload }, { call }) {
+      yield call(addTrans, payload);
+      // const response = yield call(addAccount, payload);
+      // const {  data } = response;
+      // console.log(payload);
+    },
+    
 
     *updateAccount({ payload }, { call }) {
       yield call(updateAccount, payload);
