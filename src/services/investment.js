@@ -58,3 +58,10 @@ export async function updateAccount(payload) {
     data: payload,
   });
 }
+
+export async function addTrans(payload) {
+  return request('/server/api/v1/addTrans', {
+    method: 'POST',
+    data: payload,
+  });
+}
