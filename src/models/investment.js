@@ -9,6 +9,7 @@ import {
   addAccount,
   updateAccount,
   ipo,
+  sign,
 } from '@/services/investment';
 
 export default {
@@ -116,17 +117,30 @@ export default {
       });
     },
 
-    *ipo({ payload }, { call }) {
+    *ipo({ payload }, { call, put }) {
       const response = yield call(ipo, payload);
       const { status, data } = response; //eslint-disable-line
 
-      // yield put({
-      //   type: 'saveStocks',
-      //   payload: {
-      //     status,
-      //     data,
-      //   },
-      // });
+      yield put({
+        type: 'saveIpoSign',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
+
+    *sign({ payload }, { call, put }) {
+      const response = yield call(sign, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      yield put({
+        type: 'saveIpoSign',
+        payload: {
+          status,
+          data,
+        },
+      });
     },
   },
 
@@ -156,6 +170,18 @@ export default {
         ...state,
         ipoSubscriptions: action.payload.data,
       };
+    },
+
+    saveIpoSign(state, action) {
+      const { ipoSubscriptions } = state;
+      const p = action.payload.data;
+      const list = ipoSubscriptions.map(item => {
+        if (item.id === p.id) {
+          return p;
+        }
+        return item;
+      });
+      return { ...state, ipoSubscriptions: list };
     },
 
     saveStocks(state, action) {

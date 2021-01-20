@@ -133,7 +133,7 @@ class IPOSubscriptions extends React.Component {
       case 'ipo':
         selectedRows.forEach(row => {
           // this.logon(row.id);
-          console.log('id=', row.id, ';type=', row.type, 'nameCn=', row.nameCn);
+          // console.log('id=', row.id, ';type=', row.type, 'nameCn=', row.nameCn);
           const { dispatch } = this.props;
           dispatch({
             type: 'investment/ipo',
@@ -144,10 +144,17 @@ class IPOSubscriptions extends React.Component {
           });
         });
         break;
-      case 'cancel':
+      case 'sign':
         selectedRows.forEach(row => {
           // this.queryBalance(row.id);
-          console.log(row);
+          const { dispatch } = this.props;
+          dispatch({
+            type: 'investment/sign',
+            payload: {
+              id: row.id,
+              stockCode: row.stockCode,
+            },
+          });
         });
         break;
       default:
@@ -159,7 +166,7 @@ class IPOSubscriptions extends React.Component {
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="ipo">新股申购</Menu.Item>
-        <Menu.Item key="cancel">取消申购</Menu.Item>
+        <Menu.Item key="sign">中签统计</Menu.Item>
       </Menu>
     );
 

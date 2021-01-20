@@ -30,9 +30,15 @@ export async function queryIPOSubscriptions(payload) {
     `/server/api/v1/ipoSubscriptions?stockCode=${stockCode}&nameCn=${nameCn}&type=${type}`
   );
 }
+
 export async function ipo(payload) {
   const { stockCode, id } = payload;
   return request(`/server/api/v1/ipo?stockCode=${stockCode}&id=${id}`);
+}
+
+export async function sign(payload) {
+  const { stockCode, id } = payload;
+  return request(`/server/api/v1/sign?stockCode=${stockCode}&id=${id}`);
 }
 
 export async function queryStocks() {
