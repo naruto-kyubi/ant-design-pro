@@ -9,6 +9,7 @@ import {
   addAccount,
   updateAccount,
   addTrans,
+  installApp,
 } from '@/services/investment';
 
 export default {
@@ -51,6 +52,13 @@ export default {
 
     *logon({ payload }, { call }) {
       yield call(logon, payload);
+      // const response = yield call(logon, payload);
+      // const { data } = response;
+      // console.log(data);
+    },
+
+    *installApp({ payload }, { call }) {
+      yield call(installApp, payload);
       // const response = yield call(logon, payload);
       // const { data } = response;
       // console.log(data);

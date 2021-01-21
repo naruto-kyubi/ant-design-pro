@@ -361,6 +361,8 @@ class AccountList extends PureComponent {
           <a onClick={() => this.handleUpdateModalVisible(true, record)}>更新</a>
           <Divider type="vertical" />
           <a onClick={() => this.handleTransModalVisible(true, record)}>发起转账</a>
+          {/* <Divider type="vertical" />
+          <a onClick={() => this.installApp(record)}>安装app</a> */}
         </Fragment>
       ),
     },
@@ -486,6 +488,17 @@ class AccountList extends PureComponent {
     message.success('添加成功');
     this.handleModalVisible();
   };
+
+  installApp = record => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'investment/installApp',
+      payload: {
+        account:record.id,
+      },
+    });
+    message.success('添加成功');
+  }
 
   handleUpdate = fields => {
     const { dispatch } = this.props;
