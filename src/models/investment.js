@@ -8,6 +8,8 @@ import {
   queryStocks,
   addAccount,
   updateAccount,
+  ipo,
+  sign,
   addTrans,
   installApp,
 } from '@/services/investment';
@@ -77,7 +79,6 @@ export default {
       // const {  data } = response;
       // console.log(payload);
     },
-    
 
     *updateAccount({ payload }, { call }) {
       yield call(updateAccount, payload);
@@ -131,6 +132,32 @@ export default {
         },
       });
     },
+
+    *ipo({ payload }, { call, put }) {
+      const response = yield call(ipo, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      yield put({
+        type: 'saveIpoSign',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
+
+    *sign({ payload }, { call, put }) {
+      const response = yield call(sign, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      yield put({
+        type: 'saveIpoSign',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
   },
 
   reducers: {
@@ -159,6 +186,18 @@ export default {
         ...state,
         ipoSubscriptions: action.payload.data,
       };
+    },
+
+    saveIpoSign(state, action) {
+      const { ipoSubscriptions } = state;
+      const p = action.payload.data;
+      const list = ipoSubscriptions.map(item => {
+        if (item.id === p.id) {
+          return p;
+        }
+        return item;
+      });
+      return { ...state, ipoSubscriptions: list };
     },
 
     saveStocks(state, action) {
