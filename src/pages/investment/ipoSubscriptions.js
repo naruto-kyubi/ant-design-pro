@@ -275,7 +275,7 @@ class IPOSubscriptions extends React.Component {
         filters: types,
         filteredValue: filteredInfo.type || null,
         onFilter: (value, record) => record.type.includes(value),
-        sorter: (a, b) => a.type.length - b.type.length,
+        sorter: (a, b) => a.type.localeCompare(b.type),
         sortOrder: sortedInfo.columnKey === 'type' && sortedInfo.order,
         ellipsis: true,
       },
