@@ -46,6 +46,11 @@ export async function queryIPOSubscriptions(payload) {
   );
 }
 
+export async function addPlan(payload) {
+  const { stockCode, id } = payload;
+  return request(`/server/api/v1/addPlan?stockCode=${stockCode}&id=${id}`);
+}
+
 export async function ipo(payload) {
   const { stockCode, id } = payload;
   return request(`/server/api/v1/ipo?stockCode=${stockCode}&id=${id}`);

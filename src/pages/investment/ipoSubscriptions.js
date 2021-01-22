@@ -39,10 +39,20 @@ class IPOSubscriptions extends React.Component {
         type: 'investment/queryIPOSubscriptions',
         payload: {
           stockCode: fieldsValue.stockCode,
-          nameCn: '%',
-          type: '%',
         },
       });
+    });
+    this.setState({
+      selectedRows: [],
+    });
+  };
+
+  handleImport = e => {
+    e.preventDefault();
+    const { form } = this.props;
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      console.log('submit-value=', fieldsValue.stockCode);
     });
     this.setState({
       selectedRows: [],
@@ -72,6 +82,10 @@ class IPOSubscriptions extends React.Component {
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
+              </Button>
+              &nbsp;&nbsp;&nbsp;
+              <Button type="primary" htmlType="button" onClick={this.handleImport}>
+                导入申购账户
               </Button>
             </span>
           </Col>
@@ -130,6 +144,20 @@ class IPOSubscriptions extends React.Component {
 
     if (selectedRows.length === 0) return;
     switch (e.key) {
+      case 'plan':
+        selectedRows.forEach(row => {
+          // this.logon(row.id);
+          // console.log('id=', row.id, ';type=', row.type, 'nameCn=', row.nameCn);
+          const { dispatch } = this.props;
+          dispatch({
+            type: 'investment/addPlan',
+            payload: {
+              id: row.id,
+              stockCode: row.stockCode,
+            },
+          });
+        });
+        break;
       case 'ipo':
         selectedRows.forEach(row => {
           // this.logon(row.id);
@@ -165,6 +193,7 @@ class IPOSubscriptions extends React.Component {
   render() {
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
+        <Menu.Item key="plan">加入计划</Menu.Item>
         <Menu.Item key="ipo">新股申购</Menu.Item>
         <Menu.Item key="sign">中签统计</Menu.Item>
       </Menu>
@@ -198,6 +227,14 @@ class IPOSubscriptions extends React.Component {
     if (ipoSubscriptions) {
       numberOfSigneds = Object.keys(this.groupBy(ipoSubscriptions, 'numberOfSigned'));
       numberOfSigneds = numberOfSigneds.map(x => {
+        return { text: x, value: x };
+      });
+    }
+
+    let planIPOs = [];
+    if (ipoSubscriptions) {
+      planIPOs = Object.keys(this.groupBy(ipoSubscriptions, 'planIPO'));
+      planIPOs = planIPOs.map(x => {
         return { text: x, value: x };
       });
     }
@@ -242,6 +279,19 @@ class IPOSubscriptions extends React.Component {
         needTotal: true,
       },
       {
+        title: '申购计划',
+        dataIndex: 'planIPO',
+        key: 'planIPO',
+        align: 'right',
+        filters: planIPOs,
+        filteredValue: filteredInfo.planIPO || null,
+        onFilter: (value, record) => record.planIPO == value, //eslint-disable-line
+        sorter: (a, b) => a.planIPO - b.planIPO,
+        sortOrder: sortedInfo.columnKey === 'planIPO' && sortedInfo.order,
+        ellipsis: true,
+        needTotal: true,
+      },
+      {
         title: '申购数量',
         dataIndex: 'numberOfShares',
         key: 'numberOfShares',
@@ -259,6 +309,7 @@ class IPOSubscriptions extends React.Component {
         sorter: (a, b) => a.numberOfSigned - b.numberOfSigned,
         sortOrder: sortedInfo.columnKey === 'numberOfSigned' && sortedInfo.order,
         ellipsis: true,
+        needTotal: true,
       },
     ];
 
