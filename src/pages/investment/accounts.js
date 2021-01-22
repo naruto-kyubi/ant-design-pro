@@ -314,7 +314,8 @@ class AccountList extends PureComponent {
     },
     {
       title: '账户类型',
-      dataIndex: 'type',
+      dataIndex: 'accountType',
+      render: val => val.nameCn,
     },
     {
       title: '账户余额',
