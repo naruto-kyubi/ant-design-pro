@@ -12,6 +12,8 @@ import {
   sign,
   addTrans,
   installApp,
+  closeTrans,
+  executeTrans,
 } from '@/services/investment';
 
 export default {
@@ -54,6 +56,20 @@ export default {
 
     *logon({ payload }, { call }) {
       yield call(logon, payload);
+      // const response = yield call(logon, payload);
+      // const { data } = response;
+      // console.log(data);
+    },
+
+    *executeTrans({ payload }, { call }) {
+      yield call(executeTrans, payload);
+      // const response = yield call(logon, payload);
+      // const { data } = response;
+      // console.log(data);
+    },
+
+    *closeTrans({ payload }, { call }) {
+      yield call(closeTrans, payload);
       // const response = yield call(logon, payload);
       // const { data } = response;
       // console.log(data);

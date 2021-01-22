@@ -15,6 +15,16 @@ export async function logon(payload) {
   return request(`/server/api/v1/connect?id=${id}`);
 }
 
+export async function executeTrans(payload) {
+  const { id } = payload;
+  return request(`/server/api/v1/executeTrans?id=${id}`);
+}
+
+export async function closeTrans(payload) {
+  const { id } = payload;
+  return request(`/server/api/v1/closeTrans?id=${id}`);
+}
+
 export async function installApp(payload) {
   const { account } = payload;
   return request(`/server/api/v1/installApp?account=${account}`);

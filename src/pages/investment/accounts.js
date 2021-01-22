@@ -113,6 +113,7 @@ const CreateForm = Form.create()(props => {
   );
 });
 
+
 const TransForm = Form.create()(props => {
   const { transModalVisible, form, handleTransAdd, handleTransModalVisible } = props;
   const okHandle = () => {
@@ -136,25 +137,32 @@ const TransForm = Form.create()(props => {
       <Row gutter={{ md: 0, lg: 0, xl: 0 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="转账类型">
-            {form.getFieldDecorator('transType', { initialValue: 'deposit' })(
+            {form.getFieldDecorator('transType',{ initialValue: 'deposit' })(
               <Radio.Group>
-                <Radio value="deposit">转入</Radio>
-                <Radio value="withdraw">转出</Radio>
+                <Radio value="deposit">
+                    转入
+                </Radio>
+                <Radio value="withdraw">
+                    转出
+                </Radio>
               </Radio.Group>
             )}
           </FormItem>
         </Col>
+
       </Row>
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="转账金额">
-            {form.getFieldDecorator('amount', {
+            {form.getFieldDecorator('amount',{
               initialValue: 0,
-              rules: [{ required: true, message: '请输入转账金额' }],
-            })(<InputNumber placeholder="请输入转账金额" />)}
+                            rules: [{ required: true, message: '请输入转账金额' }],
+            })(
+              <InputNumber placeholder="请输入转账金额" />
+            )}
           </FormItem>
-        </Col>
-      </Row>
+        </Col>     
+      </Row>      
     </Modal>
   );
 });
@@ -269,6 +277,8 @@ const UpdateForm = Form.create()(props => {
   );
 });
 
+
+
 @connect(({ investment, loading, user }) => ({
   mainAccount: investment.mainAccounts,
   subAccount: investment.subAccounts,
@@ -281,7 +291,7 @@ class AccountList extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
-    transModalVisible: false,
+    transModalVisible:false,
     selectedRows: [],
     updateFormValues: {},
   };
@@ -351,8 +361,8 @@ class AccountList extends PureComponent {
           <a onClick={() => this.handleUpdateModalVisible(true, record)}>更新</a>
           <Divider type="vertical" />
           <a onClick={() => this.handleTransModalVisible(true, record)}>发起转账</a>
-          {/* <Divider type="vertical" />
-          <a onClick={() => this.installApp(record)}>安装app</a> */}
+          <Divider type="vertical" />
+          <a onClick={() => this.installApp(record)}>安装app</a>
         </Fragment>
       ),
     },
@@ -453,7 +463,7 @@ class AccountList extends PureComponent {
     });
   };
 
-  handleTransModalVisible = (flag, record) => {
+  handleTransModalVisible = (flag, record)  =>{
     this.setState({
       transModalVisible: !!flag,
       updateFormValues: record || {},
@@ -562,16 +572,11 @@ class AccountList extends PureComponent {
     );
   };
 
-  expandedRowRender = record => {
+  expandedRowRender = (record) => {
     const columns = [
       { title: '转账类型', dataIndex: 'transType', key: 'transType' },
       { title: '金额', dataIndex: 'amount', key: 'amount' },
-      {
-        title: '时间',
-        dataIndex: 'transAt',
-        key: 'transAt',
-        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
-      },
+      { title: '时间', dataIndex: 'transAt', key: 'transAt' , render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>},
       {
         title: '状态',
         dataIndex: 'status',
@@ -584,17 +589,37 @@ class AccountList extends PureComponent {
       {
         title: '操作',
         dataIndex: 'id',
-        render: (id, transRecord) => (
+        render: (id) => (
           <Fragment>
-            <a>执行</a>
+            <a onClick={() => this.executeTrans(id)}>执行</a>
             <Divider type="vertical" />
-            <a>关闭</a>
+            <a onClick={() => this.closeTrans(id)}>关闭</a>
           </Fragment>
         ),
       },
     ];
 
     return <Table columns={columns} dataSource={record.fundTransList} pagination={false} />;
+  };
+
+  executeTrans = id => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'investment/executeTrans',
+      payload: {
+        id,
+      },
+    });
+  };
+
+  closeTrans = id => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'investment/closeTrans',
+      payload: {
+        id,
+      },
+    });
   };
 
   render() {
@@ -616,16 +641,10 @@ class AccountList extends PureComponent {
       handleUpdate: this.handleUpdate,
       handleModalVisible: this.handleModalVisible,
       handleUpdateModalVisible: this.handleUpdateModalVisible,
-      handleTransModalVisible: this.handleTransModalVisible,
-      handleTransAdd: this.handleTransAdd,
+      handleTransModalVisible:this.handleTransModalVisible,
+      handleTransAdd:this.handleTransAdd,
     };
-    const {
-      selectedRows,
-      modalVisible,
-      updateModalVisible,
-      updateFormValues,
-      transModalVisible,
-    } = this.state;
+    const { selectedRows, modalVisible, updateModalVisible, updateFormValues, transModalVisible} = this.state;
 
     if (!mainAccount || !accountTypes) return null;
 
@@ -652,11 +671,11 @@ class AccountList extends PureComponent {
             </div>
             <StandardTable
               data={data}
-              // dataSource={subAccount}
+             // dataSource={subAccount}
               selectedRows={selectedRows}
               expandedRowRender={this.expandedRowRender}
               rowClassName={record => record.fundTransList.length < 1 && styles.noExpand}
-              // rowExpandable={record => record.fundTransList.length > 0 }
+             // rowExpandable={record => record.fundTransList.length > 0 }
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
               pagination={{ pageSize: 300, hideOnSinglePage: true }}
@@ -682,6 +701,8 @@ class AccountList extends PureComponent {
           transModalVisible={transModalVisible}
           record={updateFormValues}
         />
+
+
       </PageHeaderWrapper>
     );
   }
