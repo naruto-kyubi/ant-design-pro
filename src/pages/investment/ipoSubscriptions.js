@@ -234,6 +234,14 @@ class IPOSubscriptions extends React.Component {
       });
     }
 
+    let commissionFee = [];
+    if (ipoSubscriptions) {
+      commissionFee = Object.keys(this.groupBy(ipoSubscriptions, 'commissionFee'));
+      commissionFee = commissionFee.map(x => {
+        return { text: x, value: x };
+      });
+    }
+
     let planIPOs = [];
     if (ipoSubscriptions) {
       planIPOs = Object.keys(this.groupBy(ipoSubscriptions, 'planIPO'));
@@ -300,6 +308,31 @@ class IPOSubscriptions extends React.Component {
         render: val => `${formatMoney(val)} `,
         sorter: (a, b) => a.balance - b.balance,
         sortOrder: sortedInfo.columnKey === 'balance' && sortedInfo.order,
+        needTotal: true,
+      },
+      {
+        title: '入场费',
+        width: 150,
+        dataIndex: 'adminssionFee',
+        key: 'adminssionFee',
+        align: 'right',
+        render: val => `${formatMoney(val)} `,
+        sorter: (a, b) => a.adminssionFee - b.adminssionFee,
+        sortOrder: sortedInfo.columnKey === 'adminssionFee' && sortedInfo.order,
+        needTotal: true,
+      },
+      {
+        title: '手续费',
+        width: 150,
+        dataIndex: 'commissionFee',
+        key: 'commissionFee',
+        align: 'right',
+        filters: commissionFee,
+        filteredValue: filteredInfo.commissionFee || null,
+        onFilter: (value, record) => record.commissionFee == value, //eslint-disable-line
+        sorter: (a, b) => a.commissionFee - b.commissionFee,
+        sortOrder: sortedInfo.columnKey === 'commissionFee' && sortedInfo.order,
+        ellipsis: true,
         needTotal: true,
       },
       {
