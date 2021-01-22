@@ -8,6 +8,7 @@ import {
   queryStocks,
   addAccount,
   updateAccount,
+  addPlan,
   ipo,
   sign,
   addTrans,
@@ -118,6 +119,19 @@ export default {
 
       yield put({
         type: 'saveStocks',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
+
+    *addPlan({ payload }, { call, put }) {
+      const response = yield call(addPlan, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      yield put({
+        type: 'saveIpoSign',
         payload: {
           status,
           data,
