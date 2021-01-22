@@ -67,7 +67,7 @@ const CreateForm = Form.create()(props => {
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户类型">
-            {form.getFieldDecorator('type')(
+            {form.getFieldDecorator('accountType')(
               <Select placeholder="请选择" allowClear="true" style={{ width: '100%' }}>
                 {accountTypes.map(element => (
                   <Select.Option key={element.id}>{element.nameCn}</Select.Option>
@@ -209,7 +209,7 @@ const UpdateForm = Form.create()(props => {
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户类型">
-            {form.getFieldDecorator('type', { initialValue: record.type })(
+            {form.getFieldDecorator('accountType', { initialValue: record.accountType.id })(
               <Select placeholder="请选择" allowClear="true" style={{ width: '100%' }}>
                 {accountTypes.map(element => (
                   <Select.Option key={element.id}>{element.nameCn}</Select.Option>
