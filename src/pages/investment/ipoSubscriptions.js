@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Card, Form, Select, Row, Col, Menu, Dropdown, Icon } from 'antd';
+import React, { Fragment } from 'react';
+import { Button, Card, Form, Select, Row, Col, Menu, Dropdown, Icon, Divider } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { connect } from 'dva';
@@ -52,7 +52,6 @@ class IPOSubscriptions extends React.Component {
     const { dispatch, form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
-      console.log('submit-value=', fieldsValue.stockCode);
       dispatch({
         type: 'investment/importData',
         payload: {
@@ -101,7 +100,6 @@ class IPOSubscriptions extends React.Component {
   };
 
   handleChange = (pagination, filters, sorter) => {
-    console.log('Various parameters', pagination, filters, sorter);
     this.setState({
       filteredInfo: filters,
       sortedInfo: sorter,
@@ -139,7 +137,6 @@ class IPOSubscriptions extends React.Component {
   };
 
   handleSelectRows = rows => {
-    console.log('rows=', rows);
     this.setState({
       selectedRows: rows,
     });
@@ -152,48 +149,55 @@ class IPOSubscriptions extends React.Component {
     switch (e.key) {
       case 'plan':
         selectedRows.forEach(row => {
-          // this.logon(row.id);
-          // console.log('id=', row.id, ';type=', row.type, 'nameCn=', row.nameCn);
-          const { dispatch } = this.props;
-          dispatch({
-            type: 'investment/addPlan',
-            payload: {
-              id: row.id,
-              stockCode: row.stockCode,
-            },
-          });
+          this.addPlan(row.id, row.stockCode);
         });
         break;
       case 'ipo':
         selectedRows.forEach(row => {
-          // this.logon(row.id);
-          // console.log('id=', row.id, ';type=', row.type, 'nameCn=', row.nameCn);
-          const { dispatch } = this.props;
-          dispatch({
-            type: 'investment/ipo',
-            payload: {
-              id: row.id,
-              stockCode: row.stockCode,
-            },
-          });
+          this.addIPO(row.id, row.stockCode);
         });
         break;
       case 'sign':
         selectedRows.forEach(row => {
-          // this.queryBalance(row.id);
-          const { dispatch } = this.props;
-          dispatch({
-            type: 'investment/sign',
-            payload: {
-              id: row.id,
-              stockCode: row.stockCode,
-            },
-          });
+          this.querySign(row.id, row.stockCode);
         });
         break;
       default:
         break;
     }
+  };
+
+  addPlan = (id, stockCode) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'investment/addPlan',
+      payload: {
+        id,
+        stockCode,
+      },
+    });
+  };
+
+  addIPO = (id, stockCode) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'investment/ipo',
+      payload: {
+        id,
+        stockCode,
+      },
+    });
+  };
+
+  querySign = (id, stockCode) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'investment/sign',
+      payload: {
+        id,
+        stockCode,
+      },
+    });
   };
 
   render() {
@@ -257,10 +261,11 @@ class IPOSubscriptions extends React.Component {
     const columns = [
       {
         title: '序号',
+        align: 'center',
         render: (text, record, index) => {
           return <span style={{ align: 'center' }}>{index + 1}</span>;
         },
-        width: 150,
+        width: 80,
       },
       {
         title: '券商',
@@ -350,6 +355,20 @@ class IPOSubscriptions extends React.Component {
         ellipsis: true,
         needTotal: true,
       },
+      {
+        title: '操作',
+        width: 210,
+        // dataIndex: 'id',
+        render: record => (
+          <Fragment>
+            <a onClick={() => this.addPlan(record.id, record.stockCode)}>计划</a>
+            <Divider type="vertical" />
+            <a onClick={() => this.addIPO(record.id, record.stockCode)}>申购</a>
+            <Divider type="vertical" />
+            <a onClick={() => this.querySign(record.id, record.stockCode)}>中签</a>
+          </Fragment>
+        ),
+      },
     ];
 
     return (
@@ -372,13 +391,7 @@ class IPOSubscriptions extends React.Component {
                 <Button onClick={this.clearFilters}>Clear filters</Button>
                 <Button onClick={this.clearAll}>Clear filters and sorters</Button>
               </div>
-              {/* <Table
-                columns={columns}
-                dataSource={data}
-                onChange={this.handleChange}
-                pagination={false}
-                size="small"
-              /> */}
+
               <StandardTable
                 rowKey="id"
                 dataSource={data}
