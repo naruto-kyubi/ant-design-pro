@@ -287,7 +287,7 @@ class IPOSubscriptions extends React.Component {
         filters: nameCns,
         filteredValue: filteredInfo.nameCn || null,
         onFilter: (value, record) => record.nameCn.includes(value),
-        sorter: (a, b) => a.nameCn.length - b.nameCn.length,
+        sorter: (a, b) => a.nameCn.localeCompare(b.nameCn),
         sortOrder: sortedInfo.columnKey === 'nameCn' && sortedInfo.order,
         ellipsis: true,
       },
