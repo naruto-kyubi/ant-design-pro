@@ -49,10 +49,16 @@ class IPOSubscriptions extends React.Component {
 
   handleImport = e => {
     e.preventDefault();
-    const { form } = this.props;
+    const { dispatch, form } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       console.log('submit-value=', fieldsValue.stockCode);
+      dispatch({
+        type: 'investment/importData',
+        payload: {
+          stockCode: fieldsValue.stockCode,
+        },
+      });
     });
     this.setState({
       selectedRows: [],
@@ -215,18 +221,11 @@ class IPOSubscriptions extends React.Component {
         return { text: x, value: x };
       });
     }
+
     let nameCns = [];
     if (ipoSubscriptions) {
       nameCns = Object.keys(this.groupBy(ipoSubscriptions, 'nameCn'));
       nameCns = nameCns.map(x => {
-        return { text: x, value: x };
-      });
-    }
-
-    let numberOfSigneds = [];
-    if (ipoSubscriptions) {
-      numberOfSigneds = Object.keys(this.groupBy(ipoSubscriptions, 'numberOfSigned'));
-      numberOfSigneds = numberOfSigneds.map(x => {
         return { text: x, value: x };
       });
     }
@@ -239,15 +238,33 @@ class IPOSubscriptions extends React.Component {
       });
     }
 
+    let numberOfShares = [];
+    if (ipoSubscriptions) {
+      numberOfShares = Object.keys(this.groupBy(ipoSubscriptions, 'numberOfShares'));
+      numberOfShares = numberOfShares.map(x => {
+        return { text: x, value: x };
+      });
+    }
+
+    let numberOfSigneds = [];
+    if (ipoSubscriptions) {
+      numberOfSigneds = Object.keys(this.groupBy(ipoSubscriptions, 'numberOfSigned'));
+      numberOfSigneds = numberOfSigneds.map(x => {
+        return { text: x, value: x };
+      });
+    }
+
     const columns = [
       {
         title: '序号',
         render: (text, record, index) => {
           return <span style={{ align: 'center' }}>{index + 1}</span>;
         },
+        width: 150,
       },
       {
         title: '券商',
+        width: 150,
         dataIndex: 'type',
         key: 'type',
         filters: types,
@@ -259,6 +276,7 @@ class IPOSubscriptions extends React.Component {
       },
       {
         title: '姓名',
+        width: 150,
         dataIndex: 'nameCn',
         key: 'nameCn',
         filters: nameCns,
@@ -270,6 +288,7 @@ class IPOSubscriptions extends React.Component {
       },
       {
         title: '账户资金',
+        width: 150,
         dataIndex: 'balance',
         key: 'balance',
         align: 'right',
@@ -279,7 +298,19 @@ class IPOSubscriptions extends React.Component {
         needTotal: true,
       },
       {
+        title: '申购费用',
+        width: 150,
+        dataIndex: 'subscriptionFee',
+        key: 'subscriptionFee',
+        align: 'right',
+        render: val => `${formatMoney(val)} `,
+        sorter: (a, b) => a.subscriptionFee - b.subscriptionFee,
+        sortOrder: sortedInfo.columnKey === 'subscriptionFee' && sortedInfo.order,
+        needTotal: true,
+      },
+      {
         title: '申购计划',
+        width: 150,
         dataIndex: 'planIPO',
         key: 'planIPO',
         align: 'right',
@@ -293,13 +324,21 @@ class IPOSubscriptions extends React.Component {
       },
       {
         title: '申购数量',
+        width: 150,
         dataIndex: 'numberOfShares',
         key: 'numberOfShares',
         align: 'right',
+        filters: numberOfShares,
+        filteredValue: filteredInfo.numberOfShares || null,
+        onFilter: (value, record) => record.numberOfShares == value, //eslint-disable-line
+        sorter: (a, b) => a.numberOfShares - b.numberOfShares,
+        sortOrder: sortedInfo.columnKey === 'numberOfShares' && sortedInfo.order,
+        ellipsis: true,
         needTotal: true,
       },
       {
         title: '中签数量',
+        width: 150,
         dataIndex: 'numberOfSigned',
         key: 'numberOfSigned',
         align: 'right',
@@ -347,6 +386,7 @@ class IPOSubscriptions extends React.Component {
                 onChange={this.handleChange}
                 columns={columns}
                 onSelectRow={this.handleSelectRows}
+                scroll={{ y: 800 }}
                 pagination={{ pageSize: 500, hideOnSinglePage: true }}
               />
             </div>

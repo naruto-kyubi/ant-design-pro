@@ -40,10 +40,13 @@ export async function queryAccountTypes() {
 }
 
 export async function queryIPOSubscriptions(payload) {
-  const { stockCode, nameCn, type } = payload;
-  return request(
-    `/server/api/v1/ipoSubscriptions?stockCode=${stockCode}&nameCn=${nameCn}&type=${type}`
-  );
+  const { stockCode } = payload;
+  return request(`/server/api/v1/ipoSubscriptions?stockCode=${stockCode}`);
+}
+
+export async function importData(payload) {
+  const { stockCode } = payload;
+  return request(`/server/api/v1/importData?stockCode=${stockCode}`);
 }
 
 export async function addPlan(payload) {

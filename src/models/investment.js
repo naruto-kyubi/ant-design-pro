@@ -12,6 +12,7 @@ import {
   ipo,
   sign,
   addTrans,
+  importData,
   installApp,
   closeTrans,
   executeTrans,
@@ -156,6 +157,19 @@ export default {
 
       yield put({
         type: 'saveIpoSign',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
+
+    *importData({ payload }, { call, put }) {
+      const response = yield call(importData, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      yield put({
+        type: 'saveIPOSubScriptions',
         payload: {
           status,
           data,
