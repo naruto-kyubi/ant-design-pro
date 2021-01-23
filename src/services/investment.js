@@ -40,28 +40,28 @@ export async function queryAccountTypes() {
 }
 
 export async function queryIPOSubscriptions(payload) {
-  const { stockCode } = payload;
-  return request(`/server/api/v1/ipoSubscriptions?stockCode=${stockCode}`);
+  const { stockId } = payload;
+  return request(`/server/api/v1/ipoSubscriptions?stockId=${stockId}`);
 }
 
 export async function importData(payload) {
-  const { stockCode } = payload;
-  return request(`/server/api/v1/importData?stockCode=${stockCode}`);
+  const { stockId } = payload;
+  return request(`/server/api/v1/importData?stockId=${stockId}`);
 }
 
 export async function addPlan(payload) {
-  const { stockCode, id } = payload;
-  return request(`/server/api/v1/addPlan?stockCode=${stockCode}&id=${id}`);
+  const { stockId, id } = payload;
+  return request(`/server/api/v1/addPlan?stockId=${stockId}&id=${id}`);
 }
 
 export async function ipo(payload) {
-  const { stockCode, id } = payload;
-  return request(`/server/api/v1/ipo?stockCode=${stockCode}&id=${id}`);
+  const { stockId, id } = payload;
+  return request(`/server/api/v1/ipo?stockId=${stockId}&id=${id}`);
 }
 
 export async function sign(payload) {
-  const { stockCode, id } = payload;
-  return request(`/server/api/v1/sign?stockCode=${stockCode}&id=${id}`);
+  const { stockId, id } = payload;
+  return request(`/server/api/v1/sign?stockId=${stockId}&id=${id}`);
 }
 
 export async function queryStocks() {
