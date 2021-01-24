@@ -62,6 +62,14 @@ const UpdateForm = Form.create()(props => {
       </Row>
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="手续费">
+            {form.getFieldDecorator('commissionFee', {
+              initialValue: record.commissionFee,
+              rules: [{ required: false, message: '请输入手续费' }],
+            })(<InputNumber placeholder="手续费" min={0} />)}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="申购费">
             {form.getFieldDecorator('subscriptionFee', {
               initialValue: record.subscriptionFee,
@@ -69,6 +77,8 @@ const UpdateForm = Form.create()(props => {
             })(<InputNumber placeholder="申购费" min={0} />)}
           </FormItem>
         </Col>
+      </Row>
+      <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="计划申购数量">
             {form.getFieldDecorator('planIPO', {
@@ -77,8 +87,6 @@ const UpdateForm = Form.create()(props => {
             })(<InputNumber placeholder="计划申购数量" min={0} />)}
           </FormItem>
         </Col>
-      </Row>
-      <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="实际申购数量">
             {form.getFieldDecorator('numberOfShares', {
@@ -87,6 +95,8 @@ const UpdateForm = Form.create()(props => {
             })(<InputNumber placeholder="实际申购数量" min={0} />)}
           </FormItem>
         </Col>
+      </Row>
+      <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="中签数量">
             {form.getFieldDecorator('numberOfSigned', {
