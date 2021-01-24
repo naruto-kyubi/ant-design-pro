@@ -54,6 +54,11 @@ export async function addPlan(payload) {
   return request(`/server/api/v1/addPlan?stockId=${stockId}&id=${id}`);
 }
 
+export async function removePlan(payload) {
+  const { stockId, id } = payload;
+  return request(`/server/api/v1/removePlan?stockId=${stockId}&id=${id}`);
+}
+
 export async function ipo(payload) {
   const { stockId, id } = payload;
   return request(`/server/api/v1/ipo?stockId=${stockId}&id=${id}`);
@@ -62,6 +67,13 @@ export async function ipo(payload) {
 export async function sign(payload) {
   const { stockId, id } = payload;
   return request(`/server/api/v1/sign?stockId=${stockId}&id=${id}`);
+}
+
+export async function updateIPO(payload) {
+  return request('/server/api/v1/updateIPO', {
+    method: 'POST',
+    data: payload,
+  });
 }
 
 export async function queryStocks() {

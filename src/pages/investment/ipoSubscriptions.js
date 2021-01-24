@@ -65,8 +65,8 @@ const UpdateForm = Form.create()(props => {
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="申购费">
             {form.getFieldDecorator('subscriptionFee', {
               initialValue: record.subscriptionFee,
-              rules: [{ required: false, message: '请输入申购费', min: 0 }],
-            })(<InputNumber placeholder="申购费" />)}
+              rules: [{ required: false, message: '请输入申购费' }],
+            })(<InputNumber placeholder="申购费" min={0} />)}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
@@ -273,6 +273,17 @@ class IPOSubscriptions extends React.Component {
     });
   };
 
+  removePlan = (id, stockId) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'investment/removePlan',
+      payload: {
+        id,
+        stockId,
+      },
+    });
+  };
+
   addIPO = (id, stockId) => {
     const { dispatch } = this.props;
     dispatch({
@@ -313,7 +324,7 @@ class IPOSubscriptions extends React.Component {
     const { updateFormValues } = this.state;
 
     dispatch({
-      type: 'investment/updateIpo',
+      type: 'investment/updateIPO',
       payload: {
         ...fields,
         id: updateFormValues.id,
@@ -517,7 +528,12 @@ class IPOSubscriptions extends React.Component {
         // dataIndex: 'id',
         render: record => (
           <Fragment>
-            <a onClick={() => this.addPlan(record.id, record.stockId)}>计划</a>
+            {record.planIPO < 1 && (
+              <a onClick={() => this.addPlan(record.id, record.stockId)}>加入计划</a>
+            )}
+            {record.planIPO > 0 && (
+              <a onClick={() => this.removePlan(record.id, record.stockId)}>取消计划</a>
+            )}
             <Divider type="vertical" />
             <a onClick={() => this.addIPO(record.id, record.stockId)}>申购</a>
             <Divider type="vertical" />

@@ -9,8 +9,10 @@ import {
   addAccount,
   updateAccount,
   addPlan,
+  removePlan,
   ipo,
   sign,
+  updateIPO,
   addTrans,
   importData,
   installApp,
@@ -177,6 +179,19 @@ export default {
       });
     },
 
+    *removePlan({ payload }, { call, put }) {
+      const response = yield call(removePlan, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      yield put({
+        type: 'saveIpoSign',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
+
     *importData({ payload }, { call, put }) {
       const response = yield call(importData, payload);
       const { status, data } = response; //eslint-disable-line
@@ -205,6 +220,19 @@ export default {
 
     *sign({ payload }, { call, put }) {
       const response = yield call(sign, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      yield put({
+        type: 'saveIpoSign',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
+
+    *updateIPO({ payload }, { call, put }) {
+      const response = yield call(updateIPO, payload);
       const { status, data } = response; //eslint-disable-line
 
       yield put({
