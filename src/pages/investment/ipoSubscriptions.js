@@ -65,8 +65,8 @@ const UpdateForm = Form.create()(props => {
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="申购费">
             {form.getFieldDecorator('subscriptionFee', {
               initialValue: record.subscriptionFee,
-              rules: [{ required: false, message: '请输入申购费', min: 0 }],
-            })(<InputNumber placeholder="申购费" />)}
+              rules: [{ required: false, message: '请输入申购费' }],
+            })(<InputNumber placeholder="申购费" min={0} />)}
           </FormItem>
         </Col>
         <Col md={12} sm={24}>
@@ -324,7 +324,7 @@ class IPOSubscriptions extends React.Component {
     const { updateFormValues } = this.state;
 
     dispatch({
-      type: 'investment/updateIpo',
+      type: 'investment/updateIPO',
       payload: {
         ...fields,
         id: updateFormValues.id,

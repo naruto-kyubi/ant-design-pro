@@ -12,6 +12,7 @@ import {
   removePlan,
   ipo,
   sign,
+  updateIPO,
   addTrans,
   importData,
   installApp,
@@ -206,6 +207,19 @@ export default {
 
     *sign({ payload }, { call, put }) {
       const response = yield call(sign, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      yield put({
+        type: 'saveIpoSign',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
+
+    *updateIPO({ payload }, { call, put }) {
+      const response = yield call(updateIPO, payload);
       const { status, data } = response; //eslint-disable-line
 
       yield put({

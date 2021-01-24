@@ -69,6 +69,13 @@ export async function sign(payload) {
   return request(`/server/api/v1/sign?stockId=${stockId}&id=${id}`);
 }
 
+export async function updateIPO(payload) {
+  return request('/server/api/v1/updateIPO', {
+    method: 'POST',
+    data: payload,
+  });
+}
+
 export async function queryStocks() {
   return request(`/server/api/v1/stocks`);
 }
