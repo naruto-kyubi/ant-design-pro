@@ -411,6 +411,7 @@ class AccountList extends PureComponent {
   };
 
   handleSelectRows = rows => {
+    console.log(rows)
     this.setState({
       selectedRows: rows,
     });
@@ -674,7 +675,7 @@ class AccountList extends PureComponent {
               data={data}
              // dataSource={subAccount}
               selectedRows={selectedRows}
-              expandedRowRender={this.expandedRowRender}
+             // expandedRowRender={this.expandedRowRender}
               rowClassName={record => record.fundTransList.length < 1 && styles.noExpand}
              // rowExpandable={record => record.fundTransList.length > 0 }
               columns={this.columns}
