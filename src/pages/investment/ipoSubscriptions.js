@@ -13,6 +13,7 @@ import {
   Modal,
   Input,
   InputNumber,
+  Switch,
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -28,8 +29,19 @@ const UpdateForm = Form.create()(props => {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
-      handleUpdate(fieldsValue);
+
+      const v = {
+        ...fieldsValue,
+        subscriptionType: fieldsValue.subscriptionType == true ? '1' : '0', //eslint-disable-line
+      };
+      handleUpdate(v);
     });
+  };
+
+  const onChange = checked => {
+    if (!checked) {
+      form.setFieldsValue({ interest: 0, subscriptionType: checked });
+    }
   };
 
   if (!updateModalVisible) return null;
@@ -60,6 +72,27 @@ const UpdateForm = Form.create()(props => {
           </FormItem>
         </Col>
       </Row>
+
+      <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="融资">
+            {form.getFieldDecorator('subscriptionType', {
+              initialValue: record.subscriptionType == '1', //eslint-disable-line
+              valuePropName: 'checked',
+              // rules: [{ required: false, message: '请选择是否融资' }],
+            })(<Switch onChange={onChange} />)}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="利息">
+            {form.getFieldDecorator('interest', {
+              initialValue: record.interest,
+              rules: [{ required: false, message: '请输入利息' }],
+            })(<InputNumber placeholder="利息" min={0} />)}
+          </FormItem>
+        </Col>
+      </Row>
+
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="手续费">
@@ -412,12 +445,12 @@ class IPOSubscriptions extends React.Component {
 
     const columns = [
       {
-        title: '序号',
+        title: '',
         align: 'center',
         render: (text, record, index) => {
           return <span style={{ align: 'center' }}>{index + 1}</span>;
         },
-        width: 80,
+        width: 60,
       },
       {
         title: '券商',
@@ -444,7 +477,7 @@ class IPOSubscriptions extends React.Component {
         ellipsis: true,
       },
       {
-        title: '账户资金',
+        title: '资金',
         width: 140,
         dataIndex: 'balance',
         key: 'balance',
@@ -456,7 +489,7 @@ class IPOSubscriptions extends React.Component {
       },
       {
         title: '入场费',
-        width: 140,
+        width: 120,
         dataIndex: 'adminssionFee',
         key: 'adminssionFee',
         align: 'right',
@@ -465,9 +498,39 @@ class IPOSubscriptions extends React.Component {
         sortOrder: sortedInfo.columnKey === 'adminssionFee' && sortedInfo.order,
         needTotal: true,
       },
+
+      {
+        title: '融资',
+        width: 100,
+        dataIndex: 'subscriptionType',
+        key: 'subscriptionType',
+        align: 'right',
+        filters: [{ text: '0', value: '0' }, { value: '1', text: '1' }],
+        filteredValue: filteredInfo.subscriptionType || null,
+        onFilter: (value, record) => record.subscriptionType == value, //eslint-disable-line
+        sorter: (a, b) => a.subscriptionType.localeCompare(b.subscriptionType),
+        sortOrder: sortedInfo.columnKey === 'subscriptionType' && sortedInfo.order,
+        ellipsis: true,
+        needTotal: true,
+      },
+      {
+        title: '利息',
+        width: 100,
+        dataIndex: 'interest',
+        key: 'interest',
+        align: 'right',
+        // filters: interest,
+        // filteredValue: filteredInfo.interest || null,
+        // onFilter: (value, record) => record.interest == value, //eslint-disable-line
+        sorter: (a, b) => a.interest - b.interest,
+        sortOrder: sortedInfo.columnKey === 'interest' && sortedInfo.order,
+        ellipsis: true,
+        needTotal: true,
+      },
+
       {
         title: '手续费',
-        width: 140,
+        width: 120,
         dataIndex: 'commissionFee',
         key: 'commissionFee',
         align: 'right',
@@ -491,8 +554,8 @@ class IPOSubscriptions extends React.Component {
         needTotal: true,
       },
       {
-        title: '申购计划',
-        width: 150,
+        title: '计划',
+        width: 100,
         dataIndex: 'planIPO',
         key: 'planIPO',
         align: 'right',
@@ -505,8 +568,8 @@ class IPOSubscriptions extends React.Component {
         needTotal: true,
       },
       {
-        title: '申购数量',
-        width: 150,
+        title: '申购',
+        width: 100,
         dataIndex: 'numberOfShares',
         key: 'numberOfShares',
         align: 'right',
@@ -519,8 +582,8 @@ class IPOSubscriptions extends React.Component {
         needTotal: true,
       },
       {
-        title: '中签数量',
-        width: 150,
+        title: '中签',
+        width: 100,
         dataIndex: 'numberOfSigned',
         key: 'numberOfSigned',
         align: 'right',
@@ -534,7 +597,7 @@ class IPOSubscriptions extends React.Component {
       },
       {
         title: '操作',
-        width: 240,
+        width: 180,
         // dataIndex: 'id',
         render: record => (
           <Fragment>
@@ -590,7 +653,7 @@ class IPOSubscriptions extends React.Component {
                 onChange={this.handleChange}
                 columns={columns}
                 onSelectRow={this.handleSelectRows}
-                scroll={{ y: 800 }}
+                scroll={{ x: 2000, y: 800 }}
                 pagination={{ pageSize: 500, hideOnSinglePage: true }}
               />
             </div>
