@@ -100,18 +100,31 @@ export default {
       // console.log(payload);
     },
 
-    *updateAccount({ payload }, { call }) {
-      yield call(updateAccount, payload);
-      // const response = yield call(updateAccount, payload);
-      // const { status, data } = response;
+    *updateAccount({ payload }, { call, put }) {
+      // yield call(updateAccount, payload);
+       const response = yield call(updateAccount, payload);
+       const { status, data } = response;
+       yield put({
+        type: 'saveAccountOperationInfo',
+        payload: {
+          status,
+          data,
+        },
+      });
       // console.log(payload);
     },
 
-    *queryBalance({ payload }, { call }) {
-      yield call(queryBalance, payload);
-      // const response = yield call(queryBalance, payload);
-      // const { status, data } = response;
-      // console.log(data);
+    *queryBalance({ payload }, { call,put }) {
+      // yield call(queryBalance, payload);
+       const response = yield call(queryBalance, payload);
+       const { status, data } = response;
+       yield put({
+        type: 'saveAccountOperationInfo',
+        payload: {
+          status,
+          data,
+        },
+      });
     },
 
     *queryAccountTypes({ payload }, { call, put }) {
@@ -270,6 +283,19 @@ export default {
         return item;
       });
       return { ...state, ipoSubscriptions: list };
+    },
+
+
+    saveAccountOperationInfo(state,action){
+      const { subAccounts } = state;
+      const p = action.payload.data;
+      const list = subAccounts.map(item => {
+        if (item.id === p.id) {
+          return p;
+        }
+        return item;
+      });
+      return { ...state, subAccounts: list };
     },
 
     saveStocks(state, action) {
