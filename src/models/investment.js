@@ -9,6 +9,7 @@ import {
   addAccount,
   updateAccount,
   addPlan,
+  removePlan,
   ipo,
   sign,
   addTrans,
@@ -153,6 +154,19 @@ export default {
 
     *addPlan({ payload }, { call, put }) {
       const response = yield call(addPlan, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      yield put({
+        type: 'saveIpoSign',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
+
+    *removePlan({ payload }, { call, put }) {
+      const response = yield call(removePlan, payload);
       const { status, data } = response; //eslint-disable-line
 
       yield put({

@@ -273,6 +273,17 @@ class IPOSubscriptions extends React.Component {
     });
   };
 
+  removePlan = (id, stockId) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'investment/removePlan',
+      payload: {
+        id,
+        stockId,
+      },
+    });
+  };
+
   addIPO = (id, stockId) => {
     const { dispatch } = this.props;
     dispatch({
@@ -517,7 +528,12 @@ class IPOSubscriptions extends React.Component {
         // dataIndex: 'id',
         render: record => (
           <Fragment>
-            <a onClick={() => this.addPlan(record.id, record.stockId)}>计划</a>
+            {record.planIPO < 1 && (
+              <a onClick={() => this.addPlan(record.id, record.stockId)}>加入计划</a>
+            )}
+            {record.planIPO > 0 && (
+              <a onClick={() => this.removePlan(record.id, record.stockId)}>取消计划</a>
+            )}
             <Divider type="vertical" />
             <a onClick={() => this.addIPO(record.id, record.stockId)}>申购</a>
             <Divider type="vertical" />
