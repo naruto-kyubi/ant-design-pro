@@ -102,9 +102,9 @@ export default {
 
     *updateAccount({ payload }, { call, put }) {
       // yield call(updateAccount, payload);
-       const response = yield call(updateAccount, payload);
-       const { status, data } = response;
-       yield put({
+      const response = yield call(updateAccount, payload);
+      const { status, data } = response;
+      yield put({
         type: 'saveAccountOperationInfo',
         payload: {
           status,
@@ -114,11 +114,11 @@ export default {
       // console.log(payload);
     },
 
-    *queryBalance({ payload }, { call,put }) {
+    *queryBalance({ payload }, { call, put }) {
       // yield call(queryBalance, payload);
-       const response = yield call(queryBalance, payload);
-       const { status, data } = response;
-       yield put({
+      const response = yield call(queryBalance, payload);
+      const { status, data } = response;
+      yield put({
         type: 'saveAccountOperationInfo',
         payload: {
           status,
@@ -265,7 +265,6 @@ export default {
         accountTypes: action.payload.data,
       };
     },
-    
 
     saveIPOSubScriptions(state, action) {
       return {
@@ -286,8 +285,7 @@ export default {
       return { ...state, ipoSubscriptions: list };
     },
 
-
-    saveAccountOperationInfo(state,action){
+    saveAccountOperationInfo(state, action) {
       const { subAccounts } = state;
       const p = action.payload.data;
       const list = subAccounts.map(item => {
@@ -299,10 +297,10 @@ export default {
       return { ...state, subAccounts: list };
     },
 
-
-    setProcessing(state,action){
+    setProcessing(state, action) {
       const { subAccounts } = state;
       const p = action.payload.data;
+
       p.lastOperationStatus = 2;
       const list = subAccounts.map(item => {
         if (item.id === p.id) {
