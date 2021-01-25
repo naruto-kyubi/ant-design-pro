@@ -27,8 +27,8 @@ import styles from './TableList.less';
 import { formatMoney } from '@/utils/utils';
 
 const FormItem = Form.Item;
-const statusMap = ['error', 'success'];
-const status = ['失败', '成功'];
+const statusMap = ['error', 'success','processing'];
+const status = ['失败', '成功','...'];
 
 const transStatusMap = ['default','processing','success','error']
 const transStatus = ['计划','执行中','成功','失败']
@@ -357,7 +357,7 @@ class AccountList extends PureComponent {
         <Fragment>
           <a onClick={() => this.logon(id)}>登录</a>
           <Divider type="vertical" />
-          <a onClick={() => this.queryBalance(id)}>查询余额</a>
+          <a onClick={() => this.queryBalance(record)}>查询余额</a>
           <Divider type="vertical" />
           <a onClick={() => this.handleUpdateModalVisible(true, record)}>更新</a>
           <Divider type="vertical" />
@@ -400,12 +400,20 @@ class AccountList extends PureComponent {
     });
   };
 
-  queryBalance = id => {
+  queryBalance = record => {
     const { dispatch } = this.props;
+
+    dispatch({
+      type: 'investment/setProcessing',
+      payload: {
+        data: record,
+      },
+    });
+
     dispatch({
       type: 'investment/queryBalance',
       payload: {
-        id,
+        id:record.id,
       },
     });
   };

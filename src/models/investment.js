@@ -265,6 +265,7 @@ export default {
         accountTypes: action.payload.data,
       };
     },
+    
 
     saveIPOSubScriptions(state, action) {
       return {
@@ -289,6 +290,20 @@ export default {
     saveAccountOperationInfo(state,action){
       const { subAccounts } = state;
       const p = action.payload.data;
+      const list = subAccounts.map(item => {
+        if (item.id === p.id) {
+          return p;
+        }
+        return item;
+      });
+      return { ...state, subAccounts: list };
+    },
+
+
+    setProcessing(state,action){
+      const { subAccounts } = state;
+      const p = action.payload.data;
+      p.lastOperationStatus = 2;
       const list = subAccounts.map(item => {
         if (item.id === p.id) {
           return p;
