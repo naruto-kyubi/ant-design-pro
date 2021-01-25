@@ -58,7 +58,7 @@ export default {
       });
     },
 
-    *logon({ payload }, { call,put }) {
+    *logon({ payload }, { call, put }) {
       const response = yield call(logon, payload);
       const { status, data } = response;
       yield put({
@@ -145,19 +145,6 @@ export default {
       });
     },
 
-    *queryIPOSubscriptions({ payload }, { call, put }) {
-      const response = yield call(queryIPOSubscriptions, payload);
-      const { status, data } = response;
-
-      yield put({
-        type: 'saveIPOSubScriptions',
-        payload: {
-          status,
-          data,
-        },
-      });
-    },
-
     *queryStocks({ payload }, { call, put }) {
       const response = yield call(queryStocks, payload);
       const { status, data } = response;
@@ -171,25 +158,12 @@ export default {
       });
     },
 
-    *addPlan({ payload }, { call, put }) {
-      const response = yield call(addPlan, payload);
-      const { status, data } = response; //eslint-disable-line
+    *queryIPOSubscriptions({ payload }, { call, put }) {
+      const response = yield call(queryIPOSubscriptions, payload);
+      const { status, data } = response;
 
       yield put({
-        type: 'saveIpoSign',
-        payload: {
-          status,
-          data,
-        },
-      });
-    },
-
-    *removePlan({ payload }, { call, put }) {
-      const response = yield call(removePlan, payload);
-      const { status, data } = response; //eslint-disable-line
-
-      yield put({
-        type: 'saveIpoSign',
+        type: 'saveIPOSubScriptions',
         payload: {
           status,
           data,
@@ -210,30 +184,85 @@ export default {
       });
     },
 
+    *addPlan({ payload }, { call, put }) {
+      const response = yield call(addPlan, payload);
+      const { status, data } = response; //eslint-disable-line
+
+      if (status === 'ok') {
+        yield put({
+          type: 'saveIpoSign',
+          payload: {
+            status,
+            data,
+          },
+        });
+      } else {
+        // fail失败；
+        yield put({
+          type: 'saveIpoSignFailed',
+          payload,
+        });
+      }
+    },
+
+    *removePlan({ payload }, { call, put }) {
+      const response = yield call(removePlan, payload);
+      const { status, data } = response; //eslint-disable-line
+      if (status === 'ok') {
+        yield put({
+          type: 'saveIpoSign',
+          payload: {
+            status,
+            data,
+          },
+        });
+      } else {
+        // fail失败；
+        yield put({
+          type: 'saveIpoSignFailed',
+          payload,
+        });
+      }
+    },
+
     *ipo({ payload }, { call, put }) {
       const response = yield call(ipo, payload);
       const { status, data } = response; //eslint-disable-line
-
-      yield put({
-        type: 'saveIpoSign',
-        payload: {
-          status,
-          data,
-        },
-      });
+      if (status === 'ok') {
+        yield put({
+          type: 'saveIpoSign',
+          payload: {
+            status,
+            data,
+          },
+        });
+      } else {
+        // fail失败；
+        yield put({
+          type: 'saveIpoSignFailed',
+          payload,
+        });
+      }
     },
 
     *sign({ payload }, { call, put }) {
       const response = yield call(sign, payload);
       const { status, data } = response; //eslint-disable-line
-
-      yield put({
-        type: 'saveIpoSign',
-        payload: {
-          status,
-          data,
-        },
-      });
+      if (status === 'ok') {
+        yield put({
+          type: 'saveIpoSign',
+          payload: {
+            status,
+            data,
+          },
+        });
+      } else {
+        // fail失败；
+        yield put({
+          type: 'saveIpoSignFailed',
+          payload,
+        });
+      }
     },
 
     *updateIPO({ payload }, { call, put }) {
@@ -271,6 +300,20 @@ export default {
       };
     },
 
+    setIPOProcessing(state, action) {
+      const { ipoSubscriptions } = state;
+      const p = action.payload.data;
+
+      p.lastOperationStatus = 2;
+      const list = ipoSubscriptions.map(item => {
+        if (item.id === p.id) {
+          return p;
+        }
+        return item;
+      });
+      return { ...state, ipoSubscriptions: list };
+    },
+
     saveIPOSubScriptions(state, action) {
       return {
         ...state,
@@ -281,9 +324,22 @@ export default {
     saveIpoSign(state, action) {
       const { ipoSubscriptions } = state;
       const p = action.payload.data;
+      p.lastOperationStatus = '1';
       const list = ipoSubscriptions.map(item => {
         if (item.id === p.id) {
           return p;
+        }
+        return item;
+      });
+      return { ...state, ipoSubscriptions: list };
+    },
+
+    saveIpoSignFailed(state, action) {
+      const { ipoSubscriptions } = state;
+      const { id } = action.payload;
+      const list = ipoSubscriptions.map(item => {
+        if (item.id === id) {
+          return { ...item, lastOperationStatus: '0' };
         }
         return item;
       });

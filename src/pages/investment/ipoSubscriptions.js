@@ -14,12 +14,16 @@ import {
   Input,
   InputNumber,
   Switch,
+  Badge,
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { connect } from 'dva';
 import { formatMoney } from '@/utils/utils';
 import styles from './TableList.less';
+
+const statusMap = ['error', 'success', 'processing'];
+const status = ['失败', '成功', '...'];
 
 const FormItem = Form.Item;
 
@@ -305,46 +309,60 @@ class IPOSubscriptions extends React.Component {
     }
   };
 
-  addPlan = (id, stockId) => {
+  setProcessing = (dispatch, record) => {
+    dispatch({
+      type: 'investment/setIPOProcessing',
+      payload: {
+        data: record,
+      },
+    });
+  };
+
+  addPlan = record => {
     const { dispatch } = this.props;
+    this.setProcessing(dispatch, record);
     dispatch({
       type: 'investment/addPlan',
       payload: {
-        id,
-        stockId,
+        id: record.id,
+        stockId: record.stockId,
       },
     });
   };
 
-  removePlan = (id, stockId) => {
+  removePlan = record => {
     const { dispatch } = this.props;
+    this.setProcessing(dispatch, record);
     dispatch({
       type: 'investment/removePlan',
       payload: {
-        id,
-        stockId,
+        id: record.id,
+        stockId: record.stockId,
       },
     });
   };
 
-  addIPO = (id, stockId) => {
+  addIPO = record => {
     const { dispatch } = this.props;
+    this.setProcessing(dispatch, record);
+
     dispatch({
       type: 'investment/ipo',
       payload: {
-        id,
-        stockId,
+        id: record.id,
+        stockId: record.stockId,
       },
     });
   };
 
-  querySign = (id, stockId) => {
+  querySign = record => {
     const { dispatch } = this.props;
+    this.setProcessing(dispatch, record);
     dispatch({
       type: 'investment/sign',
       payload: {
-        id,
-        stockId,
+        id: record.id,
+        stockId: record.stockId,
       },
     });
   };
@@ -490,17 +508,17 @@ class IPOSubscriptions extends React.Component {
         sortOrder: sortedInfo.columnKey === 'balance' && sortedInfo.order,
         needTotal: true,
       },
-      {
-        title: '入场费',
-        width: 120,
-        dataIndex: 'adminssionFee',
-        key: 'adminssionFee',
-        align: 'right',
-        render: val => `${formatMoney(val)} `,
-        sorter: (a, b) => a.adminssionFee - b.adminssionFee,
-        sortOrder: sortedInfo.columnKey === 'adminssionFee' && sortedInfo.order,
-        needTotal: true,
-      },
+      // {
+      //   title: '入场费',
+      //   width: 120,
+      //   dataIndex: 'adminssionFee',
+      //   key: 'adminssionFee',
+      //   align: 'right',
+      //   render: val => `${formatMoney(val)} `,
+      //   sorter: (a, b) => a.adminssionFee - b.adminssionFee,
+      //   sortOrder: sortedInfo.columnKey === 'adminssionFee' && sortedInfo.order,
+      //   needTotal: true,
+      // },
 
       {
         title: '融资',
@@ -598,6 +616,29 @@ class IPOSubscriptions extends React.Component {
         ellipsis: true,
         needTotal: true,
       },
+      // {
+      //   title: '上次调度时间',
+      //   dataIndex: 'lastOperationAt',
+      //   sorter: true,
+      //   render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      // },
+      {
+        title: '执行状态',
+        dataIndex: 'lastOperationStatus',
+        filters: [
+          {
+            text: status[0],
+            value: 0,
+          },
+          {
+            text: status[1],
+            value: 1,
+          },
+        ],
+        render(val) {
+          return <Badge status={statusMap[val]} text={status[val]} />;
+        },
+      },
       {
         title: '操作',
         width: 240,
@@ -606,16 +647,12 @@ class IPOSubscriptions extends React.Component {
         // dataIndex: 'id',
         render: record => (
           <Fragment>
-            {record.planIPO < 1 && (
-              <a onClick={() => this.addPlan(record.id, record.stockId)}>加入计划</a>
-            )}
-            {record.planIPO > 0 && (
-              <a onClick={() => this.removePlan(record.id, record.stockId)}>取消计划</a>
-            )}
+            {record.planIPO < 1 && <a onClick={() => this.addPlan(record)}>加入计划</a>}
+            {record.planIPO > 0 && <a onClick={() => this.removePlan(record)}>取消计划</a>}
             <Divider type="vertical" />
-            <a onClick={() => this.addIPO(record.id, record.stockId)}>申购</a>
+            <a onClick={() => this.addIPO(record)}>申购</a>
             <Divider type="vertical" />
-            <a onClick={() => this.querySign(record.id, record.stockId)}>中签</a>
+            <a onClick={() => this.querySign(record)}>中签</a>
             <Divider type="vertical" />
             <a onClick={() => this.handleUpdateModalVisible(true, record)}>更新</a>
           </Fragment>
