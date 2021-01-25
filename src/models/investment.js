@@ -58,11 +58,16 @@ export default {
       });
     },
 
-    *logon({ payload }, { call }) {
-      yield call(logon, payload);
-      // const response = yield call(logon, payload);
-      // const { data } = response;
-      // console.log(data);
+    *logon({ payload }, { call,put }) {
+      const response = yield call(logon, payload);
+      const { status, data } = response;
+      yield put({
+        type: 'saveAccountOperationInfo',
+        payload: {
+          status,
+          data,
+        },
+      });
     },
 
     *executeTrans({ payload }, { call }) {

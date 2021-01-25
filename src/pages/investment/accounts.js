@@ -355,7 +355,7 @@ class AccountList extends PureComponent {
       dataIndex: 'id',
       render: (id, record) => (
         <Fragment>
-          <a onClick={() => this.logon(id)}>登录</a>
+          <a onClick={() => this.logon(record)}>登录</a>
           <Divider type="vertical" />
           <a onClick={() => this.queryBalance(record)}>查询余额</a>
           <Divider type="vertical" />
@@ -390,25 +390,31 @@ class AccountList extends PureComponent {
     });
   }
 
-  logon = id => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'investment/logon',
-      payload: {
-        id,
-      },
-    });
-  };
-
-  queryBalance = record => {
-    const { dispatch } = this.props;
-
+  setProcessing = (dispatch,record) =>{
     dispatch({
       type: 'investment/setProcessing',
       payload: {
         data: record,
       },
     });
+  }
+
+  logon = record => {
+    const { dispatch } = this.props;
+    this.setProcessing(dispatch,record);
+    dispatch({
+      type: 'investment/logon',
+      payload: {
+        id:record.id,
+      },
+    });
+  };
+
+  
+
+  queryBalance = record => {
+    const { dispatch } = this.props;
+    this.setProcessing(dispatch,record);
 
     dispatch({
       type: 'investment/queryBalance',
@@ -432,12 +438,12 @@ class AccountList extends PureComponent {
     switch (e.key) {
       case 'logon':
         selectedRows.forEach(row => {
-          this.logon(row.id);
+          this.logon(row);
         });
         break;
       case 'queryBalance':
         selectedRows.forEach(row => {
-          this.queryBalance(row.id);
+          this.queryBalance(row);
         });
         break;
       default:
