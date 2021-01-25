@@ -310,9 +310,9 @@ export default {
 
     setIPOProcessing(state, action) {
       const { ipoSubscriptions } = state;
-      const p = action.payload.data;
+      let p = action.payload.data;
 
-      p.lastOperationStatus = 2;
+      p = { ...p, lastOperationStatus: 2 };
       const list = ipoSubscriptions.map(item => {
         if (item.id === p.id) {
           return p;

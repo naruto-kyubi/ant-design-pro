@@ -291,17 +291,17 @@ class IPOSubscriptions extends React.Component {
     switch (e.key) {
       case 'plan':
         selectedRows.forEach(row => {
-          this.addPlan(row.id, row.stockId);
+          this.addPlan(row);
         });
         break;
       case 'ipo':
         selectedRows.forEach(row => {
-          this.addIPO(row.id, row.stockId);
+          this.addIPO(row);
         });
         break;
       case 'sign':
         selectedRows.forEach(row => {
-          this.querySign(row.id, row.stockId);
+          this.querySign(row);
         });
         break;
       default:
