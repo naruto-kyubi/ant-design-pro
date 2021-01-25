@@ -18,6 +18,7 @@ import {
   installApp,
   closeTrans,
   executeTrans,
+  dayEndClearing,
 } from '@/services/investment';
 
 export default {
@@ -72,6 +73,13 @@ export default {
 
     *executeTrans({ payload }, { call }) {
       yield call(executeTrans, payload);
+      // const response = yield call(logon, payload);
+      // const { data } = response;
+      // console.log(data);
+    },
+
+    *dayEndClearing({ payload }, { call }) {
+      yield call(dayEndClearing, payload);
       // const response = yield call(logon, payload);
       // const { data } = response;
       // console.log(data);

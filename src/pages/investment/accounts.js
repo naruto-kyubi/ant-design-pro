@@ -410,7 +410,12 @@ class AccountList extends PureComponent {
     });
   };
 
-  
+  dayEndClearing = () =>{
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'investment/dayEndClearing',
+    });
+  }
 
   queryBalance = record => {
     const { dispatch } = this.props;
@@ -580,6 +585,10 @@ class AccountList extends PureComponent {
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
+              </Button>
+              &nbsp;&nbsp;&nbsp;
+              <Button type="primary" htmlType="submit" onClick={this.dayEndClearing}>
+                当日记账
               </Button>
             </span>
           </Col>

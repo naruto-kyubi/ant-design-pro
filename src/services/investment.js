@@ -35,6 +35,11 @@ export async function queryBalance(payload) {
   return request(`/server/api/v1/queryBalance?id=${id}`);
 }
 
+export async function dayEndClearing(payload) {
+  return request(`/server/api/v1/dayEndClearing`);
+}
+
+
 export async function queryAccountTypes() {
   return request(`/server/api/v1/queryAccountTypes`);
 }
