@@ -451,6 +451,7 @@ class IPOSubscriptions extends React.Component {
           return <span style={{ align: 'center' }}>{index + 1}</span>;
         },
         width: 60,
+        fixed: 'left',
       },
       {
         title: '券商',
@@ -463,6 +464,7 @@ class IPOSubscriptions extends React.Component {
         sorter: (a, b) => a.type.localeCompare(b.type),
         sortOrder: sortedInfo.columnKey === 'type' && sortedInfo.order,
         ellipsis: true,
+        fixed: 'left',
       },
       {
         title: '姓名',
@@ -475,6 +477,7 @@ class IPOSubscriptions extends React.Component {
         sorter: (a, b) => a.nameCn.localeCompare(b.nameCn),
         sortOrder: sortedInfo.columnKey === 'nameCn' && sortedInfo.order,
         ellipsis: true,
+        fixed: 'left',
       },
       {
         title: '资金',
@@ -597,7 +600,9 @@ class IPOSubscriptions extends React.Component {
       },
       {
         title: '操作',
-        width: 180,
+        width: 240,
+        fixed: 'right',
+        align: 'center',
         // dataIndex: 'id',
         render: record => (
           <Fragment>
@@ -653,7 +658,7 @@ class IPOSubscriptions extends React.Component {
                 onChange={this.handleChange}
                 columns={columns}
                 onSelectRow={this.handleSelectRows}
-                scroll={{ x: 2000, y: 800 }}
+                scroll={{ x: 1600, y: 800 }}
                 pagination={{ pageSize: 500, hideOnSinglePage: true }}
               />
             </div>
