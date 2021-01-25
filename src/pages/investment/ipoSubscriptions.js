@@ -514,7 +514,7 @@ class IPOSubscriptions extends React.Component {
         sorter: (a, b) => a.subscriptionType.localeCompare(b.subscriptionType),
         sortOrder: sortedInfo.columnKey === 'subscriptionType' && sortedInfo.order,
         ellipsis: true,
-        needTotal: true,
+        // needTotal: true,
       },
       {
         title: '利息',
