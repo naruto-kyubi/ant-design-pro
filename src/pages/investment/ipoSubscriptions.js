@@ -13,8 +13,8 @@ import {
   Modal,
   Input,
   InputNumber,
-  Switch,
   Badge,
+  Radio,
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -42,9 +42,12 @@ const UpdateForm = Form.create()(props => {
     });
   };
 
-  const onChange = checked => {
-    if (!checked) {
-      form.setFieldsValue({ interest: 0, subscriptionType: checked });
+  const onChange = e => {
+    e.preventDefault();
+    if (e.target.value === '0')
+      form.setFieldsValue({ interest: 0, commissionFee: record.cashCommissionFee });
+    else {
+      form.setFieldsValue({ commissionFee: record.financeCommissionFee });
     }
   };
 
@@ -79,13 +82,24 @@ const UpdateForm = Form.create()(props => {
 
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
-          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="融资">
+          {/* <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="融资">
             {form.getFieldDecorator('subscriptionType', {
               initialValue: record.subscriptionType == '1', //eslint-disable-line
               valuePropName: 'checked',
               // rules: [{ required: false, message: '请选择是否融资' }],
             })(<Switch onChange={onChange} />)}
-          </FormItem>
+          </FormItem> */}
+          <Form.Item labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="申购方式">
+            {form.getFieldDecorator('subscriptionType', {
+              initialValue: record.subscriptionType, //eslint-disable-line
+              valuePropName: 'value',
+            })(
+              <Radio.Group onChange={onChange}>
+                <Radio value="0">现金</Radio>
+                <Radio value="1">融资</Radio>
+              </Radio.Group>
+            )}
+          </Form.Item>
         </Col>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="利息">
@@ -535,21 +549,6 @@ class IPOSubscriptions extends React.Component {
         // needTotal: true,
       },
       {
-        title: '利息',
-        width: 100,
-        dataIndex: 'interest',
-        key: 'interest',
-        align: 'right',
-        // filters: interest,
-        // filteredValue: filteredInfo.interest || null,
-        // onFilter: (value, record) => record.interest == value, //eslint-disable-line
-        sorter: (a, b) => a.interest - b.interest,
-        sortOrder: sortedInfo.columnKey === 'interest' && sortedInfo.order,
-        ellipsis: true,
-        needTotal: true,
-      },
-
-      {
         title: '手续费',
         width: 120,
         dataIndex: 'commissionFee',
@@ -560,6 +559,20 @@ class IPOSubscriptions extends React.Component {
         onFilter: (value, record) => record.commissionFee == value, //eslint-disable-line
         sorter: (a, b) => a.commissionFee - b.commissionFee,
         sortOrder: sortedInfo.columnKey === 'commissionFee' && sortedInfo.order,
+        ellipsis: true,
+        needTotal: true,
+      },
+      {
+        title: '利息',
+        width: 100,
+        dataIndex: 'interest',
+        key: 'interest',
+        align: 'right',
+        // filters: interest,
+        // filteredValue: filteredInfo.interest || null,
+        // onFilter: (value, record) => record.interest == value, //eslint-disable-line
+        sorter: (a, b) => a.interest - b.interest,
+        sortOrder: sortedInfo.columnKey === 'interest' && sortedInfo.order,
         ellipsis: true,
         needTotal: true,
       },
