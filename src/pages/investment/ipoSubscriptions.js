@@ -369,6 +369,32 @@ class IPOSubscriptions extends React.Component {
     });
   };
 
+  addFinanceIPO = record => {
+    const { dispatch } = this.props;
+    this.setProcessing(dispatch, record);
+
+    dispatch({
+      type: 'investment/addFinanceIPO',
+      payload: {
+        id: record.id,
+        stockId: record.stockId,
+      },
+    });
+  };
+
+  cancelFinanceIPO = record => {
+    const { dispatch } = this.props;
+    this.setProcessing(dispatch, record);
+
+    dispatch({
+      type: 'investment/cancelFinanceIPO',
+      payload: {
+        id: record.id,
+        stockId: record.stockId,
+      },
+    });
+  };
+
   querySign = record => {
     const { dispatch } = this.props;
     this.setProcessing(dispatch, record);
@@ -663,7 +689,11 @@ class IPOSubscriptions extends React.Component {
             {record.planIPO < 1 && <a onClick={() => this.addPlan(record)}>加入计划</a>}
             {record.planIPO > 0 && <a onClick={() => this.removePlan(record)}>取消计划</a>}
             <Divider type="vertical" />
-            <a onClick={() => this.addIPO(record)}>申购</a>
+            <a onClick={() => this.addIPO(record)}>现金</a>
+            <Divider type="vertical" />
+            <a onClick={() => this.addFinanceIPO(record)}>融资</a>
+            <Divider type="vertical" />
+            <a onClick={() => this.cancelFinanceIPO(record)}>暂停</a>
             <Divider type="vertical" />
             <a onClick={() => this.querySign(record)}>中签</a>
             <Divider type="vertical" />

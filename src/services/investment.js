@@ -35,10 +35,9 @@ export async function queryBalance(payload) {
   return request(`/server/api/v1/queryBalance?id=${id}`);
 }
 
-export async function dayEndClearing(payload) {
+export async function dayEndClearing() {
   return request(`/server/api/v1/dayEndClearing`);
 }
-
 
 export async function queryAccountTypes() {
   return request(`/server/api/v1/queryAccountTypes`);
@@ -67,6 +66,16 @@ export async function removePlan(payload) {
 export async function ipo(payload) {
   const { stockId, id } = payload;
   return request(`/server/api/v1/ipo?stockId=${stockId}&id=${id}`);
+}
+
+export async function addFinanceIPO(payload) {
+  const { stockId, id } = payload;
+  return request(`/server/api/v1/addFinanceIPO?stockId=${stockId}&id=${id}`);
+}
+
+export async function cancelFinanceIPO(payload) {
+  const { stockId, id } = payload;
+  return request(`/server/api/v1/cancelFinanceIPO?stockId=${stockId}&id=${id}`);
 }
 
 export async function sign(payload) {

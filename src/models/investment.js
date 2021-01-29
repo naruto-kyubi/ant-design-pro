@@ -11,6 +11,8 @@ import {
   addPlan,
   removePlan,
   ipo,
+  addFinanceIPO,
+  cancelFinanceIPO,
   sign,
   updateIPO,
   addTrans,
@@ -235,6 +237,46 @@ export default {
 
     *ipo({ payload }, { call, put }) {
       const response = yield call(ipo, payload);
+      const { status, data } = response; //eslint-disable-line
+      if (status === 'ok') {
+        yield put({
+          type: 'saveIpoSign',
+          payload: {
+            status,
+            data,
+          },
+        });
+      } else {
+        // fail失败；
+        yield put({
+          type: 'saveIpoSignFailed',
+          payload,
+        });
+      }
+    },
+
+    *addFinanceIPO({ payload }, { call, put }) {
+      const response = yield call(addFinanceIPO, payload);
+      const { status, data } = response; //eslint-disable-line
+      if (status === 'ok') {
+        yield put({
+          type: 'saveIpoSign',
+          payload: {
+            status,
+            data,
+          },
+        });
+      } else {
+        // fail失败；
+        yield put({
+          type: 'saveIpoSignFailed',
+          payload,
+        });
+      }
+    },
+
+    *cancelFinanceIPO({ payload }, { call, put }) {
+      const response = yield call(cancelFinanceIPO, payload);
       const { status, data } = response; //eslint-disable-line
       if (status === 'ok') {
         yield put({
