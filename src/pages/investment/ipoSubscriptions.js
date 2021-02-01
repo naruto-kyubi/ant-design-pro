@@ -662,7 +662,8 @@ class IPOSubscriptions extends React.Component {
       //   render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
       // },
       {
-        title: '执行状态',
+        title: '状态',
+        width: 120,
         dataIndex: 'lastOperationStatus',
         filters: [
           {
@@ -680,7 +681,7 @@ class IPOSubscriptions extends React.Component {
       },
       {
         title: '操作',
-        width: 240,
+        // width: 240,
         fixed: 'right',
         align: 'center',
         // dataIndex: 'id',
@@ -730,17 +731,18 @@ class IPOSubscriptions extends React.Component {
                 <Button onClick={this.clearFilters}>Clear filters</Button>
                 <Button onClick={this.clearAll}>Clear filters and sorters</Button>
               </div>
-
-              <StandardTable
-                rowKey="id"
-                dataSource={data}
-                selectedRows={selectedRows}
-                onChange={this.handleChange}
-                columns={columns}
-                onSelectRow={this.handleSelectRows}
-                scroll={{ x: 1600, y: 800 }}
-                pagination={{ pageSize: 500, hideOnSinglePage: true }}
-              />
+              <div>
+                <StandardTable
+                  rowKey="id"
+                  dataSource={data}
+                  selectedRows={selectedRows}
+                  onChange={this.handleChange}
+                  columns={columns}
+                  onSelectRow={this.handleSelectRows}
+                  scroll={{ x: 1600, y: 800 }}
+                  pagination={{ pageSize: 500, hideOnSinglePage: true }}
+                />
+              </div>
             </div>
           </div>
         </Card>
