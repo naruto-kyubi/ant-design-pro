@@ -264,24 +264,8 @@ const UpdateForm = Form.create()(props => {
             })(<Input placeholder="" />)}
           </FormItem>
         </Col>
-        {/* <Col md={12} sm={24}>
-          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户余额">
-            {form.getFieldDecorator('balance', {
-              initialValue: record.balance,
-              rules: [{ required: false, message: '请输入账户余额' }],
-            })(<InputNumber placeholder="" />)}
-          </FormItem>
-        </Col> */}
       </Row>
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
-        {/* <Col md={12} sm={24}>
-          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="账号">
-            {form.getFieldDecorator('accountNo', {
-              initialValue: record.accountNo,
-              rules: [{ required: false, message: '请输入账号', min: 2 }],
-            })(<Input placeholder="" />)}
-          </FormItem>
-        </Col> */}
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户余额">
             {form.getFieldDecorator('balance', {
