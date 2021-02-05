@@ -459,6 +459,9 @@ class IPOSubscriptions extends React.Component {
       types = types.map(x => {
         return { text: x, value: x };
       });
+      types = types.sort((a, b) => {
+        return a.text.localeCompare(b.text);
+      });
     }
 
     let nameCns = [];
@@ -739,7 +742,7 @@ class IPOSubscriptions extends React.Component {
                   onChange={this.handleChange}
                   columns={columns}
                   onSelectRow={this.handleSelectRows}
-                  scroll={{ x: 1600, y: 800 }}
+                  scroll={{ x: 1500, y: 800 }}
                   pagination={{ pageSize: 500, hideOnSinglePage: true }}
                 />
               </div>

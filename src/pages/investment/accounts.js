@@ -27,11 +27,11 @@ import styles from './TableList.less';
 import { formatMoney } from '@/utils/utils';
 
 const FormItem = Form.Item;
-const statusMap = ['error', 'success','processing'];
-const status = ['失败', '成功','...'];
+const statusMap = ['error', 'success', 'processing'];
+const status = ['失败', '成功', '...'];
 
-const transStatusMap = ['default','processing','success','error']
-const transStatus = ['计划','执行中','成功','失败']
+const transStatusMap = ['default', 'processing', 'success', 'error'];
+const transStatus = ['计划', '执行中', '成功', '失败'];
 
 const CreateForm = Form.create()(props => {
   const { modalVisible, form, handleAdd, handleModalVisible, mainAccount, accountTypes } = props;
@@ -113,7 +113,6 @@ const CreateForm = Form.create()(props => {
   );
 });
 
-
 const TransForm = Form.create()(props => {
   const { transModalVisible, form, handleTransAdd, handleTransModalVisible } = props;
   const okHandle = () => {
@@ -137,32 +136,25 @@ const TransForm = Form.create()(props => {
       <Row gutter={{ md: 0, lg: 0, xl: 0 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="转账类型">
-            {form.getFieldDecorator('transType',{ initialValue: 'deposit' })(
+            {form.getFieldDecorator('transType', { initialValue: 'deposit' })(
               <Radio.Group>
-                <Radio value="deposit">
-                    转入
-                </Radio>
-                <Radio value="withdraw">
-                    转出
-                </Radio>
+                <Radio value="deposit">转入</Radio>
+                <Radio value="withdraw">转出</Radio>
               </Radio.Group>
             )}
           </FormItem>
         </Col>
-
       </Row>
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="转账金额">
-            {form.getFieldDecorator('amount',{
+            {form.getFieldDecorator('amount', {
               initialValue: 0,
-                            rules: [{ required: true, message: '请输入转账金额' }],
-            })(
-              <InputNumber placeholder="请输入转账金额" />
-            )}
+              rules: [{ required: true, message: '请输入转账金额' }],
+            })(<InputNumber placeholder="请输入转账金额" />)}
           </FormItem>
-        </Col>     
-      </Row>      
+        </Col>
+      </Row>
     </Modal>
   );
 });
@@ -257,13 +249,39 @@ const UpdateForm = Form.create()(props => {
       </Row>
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
-          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="账号">
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="PIN密码">
+            {form.getFieldDecorator('pinPwd', {
+              initialValue: record.pinPwd,
+              rules: [{ required: false, message: '请输入PIN密码', min: 2 }],
+            })(<Input placeholder="PIN密码" />)}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账号">
             {form.getFieldDecorator('accountNo', {
               initialValue: record.accountNo,
               rules: [{ required: false, message: '请输入账号', min: 2 }],
             })(<Input placeholder="" />)}
           </FormItem>
         </Col>
+        {/* <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户余额">
+            {form.getFieldDecorator('balance', {
+              initialValue: record.balance,
+              rules: [{ required: false, message: '请输入账户余额' }],
+            })(<InputNumber placeholder="" />)}
+          </FormItem>
+        </Col> */}
+      </Row>
+      <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
+        {/* <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="账号">
+            {form.getFieldDecorator('accountNo', {
+              initialValue: record.accountNo,
+              rules: [{ required: false, message: '请输入账号', min: 2 }],
+            })(<Input placeholder="" />)}
+          </FormItem>
+        </Col> */}
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户余额">
             {form.getFieldDecorator('balance', {
@@ -277,8 +295,6 @@ const UpdateForm = Form.create()(props => {
   );
 });
 
-
-
 @connect(({ investment, loading, user }) => ({
   mainAccount: investment.mainAccounts,
   subAccount: investment.subAccounts,
@@ -291,7 +307,7 @@ class AccountList extends PureComponent {
   state = {
     modalVisible: false,
     updateModalVisible: false,
-    transModalVisible:false,
+    transModalVisible: false,
     selectedRows: [],
     updateFormValues: {},
   };
@@ -390,47 +406,47 @@ class AccountList extends PureComponent {
     });
   }
 
-  setProcessing = (dispatch,record) =>{
+  setProcessing = (dispatch, record) => {
     dispatch({
       type: 'investment/setProcessing',
       payload: {
         data: record,
       },
     });
-  }
+  };
 
   logon = record => {
     const { dispatch } = this.props;
-    this.setProcessing(dispatch,record);
+    this.setProcessing(dispatch, record);
     dispatch({
       type: 'investment/logon',
       payload: {
-        id:record.id,
+        id: record.id,
       },
     });
   };
 
-  dayEndClearing = () =>{
+  dayEndClearing = () => {
     const { dispatch } = this.props;
     dispatch({
       type: 'investment/dayEndClearing',
     });
-  }
+  };
 
   queryBalance = record => {
     const { dispatch } = this.props;
-    this.setProcessing(dispatch,record);
+    this.setProcessing(dispatch, record);
 
     dispatch({
       type: 'investment/queryBalance',
       payload: {
-        id:record.id,
+        id: record.id,
       },
     });
   };
 
   handleSelectRows = rows => {
-    console.log(rows)
+    console.log(rows);
     this.setState({
       selectedRows: rows,
     });
@@ -484,7 +500,7 @@ class AccountList extends PureComponent {
     });
   };
 
-  handleTransModalVisible = (flag, record)  =>{
+  handleTransModalVisible = (flag, record) => {
     this.setState({
       transModalVisible: !!flag,
       updateFormValues: record || {},
@@ -515,11 +531,11 @@ class AccountList extends PureComponent {
     dispatch({
       type: 'investment/installApp',
       payload: {
-        account:record.id,
+        account: record.id,
       },
     });
     message.success('添加成功');
-  }
+  };
 
   handleUpdate = fields => {
     const { dispatch } = this.props;
@@ -597,11 +613,16 @@ class AccountList extends PureComponent {
     );
   };
 
-  expandedRowRender = (record) => {
+  expandedRowRender = record => {
     const columns = [
       { title: '转账类型', dataIndex: 'transType', key: 'transType' },
       { title: '金额', dataIndex: 'amount', key: 'amount' },
-      { title: '时间', dataIndex: 'transAt', key: 'transAt' , render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>},
+      {
+        title: '时间',
+        dataIndex: 'transAt',
+        key: 'transAt',
+        render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      },
       {
         title: '状态',
         dataIndex: 'status',
@@ -614,7 +635,7 @@ class AccountList extends PureComponent {
       {
         title: '操作',
         dataIndex: 'id',
-        render: (id) => (
+        render: id => (
           <Fragment>
             <a onClick={() => this.executeTrans(id)}>执行</a>
             <Divider type="vertical" />
@@ -666,10 +687,16 @@ class AccountList extends PureComponent {
       handleUpdate: this.handleUpdate,
       handleModalVisible: this.handleModalVisible,
       handleUpdateModalVisible: this.handleUpdateModalVisible,
-      handleTransModalVisible:this.handleTransModalVisible,
-      handleTransAdd:this.handleTransAdd,
+      handleTransModalVisible: this.handleTransModalVisible,
+      handleTransAdd: this.handleTransAdd,
     };
-    const { selectedRows, modalVisible, updateModalVisible, updateFormValues, transModalVisible} = this.state;
+    const {
+      selectedRows,
+      modalVisible,
+      updateModalVisible,
+      updateFormValues,
+      transModalVisible,
+    } = this.state;
 
     if (!mainAccount || !accountTypes) return null;
 
@@ -696,11 +723,11 @@ class AccountList extends PureComponent {
             </div>
             <StandardTable
               data={data}
-             // dataSource={subAccount}
+              // dataSource={subAccount}
               selectedRows={selectedRows}
-             // expandedRowRender={this.expandedRowRender}
+              // expandedRowRender={this.expandedRowRender}
               rowClassName={record => record.fundTransList.length < 1 && styles.noExpand}
-             // rowExpandable={record => record.fundTransList.length > 0 }
+              // rowExpandable={record => record.fundTransList.length > 0 }
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
               pagination={{ pageSize: 300, hideOnSinglePage: true }}
@@ -726,8 +753,6 @@ class AccountList extends PureComponent {
           transModalVisible={transModalVisible}
           record={updateFormValues}
         />
-
-
       </PageHeaderWrapper>
     );
   }
