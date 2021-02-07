@@ -308,11 +308,32 @@ class IPOSubscriptions extends React.Component {
           this.addPlan(row);
         });
         break;
+      case 'logon':
+        selectedRows.forEach(row => {
+          this.logonFinanceIPO(row);
+        });
+        break;
+      case 'prepare':
+        selectedRows.forEach(row => {
+          this.prepareFinanceIPO(row);
+        });
+        break;
+      case 'start':
+        selectedRows.forEach(row => {
+          this.startFinanceIPO(row);
+        });
+        break;
+      case 'quit':
+        selectedRows.forEach(row => {
+          this.quitFinanceIPO(row);
+        });
+        break;
       case 'ipo':
         selectedRows.forEach(row => {
           this.addIPO(row);
         });
         break;
+
       case 'sign':
         selectedRows.forEach(row => {
           this.querySign(row);
@@ -369,12 +390,12 @@ class IPOSubscriptions extends React.Component {
     });
   };
 
-  addFinanceIPO = record => {
+  logonFinanceIPO = record => {
     const { dispatch } = this.props;
     this.setProcessing(dispatch, record);
 
     dispatch({
-      type: 'investment/addFinanceIPO',
+      type: 'investment/logonFinanceIPO',
       payload: {
         id: record.id,
         stockId: record.stockId,
@@ -382,12 +403,38 @@ class IPOSubscriptions extends React.Component {
     });
   };
 
-  cancelFinanceIPO = record => {
+  prepareFinanceIPO = record => {
     const { dispatch } = this.props;
     this.setProcessing(dispatch, record);
 
     dispatch({
-      type: 'investment/cancelFinanceIPO',
+      type: 'investment/prepareFinanceIPO',
+      payload: {
+        id: record.id,
+        stockId: record.stockId,
+      },
+    });
+  };
+
+  startFinanceIPO = record => {
+    const { dispatch } = this.props;
+    this.setProcessing(dispatch, record);
+
+    dispatch({
+      type: 'investment/startFinanceIPO',
+      payload: {
+        id: record.id,
+        stockId: record.stockId,
+      },
+    });
+  };
+
+  quitFinanceIPO = record => {
+    const { dispatch } = this.props;
+    this.setProcessing(dispatch, record);
+
+    dispatch({
+      type: 'investment/quitFinanceIPO',
       payload: {
         id: record.id,
         stockId: record.stockId,
@@ -406,12 +453,6 @@ class IPOSubscriptions extends React.Component {
       },
     });
   };
-
-  // handleModalVisible = flag => {
-  //   this.setState({
-  //     modalVisible: !!flag,
-  //   });
-  // };
 
   handleUpdateModalVisible = (flag, record) => {
     this.setState({
@@ -439,7 +480,13 @@ class IPOSubscriptions extends React.Component {
     const menu = (
       <Menu onClick={this.handleMenuClick} selectedKeys={[]}>
         <Menu.Item key="plan">加入计划</Menu.Item>
+        <Menu.Item key="logon">登录</Menu.Item>
+        <Menu.Item key="prepare">准备</Menu.Item>
+        <Menu.Item key="start">融资</Menu.Item>
+        <Menu.Item key="quit">退出</Menu.Item>
+
         <Menu.Item key="ipo">新股申购</Menu.Item>
+
         <Menu.Item key="sign">中签统计</Menu.Item>
       </Menu>
     );
@@ -695,9 +742,13 @@ class IPOSubscriptions extends React.Component {
             <Divider type="vertical" />
             <a onClick={() => this.addIPO(record)}>现金</a>
             <Divider type="vertical" />
-            <a onClick={() => this.addFinanceIPO(record)}>融资</a>
+            <a onClick={() => this.logonFinanceIPO(record)}>登录</a>
             <Divider type="vertical" />
-            <a onClick={() => this.cancelFinanceIPO(record)}>暂停</a>
+            <a onClick={() => this.prepareFinanceIPO(record)}>准备</a>
+            <Divider type="vertical" />
+            <a onClick={() => this.startFinanceIPO(record)}>融资</a>
+            <Divider type="vertical" />
+            <a onClick={() => this.quitFinanceIPO(record)}>退出</a>
             <Divider type="vertical" />
             <a onClick={() => this.querySign(record)}>中签</a>
             <Divider type="vertical" />

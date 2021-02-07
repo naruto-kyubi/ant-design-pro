@@ -68,14 +68,24 @@ export async function ipo(payload) {
   return request(`/server/api/v1/ipo?stockId=${stockId}&id=${id}`);
 }
 
-export async function addFinanceIPO(payload) {
+export async function logonFinanceIPO(payload) {
   const { stockId, id } = payload;
-  return request(`/server/api/v1/addFinanceIPO?stockId=${stockId}&id=${id}`);
+  return request(`/server/api/v1/finance/logon?stockId=${stockId}&id=${id}`);
 }
 
-export async function cancelFinanceIPO(payload) {
+export async function prepareFinanceIPO(payload) {
   const { stockId, id } = payload;
-  return request(`/server/api/v1/cancelFinanceIPO?stockId=${stockId}&id=${id}`);
+  return request(`/server/api/v1/finance/prepare?stockId=${stockId}&id=${id}`);
+}
+
+export async function startFinanceIPO(payload) {
+  const { stockId, id } = payload;
+  return request(`/server/api/v1/finance/start?stockId=${stockId}&id=${id}`);
+}
+
+export async function quitFinanceIPO(payload) {
+  const { stockId, id } = payload;
+  return request(`/server/api/v1/finance/quit?stockId=${stockId}&id=${id}`);
 }
 
 export async function sign(payload) {

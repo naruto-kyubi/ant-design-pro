@@ -11,8 +11,10 @@ import {
   addPlan,
   removePlan,
   ipo,
-  addFinanceIPO,
-  cancelFinanceIPO,
+  logonFinanceIPO,
+  prepareFinanceIPO,
+  startFinanceIPO,
+  quitFinanceIPO,
   sign,
   updateIPO,
   addTrans,
@@ -255,8 +257,8 @@ export default {
       }
     },
 
-    *addFinanceIPO({ payload }, { call, put }) {
-      const response = yield call(addFinanceIPO, payload);
+    *logonFinanceIPO({ payload }, { call, put }) {
+      const response = yield call(logonFinanceIPO, payload);
       const { status, data } = response; //eslint-disable-line
       if (status === 'ok') {
         yield put({
@@ -275,8 +277,48 @@ export default {
       }
     },
 
-    *cancelFinanceIPO({ payload }, { call, put }) {
-      const response = yield call(cancelFinanceIPO, payload);
+    *prepareFinanceIPO({ payload }, { call, put }) {
+      const response = yield call(prepareFinanceIPO, payload);
+      const { status, data } = response; //eslint-disable-line
+      if (status === 'ok') {
+        yield put({
+          type: 'saveIpoSign',
+          payload: {
+            status,
+            data,
+          },
+        });
+      } else {
+        // fail失败；
+        yield put({
+          type: 'saveIpoSignFailed',
+          payload,
+        });
+      }
+    },
+
+    *startFinanceIPO({ payload }, { call, put }) {
+      const response = yield call(startFinanceIPO, payload);
+      const { status, data } = response; //eslint-disable-line
+      if (status === 'ok') {
+        yield put({
+          type: 'saveIpoSign',
+          payload: {
+            status,
+            data,
+          },
+        });
+      } else {
+        // fail失败；
+        yield put({
+          type: 'saveIpoSignFailed',
+          payload,
+        });
+      }
+    },
+
+    *quitFinanceIPO({ payload }, { call, put }) {
+      const response = yield call(quitFinanceIPO, payload);
       const { status, data } = response; //eslint-disable-line
       if (status === 'ok') {
         yield put({
