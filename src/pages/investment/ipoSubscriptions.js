@@ -132,8 +132,8 @@ const UpdateForm = Form.create()(props => {
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="计划申购数量">
-            {form.getFieldDecorator('planIPO', {
-              initialValue: record.planIPO,
+            {form.getFieldDecorator('planSubscriptionShares', {
+              initialValue: record.planSubscriptionShares,
               rules: [{ required: false, message: '请输入计划申购数量' }],
             })(<InputNumber placeholder="计划申购数量" min={0} />)}
           </FormItem>
@@ -527,10 +527,10 @@ class IPOSubscriptions extends React.Component {
       });
     }
 
-    let planIPOs = [];
+    let planSubscriptionSharess = [];
     if (ipoSubscriptions) {
-      planIPOs = Object.keys(this.groupBy(ipoSubscriptions, 'planIPO'));
-      planIPOs = planIPOs.map(x => {
+      planSubscriptionSharess = Object.keys(this.groupBy(ipoSubscriptions, 'planSubscriptionShares'));
+      planSubscriptionSharess = planSubscriptionSharess.map(x => {
         return { text: x, value: x };
       });
     }
@@ -666,14 +666,14 @@ class IPOSubscriptions extends React.Component {
       {
         title: '计划',
         width: 100,
-        dataIndex: 'planIPO',
-        key: 'planIPO',
+        dataIndex: 'planSubscriptionShares',
+        key: 'planSubscriptionShares',
         align: 'right',
-        filters: planIPOs,
-        filteredValue: filteredInfo.planIPO || null,
-        onFilter: (value, record) => record.planIPO == value, //eslint-disable-line
-        sorter: (a, b) => a.planIPO - b.planIPO,
-        sortOrder: sortedInfo.columnKey === 'planIPO' && sortedInfo.order,
+        filters: planSubscriptionSharess,
+        filteredValue: filteredInfo.planSubscriptionShares || null,
+        onFilter: (value, record) => record.planSubscriptionShares == value, //eslint-disable-line
+        sorter: (a, b) => a.planSubscriptionShares - b.planSubscriptionShares,
+        sortOrder: sortedInfo.columnKey === 'planSubscriptionShares' && sortedInfo.order,
         ellipsis: true,
         needTotal: true,
       },
@@ -737,8 +737,8 @@ class IPOSubscriptions extends React.Component {
         // dataIndex: 'id',
         render: record => (
           <Fragment>
-            {record.planIPO < 1 && <a onClick={() => this.addPlan(record)}>加入计划</a>}
-            {record.planIPO > 0 && <a onClick={() => this.removePlan(record)}>取消计划</a>}
+            {record.planSubscriptionShares < 1 && <a onClick={() => this.addPlan(record)}>加入计划</a>}
+            {record.planSubscriptionShares > 0 && <a onClick={() => this.removePlan(record)}>取消计划</a>}
             <Divider type="vertical" />
             <a onClick={() => this.addIPO(record)}>现金</a>
             <Divider type="vertical" />
