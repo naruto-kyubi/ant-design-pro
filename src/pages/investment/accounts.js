@@ -267,10 +267,18 @@ const UpdateForm = Form.create()(props => {
       </Row>
       <Row gutter={{ md: 2, lg: 2, xl: 2 }}>
         <Col md={12} sm={24}>
-          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="账户余额">
+          <FormItem labelCol={{ span: 5 }} wrapperCol={{ span: 15 }} label="账户余额">
             {form.getFieldDecorator('balance', {
               initialValue: record.balance,
               rules: [{ required: false, message: '请输入账户余额' }],
+            })(<InputNumber placeholder="" />)}
+          </FormItem>
+        </Col>
+        <Col md={12} sm={24}>
+          <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 18 }} label="可取现金">
+            {form.getFieldDecorator('cash', {
+              initialValue: record.cash,
+              rules: [{ required: false, message: '请输入可取金额' }],
             })(<InputNumber placeholder="" />)}
           </FormItem>
         </Col>
@@ -328,10 +336,14 @@ class AccountList extends PureComponent {
       needTotal: true,
     },
     {
-      title: '上次调度时间',
-      dataIndex: 'lastOperationAt',
-      sorter: true,
-      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+      title: '可取现金',
+      dataIndex: 'cash',
+      align: 'right',
+      // sorter: true,
+      render: val => `${formatMoney(val)} `,
+      // mark to display a total number
+      sorter: (a, b) => a.cash - b.cash,
+      needTotal: true,
     },
     {
       title: '执行状态',
