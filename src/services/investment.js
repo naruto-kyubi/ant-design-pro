@@ -10,6 +10,11 @@ export async function queryMainAccounts(payload) {
   return request(`/server/api/v1/mainAccounts?owner=${owner}`);
 }
 
+export async function queryFundTrans(payload) {
+  const { owner } = payload;
+  return request(`/server/api/v1/fundTrans?owner=${owner}`);
+}
+
 export async function logon(payload) {
   const { id } = payload;
   return request(`/server/api/v1/connect?id=${id}`);

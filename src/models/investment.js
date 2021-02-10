@@ -23,6 +23,7 @@ import {
   closeTrans,
   executeTrans,
   dayEndClearing,
+  queryFundTrans,
 } from '@/services/investment';
 
 export default {
@@ -34,6 +35,7 @@ export default {
     accountTypes: [],
     ipoSubscriptions: [],
     stocks: [],
+    fundTrans:[],
   },
 
   effects: {
@@ -43,6 +45,19 @@ export default {
 
       yield put({
         type: 'saveSubAccounts',
+        payload: {
+          status,
+          data,
+        },
+      });
+    },
+
+    *queryFundTrans({ payload }, { call, put }) {
+      const response = yield call(queryFundTrans, payload);
+      const { status, data } = response;
+
+      yield put({
+        type: 'saveFundTrans',
         payload: {
           status,
           data,
@@ -384,7 +399,14 @@ export default {
         subAccounts: action.payload.data,
       };
     },
+    saveFundTrans(state, action) {
+      return {
+        ...state,
+        fundTrans: action.payload.data,
+      };
+    },
 
+    
     saveAccountTypes(state, action) {
       return {
         ...state,
