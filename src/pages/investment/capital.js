@@ -219,7 +219,7 @@ class AccountList extends PureComponent {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       dispatch({
-        type: 'investment/querySubAccounts',
+        type: 'investment/queryFundTrans',
         payload: {
           owner: currentUser.id,
           parent: fieldsValue.parent || '',
