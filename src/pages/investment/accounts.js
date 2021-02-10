@@ -136,10 +136,10 @@ const TransForm = Form.create()(props => {
       <Row gutter={{ md: 0, lg: 0, xl: 0 }}>
         <Col md={12} sm={24}>
           <FormItem labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} label="转账类型">
-            {form.getFieldDecorator('transType', { initialValue: 'deposit' })(
+            {form.getFieldDecorator('transType', { initialValue: '0' })(
               <Radio.Group>
-                <Radio value="deposit">转入</Radio>
-                <Radio value="withdraw">转出</Radio>
+                <Radio value="0">转入</Radio>
+                <Radio value="1">转出</Radio>
               </Radio.Group>
             )}
           </FormItem>
@@ -710,7 +710,7 @@ class AccountList extends PureComponent {
               // dataSource={subAccount}
               selectedRows={selectedRows}
               // expandedRowRender={this.expandedRowRender}
-              rowClassName={record => record.fundTransList.length < 1 && styles.noExpand}
+              // rowClassName={record => record.fundTransList.length < 1 && styles.noExpand}
               // rowExpandable={record => record.fundTransList.length > 0 }
               columns={this.columns}
               onSelectRow={this.handleSelectRows}
