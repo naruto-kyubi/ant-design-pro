@@ -11,8 +11,8 @@ export async function queryMainAccounts(payload) {
 }
 
 export async function queryFundTrans(payload) {
-  const { owner } = payload;
-  return request(`/server/api/v1/fundTrans?owner=${owner}`);
+  const { owner, parent, type } = payload;
+  return request(`/server/api/v1/fundTrans?owner=${owner}&parent=${parent}&type=${type}`);
 }
 
 export async function logon(payload) {
