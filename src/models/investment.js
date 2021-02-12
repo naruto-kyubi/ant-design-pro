@@ -104,11 +104,16 @@ export default {
       // console.log(data);
     },
 
-    *closeTrans({ payload }, { call }) {
-      yield call(closeTrans, payload);
-      // const response = yield call(logon, payload);
-      // const { data } = response;
-      // console.log(data);
+    *closeTrans({ payload }, { call,put }) {
+      // yield call(closeTrans, payload);
+      const response = yield call(closeTrans, payload);
+      const { data } = response;
+      yield put({
+        type: 'removeCloedtrans',
+        payload: {
+          data,
+        },
+      });
     },
 
     *installApp({ payload }, { call }) {
@@ -470,6 +475,16 @@ export default {
         return item;
       });
       return { ...state, subAccounts: list };
+    },
+
+    removeCloedtrans(state,action){
+      const { fundTrans } = state;
+      const p = action.payload.data;
+      const list = fundTrans.filter((item, index, arr)=>{
+        return item.id !==  p.id;
+      });
+
+      return { ...state, fundTrans: list };
     },
 
     setProcessing(state, action) {

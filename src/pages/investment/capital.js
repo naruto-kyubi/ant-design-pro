@@ -27,8 +27,6 @@ import styles from './TableList.less';
 import { formatMoney } from '@/utils/utils';
 
 const FormItem = Form.Item;
-const statusMap = ['error', 'success', 'processing'];
-const status = ['失败', '成功', '...'];
 
 const transStatusMap = ['default', 'processing', 'success', 'error'];
 const transStatus = ['计划', '执行中', '成功', '失败'];
@@ -98,20 +96,28 @@ class AccountList extends PureComponent {
       render: val => `${formatMoney(val)} `,
     },   
     {
-      title: '执行状态',
-      dataIndex: 'lastOperationStatus',
+      title: '转账状态',
+      dataIndex: 'status',
       filters: [
         {
-          text: status[0],
+          text: transStatus[0],
           value: 0,
         },
         {
-          text: status[1],
+          text: transStatus[1],
           value: 1,
+        },
+        {
+          text: transStatus[2],
+          value: 2,
+        },
+        {
+          text: transStatus[2],
+          value: 3,
         },
       ],
       render(val) {
-        return <Badge status={statusMap[val]} text={status[val]} />;
+        return <Badge status={transStatusMap[val]} text={transStatus[val]} />;
       },
     },
     {
@@ -121,9 +127,9 @@ class AccountList extends PureComponent {
         <Fragment>
 
           <Divider type="vertical" />
-          <a onClick={() => this.handleTransModalVisible(true, record)}>执行转账</a>
+          <a onClick={() => this.executeTrans(record)}>执行转账</a>
           <Divider type="vertical" />
-          <a onClick={() => this.handleTransModalVisible(true, record)}>完结转账</a>
+          <a onClick={() => this.closeTrans(record)}>完结转账</a>
           <Divider type="vertical" />
           <a onClick={() => this.handleTransModalVisible(true, record)}>删除</a>
         </Fragment>
@@ -166,18 +172,6 @@ class AccountList extends PureComponent {
     this.setProcessing(dispatch, record);
     dispatch({
       type: 'investment/logon',
-      payload: {
-        id: record.id,
-      },
-    });
-  };
-
-  queryBalance = record => {
-    const { dispatch } = this.props;
-    this.setProcessing(dispatch, record);
-
-    dispatch({
-      type: 'investment/queryBalance',
       payload: {
         id: record.id,
       },
@@ -233,13 +227,6 @@ class AccountList extends PureComponent {
     });
   };
 
-
-  handleUpdateModalVisible = (flag, record) => {
-    this.setState({
-      updateModalVisible: !!flag,
-      updateFormValues: record || {},
-    });
-  };
 
   handleTransAdd = fields => {
     const { dispatch } = this.props;
@@ -300,22 +287,22 @@ class AccountList extends PureComponent {
 
 
 
-  executeTrans = id => {
+  executeTrans = record => {
     const { dispatch } = this.props;
     dispatch({
       type: 'investment/executeTrans',
       payload: {
-        id,
+        id:record.id,
       },
     });
   };
 
-  closeTrans = id => {
+  closeTrans = record => {
     const { dispatch } = this.props;
     dispatch({
       type: 'investment/closeTrans',
       payload: {
-        id,
+        id:record.id,
       },
     });
   };
