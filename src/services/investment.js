@@ -30,6 +30,11 @@ export async function closeTrans(payload) {
   return request(`/server/api/v1/closeTrans?id=${id}`);
 }
 
+export async function removeTrans(payload) {
+  const { id } = payload;
+  return request(`/server/api/v1/removeTrans?id=${id}`);
+}
+
 export async function installApp(payload) {
   const { account } = payload;
   return request(`/server/api/v1/installApp?account=${account}`);

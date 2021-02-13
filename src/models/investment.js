@@ -24,6 +24,7 @@ import {
   executeTrans,
   dayEndClearing,
   queryFundTrans,
+  removeTrans,
 } from '@/services/investment';
 
 export default {
@@ -107,6 +108,18 @@ export default {
     *closeTrans({ payload }, { call,put }) {
       // yield call(closeTrans, payload);
       const response = yield call(closeTrans, payload);
+      const { data } = response;
+      yield put({
+        type: 'removeCloedtrans',
+        payload: {
+          data:data.id,
+        },
+      });
+    },
+
+    *removeTrans({ payload }, { call,put }) {
+      // yield call(closeTrans, payload);
+      const response = yield call(removeTrans, payload);
       const { data } = response;
       yield put({
         type: 'removeCloedtrans',
@@ -481,7 +494,7 @@ export default {
       const { fundTrans } = state;
       const p = action.payload.data;
       const list = fundTrans.filter((item, index, arr)=>{
-        return item.id !==  p.id;
+        return item.id !==  p;
       });
 
       return { ...state, fundTrans: list };

@@ -125,13 +125,11 @@ class AccountList extends PureComponent {
       dataIndex: 'id',
       render: (id, record) => (
         <Fragment>
-
-          <Divider type="vertical" />
           <a onClick={() => this.executeTrans(record)}>执行转账</a>
           <Divider type="vertical" />
-          <a onClick={() => this.closeTrans(record)}>完结转账</a>
+          <a onClick={() => this.closeTrans(record)}>完结</a>
           <Divider type="vertical" />
-          <a onClick={() => this.handleTransModalVisible(true, record)}>删除</a>
+          <a onClick={() => this.removeTrans(record)}>删除</a>
         </Fragment>
       ),
     },
@@ -302,6 +300,16 @@ class AccountList extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'investment/closeTrans',
+      payload: {
+        id:record.id,
+      },
+    });
+  };
+
+  removeTrans = record => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'investment/removeTrans',
       payload: {
         id:record.id,
       },
