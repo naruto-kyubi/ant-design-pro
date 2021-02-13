@@ -96,6 +96,11 @@ class AccountList extends PureComponent {
       render: val => `${formatMoney(val)} `,
     },   
     {
+      title: '日期',
+      dataIndex: 'tranAt',
+      render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
+    }, 
+    {
       title: '转账状态',
       dataIndex: 'status',
       filters: [
