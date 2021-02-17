@@ -97,7 +97,7 @@ class AccountList extends PureComponent {
     },   
     {
       title: '日期',
-      dataIndex: 'tranAt',
+      dataIndex: 'transAt',
       render: val => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
     }, 
     {
