@@ -59,16 +59,16 @@ class AccountList extends PureComponent {
     },
     {
       title: '转出方',
-      dataIndex: 'receivingAccount.accountType.nameCn',
+      dataIndex: 'debitAccount.accountType.nameCn',
       render: text => <a onClick={() => this.previewItem(text)}>{text}</a>,
     },
     {
       title: '转出账户',
-      dataIndex: 'receivingAccount.nameCn',
+      dataIndex: 'debitAccount.nameCn',
     },
     {
       title: '转出前余额',
-      dataIndex: 'balanceBeforeTransOfReceivingAccount',
+      dataIndex: 'balanceBeforeTransOfDebitAccount',
       render: val => `${formatMoney(val)} `,
     },
     {
@@ -83,16 +83,16 @@ class AccountList extends PureComponent {
     },
     {
       title: '转入方',
-      dataIndex: 'debitAccount.accountType.nameCn',
+      dataIndex: 'receivingAccount.accountType.nameCn',
       render: text => <a onClick={() => this.previewItem(text)}>{text}</a>,
     },
     {
       title: '转入账户',
-      dataIndex: 'debitAccount.nameCn',
+      dataIndex: 'receivingAccount.nameCn',
     },
     {
       title: '转入前余额',
-      dataIndex: 'balanceBeforeTransOfDebitAccount',
+      dataIndex: 'balanceBeforeTransOfReceivingAccount',
       render: val => `${formatMoney(val)} `,
     },   
     {
